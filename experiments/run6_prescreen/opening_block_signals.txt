@@ -1,0 +1,6 @@
+peak         th=0.663 coverage=0.900 correct_abstain=24/33
+skip_first   th=0.663 coverage=0.900 correct_abstain=28/33
+drop_head300 th=0.649 coverage=0.900 correct_abstain=26/33
+drop_head600 th=0.649 coverage=0.900 correct_abstain=22/33
+drop_head1000 th=0.665 coverage=0.900 correct_abstain=21/33
+drop_head1500 th=0.669 coverage=0.900 correct_abstain=17/33

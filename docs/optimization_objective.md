@@ -119,3 +119,6 @@ data). The loop decides by the same rules as Run 5. Both options default to the 
 the config hash, so the baseline and Run 5 hashes (`989b96530441`, `78a53ef0d1aa`) are unchanged. Run 6 starts again from
 `configs/baseline.yaml` with 16 iterations. Run 5's final config is kept as `experiments/run5/final_run5.yaml`. The test
 split had been evaluated 3 times before this revision; any new test evaluation is logged and counted.
+
+*Correction (added after Run 6):* only the abstention idea was pre-screened (`experiments/run6_prescreen/`). The stemmer
+hypothesis was not pre-screened; its first measurement is Run 6, iteration 8. No rule or threshold is changed by this note.

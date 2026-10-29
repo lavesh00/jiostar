@@ -1,0 +1,7 @@
+peak           threshold=0.663 coverage=0.900 correct_abstain=24/33
+cov1           threshold=0.000 coverage=0.993 correct_abstain=11/33
+cov3           threshold=0.176 coverage=0.929 correct_abstain=11/33
+peak*cov1      threshold=0.000 coverage=0.993 correct_abstain=11/33
+peak*sqrtcov1  threshold=0.000 coverage=0.993 correct_abstain=11/33
+peak*cov3      threshold=0.168 coverage=0.900 correct_abstain=15/33
+min            threshold=0.000 coverage=0.993 correct_abstain=11/33
