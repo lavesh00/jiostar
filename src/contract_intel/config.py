@@ -39,6 +39,9 @@ class RetrievalConfig:
     rrf_k: int = 60
     doc_boost: float = 0.0  # weight of a document-level BM25 prior added to the chunk score
     candidates: int = 50  # chunks kept before overlap suppression
+    doc_filter_ratio: float = 0.0  # >0: keep only contracts whose document prior >= ratio * best prior
+    min_rel_score: float = 0.0  # >0: drop passages scoring below ratio * top passage score
+    refine_max_chars: int = 0  # >0: shrink each passage to its best-matching sentence window of <= N chars
     max_overlap_frac: float = 0.5  # drop a result overlapping a higher-ranked one by more than this
 
 
@@ -49,6 +52,7 @@ class AbstentionConfig:
     min_gap: float = 0.0  # top_score_gap only: lower bound on (top1 - top2) / top1
     signal: str = "normalized_score"  # "normalized_score" | "doc_peakedness"
     strip_context: bool = False  # confidence uses the query without its 'Consider the <contract>;' prefix
+    min_doc_prior: float = 0.0  # >0: abstain when the best contract match is weaker (named contract not indexed)
     topical_min_docs: int = 0  # >0: confidence ignores query terms found in fewer than N contracts (names)
 
 
@@ -124,6 +128,10 @@ def validate(cfg: Config) -> None:
         raise ConfigError("retrieval.k1 must be > 0 and retrieval.b in [0, 1]")
     if r.fusion not in FUSIONS:
         raise ConfigError(f"retrieval.fusion must be one of {FUSIONS}")
+    if not 0 <= r.doc_filter_ratio <= 1 or not 0 <= r.min_rel_score <= 1 or r.refine_max_chars < 0:
+        raise ConfigError("invalid retrieval.doc_filter_ratio / min_rel_score / refine_max_chars")
+    if not 0 <= a.min_doc_prior <= 1:
+        raise ConfigError("abstention.min_doc_prior must be in [0, 1]")
     if r.candidates < 1 or not 0 <= r.max_overlap_frac <= 1 or r.doc_boost < 0:
         raise ConfigError("invalid retrieval.candidates / max_overlap_frac / doc_boost")
     if a.policy not in ("top_score", "top_score_gap"):

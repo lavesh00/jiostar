@@ -53,7 +53,7 @@ def _rate(num: int, den: int) -> float | None:
 
 def score_run(run: QueryRun, abstention: AbstentionConfig, k_values: tuple[int, ...]) -> dict[str, Any]:
     q, raw = run.query, run.raw
-    abstained, reason = decide(abstention, raw.top1, raw.top2, len(raw.passages))
+    abstained, reason = decide(abstention, raw.top1, raw.top2, len(raw.passages), raw.doc_match)
     shown = [] if abstained else raw.passages
     rec: dict[str, Any] = {
         "id": q.id,
@@ -64,6 +64,7 @@ def score_run(run: QueryRun, abstention: AbstentionConfig, k_values: tuple[int, 
         "abstain_reason": reason,
         "top1_confidence": raw.top1,
         "top2_confidence": raw.top2,
+        "doc_match": raw.doc_match,
         "latency_ms": raw.elapsed_ms,
         "results": [[p.file_path, p.start, p.end, round(p.score, 6)] for p in shown],
     }

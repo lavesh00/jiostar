@@ -26,7 +26,7 @@ from .config import Config
 from .documents import DocumentStore
 from .indexing import LexicalIndex, Tokenizer, strip_query_context
 from .lexicon import expand
-from .ranking import Candidate, rank_candidates, suppress_overlaps
+from .ranking import Candidate, rank_candidates, refine_span, suppress_overlaps
 
 
 @dataclass(frozen=True)
@@ -60,6 +60,7 @@ class RawSearch:
     top1: float
     top2: float
     elapsed_ms: float
+    doc_match: float = 1.0  # best document prior (1.0 without a doc index or with an explicit contract)
 
 
 @dataclass
@@ -105,7 +106,8 @@ class ContractSearcher:
         for i, ch in enumerate(self.chunks):
             self.doc_chunks.setdefault(ch.file_path, []).append(i)
         self.doc_index: LexicalIndex | None = None
-        if r.doc_boost > 0 or cfg.abstention.topical_min_docs > 0:
+        if (r.doc_boost > 0 or r.doc_filter_ratio > 0 or cfg.abstention.topical_min_docs > 0
+                or cfg.abstention.min_doc_prior > 0):
             self.doc_index = LexicalIndex([self.tokenize(docs.text(fp)) for fp in docs.paths()], r.k1, r.b)
         self.build_seconds = time.perf_counter() - t0
 
@@ -150,8 +152,17 @@ class ContractSearcher:
             out[c.idx] = by_doc[fp]
         return out
 
-    def search_raw(self, query: str, top_k: int | None = None) -> RawSearch:
-        """Ranked passages without applying abstention (used for fast threshold sweeps)."""
+    def contracts_matching(self, contract: str) -> list[str]:
+        """Indexed contract paths equal to, or containing (case-insensitive), ``contract``."""
+        if contract in self.docs:
+            return [contract]
+        return [p for p in self.docs.paths() if contract.lower() in p.lower()]
+
+    def search_raw(self, query: str, top_k: int | None = None, contract: str | None = None) -> RawSearch:
+        """Ranked passages without applying abstention (used for fast threshold sweeps).
+
+        ``contract`` optionally restricts the search to indexed contracts matching it (path or substring).
+        """
         t0 = time.perf_counter()
         r = self.cfg.retrieval
         top_k = top_k or self.cfg.eval.top_k
@@ -159,25 +170,41 @@ class ContractSearcher:
         q_text = expand(base) if r.expand_query else base
         conf_text = strip_query_context(query) if (r.strip_query_context or self.cfg.abstention.strip_context) else query
         prior = self._doc_prior(query) if self.doc_index is not None else None
-        cands = rank_candidates(self.index, self.chunks, self.tokenize(q_text), r, prior)
+        allowed: set[str] | None = None
+        doc_match = 1.0
+        if contract:
+            allowed = set(self.contracts_matching(contract))
+            if not allowed:
+                raise ValueError(f"no indexed contract matches {contract!r}")
+            prior = None  # the user chose the contract: no routing needed
+        elif prior is not None:
+            doc_match = max(prior.values(), default=0.0)
+            if r.doc_filter_ratio > 0 and prior:
+                allowed = {fp for fp, v in prior.items() if v >= r.doc_filter_ratio * doc_match}
+        q_tokens = self.tokenize(q_text)
+        cands = rank_candidates(self.index, self.chunks, q_tokens, r, prior, allowed)
         kept = suppress_overlaps(cands, r.max_overlap_frac, top_k)
+        if r.min_rel_score > 0 and kept:
+            kept = [c for c in kept if c.score >= r.min_rel_score * kept[0].score]
         conf = {c.idx: c.confidence for c in kept}
         if self.cfg.abstention.signal == "doc_peakedness" and kept:
             conf = self._peakedness_confidence(strip_query_context(query), kept)
         elif self.cfg.abstention.topical_min_docs > 0 and kept:
             conf = self._topical_confidence(self.tokenize(conf_text), [c.idx for c in kept])
-        passages = [
-            Passage(i, c.chunk.file_path, c.chunk.start, c.chunk.end, c.score, conf[c.idx],
-                    self.docs.slice(c.chunk.file_path, c.chunk.start, c.chunk.end))
-            for i, c in enumerate(kept, 1)
-        ]
+        weights = {t: self.index.idf[t] for t in set(q_tokens) if t in self.index.idf}
+        passages = []
+        for i, c in enumerate(kept, 1):
+            fp, s, e = c.chunk.file_path, c.chunk.start, c.chunk.end
+            if r.refine_max_chars > 0:
+                s, e = refine_span(self.docs.text(fp), s, e, weights, self.tokenize, r.refine_max_chars)
+            passages.append(Passage(i, fp, s, e, c.score, conf[c.idx], self.docs.slice(fp, s, e)))
         top1 = passages[0].confidence if passages else 0.0
         top2 = passages[1].confidence if len(passages) > 1 else 0.0
-        return RawSearch(query, passages, top1, top2, (time.perf_counter() - t0) * 1000)
+        return RawSearch(query, passages, top1, top2, (time.perf_counter() - t0) * 1000, doc_match)
 
-    def search(self, query: str, top_k: int | None = None) -> SearchResponse:
-        raw = self.search_raw(query, top_k)
-        abstain, reason = decide(self.cfg.abstention, raw.top1, raw.top2, len(raw.passages))
+    def search(self, query: str, top_k: int | None = None, contract: str | None = None) -> SearchResponse:
+        raw = self.search_raw(query, top_k, contract)
+        abstain, reason = decide(self.cfg.abstention, raw.top1, raw.top2, len(raw.passages), raw.doc_match)
         return SearchResponse(
             query=query,
             abstained=abstain,
@@ -188,6 +215,8 @@ class ContractSearcher:
                 "config_hash": self.cfg.hash(),
                 "top1_confidence": round(raw.top1, 6),
                 "top2_confidence": round(raw.top2, 6),
+                "contract_match": round(raw.doc_match, 6),
+                "contract_filter": contract,
                 "elapsed_ms": round(raw.elapsed_ms, 3),
             },
         )

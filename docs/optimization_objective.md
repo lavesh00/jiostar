@@ -85,3 +85,21 @@ because it crashed).
 Caveat: the answerable queries are templated ("Consider the <contract>; <question>") whereas the unanswerable ones
 are free-form, so any signal can partly exploit form differences; the peakedness signal always strips the
 "Consider ..." prefix to limit this, but the effect cannot be ruled out and is reported as a limitation.
+
+## Revision 1.5 — Run 5: precision phase and contract gate (declared before Run 5; phases A and B unchanged)
+Run 4's final configuration had train Recall@5 0.72 but Precision@5 0.05; diagnosis: "overly broad" passages dominate,
+and top-5 lists mix in passages from unrelated contracts. Phase A optimised recall only, so precision was never targeted.
+A measurement after Run 4 also showed it abstained on 0/60 questions about CUAD contracts that are not indexed
+(`data/out_of_corpus_probe.jsonl`, derived deterministically from the benchmark, used for reporting only, never for tuning).
+
+* **Phase C — precision (new, runs after phase A, before phase B).** Objective: macro character **Precision@5** on train
+  answerable queries with abstention disabled. Guardrails: Recall@5 and Recall@1 each >= incumbent - 0.02; latency and
+  index-size guardrails as in phase A. Accept if Precision@5 improves by > 0.002. Hypotheses: route filter, chunk-size
+  revisit, relative score cut-off, sentence-window span refinement (gated on "overly broad" >= 10%).
+* **Rule R amendment — contract gate.** When a configuration builds a document index, rule R first sets
+  `min_doc_prior` to the largest value (grid step 0.01) that rejects at most 1% of *train answerable* queries (all of which
+  name an indexed contract); then the confidence threshold is fitted as before so total coverage stays >= 0.90. The gate uses
+  no unanswerable labels. Rationale: questions about contracts that are not in the corpus must be refused.
+* The frozen unanswerable set, metrics and the train/test split are unchanged. Run 5 starts again from `configs/baseline.yaml`;
+  Runs 1-4 stay in the log. The test split was evaluated twice before this revision (Run 4 final and baseline); any new test
+  evaluation is logged and counted.

@@ -1,10 +1,11 @@
 """Train-only self-improvement loop (deterministic grid proposer, rule-gated by diagnostics).
 
-    python -m contract_intel.optimize --config configs/baseline.yaml --iterations 10
+    python -m contract_intel.optimize --config configs/baseline.yaml --iterations 14
 
 Protocol (declared in docs/optimization_objective.md, revision 1.1):
   * Phase A (structure / lexical): maximise macro char Recall@5 with abstention disabled, subject to
     guardrails on Precision@5, latency and index size.
+  * Phase C (precision): maximise macro char Precision@5 without losing more than 0.02 Recall@5/@1.
   * Phase B (abstention): maximise the correct-abstention rate on train unanswerable queries at the
     train-fitted threshold subject to answerable coverage >= 0.90 and no loss of retrieval quality.
   * Each iteration tests one hypothesis (a small grid), takes the best guardrail-passing grid point as the
@@ -47,6 +48,10 @@ LATENCY_FACTOR = 5.0
 CHUNK_FACTOR = 10.0  # G5
 MIN_COVERAGE = 0.90  # G2
 PHASE_B_RETRIEVAL_TOLERANCE = 0.002
+MIN_IMPROVEMENT_C = 0.002  # absolute Precision@5
+PHASE_C_RECALL_TOLERANCE = 0.02  # Recall@5 and Recall@1 may drop by at most this much vs the incumbent
+GATE_MISS_BUDGET = 0.01  # contract gate may wrongly reject at most 1% of train answerable queries
+GATE_GRID = [round(i * 0.01, 2) for i in range(101)]
 THRESHOLD_GRID = [round(i * 0.005, 3) for i in range(191)]  # 0.000 .. 0.950
 GAP_GRID = [round(i * 0.05, 2) for i in range(11)]
 
@@ -54,7 +59,7 @@ GAP_GRID = [round(i * 0.05, 2) for i in range(11)]
 @dataclasses.dataclass(frozen=True)
 class Hypothesis:
     name: str
-    phase: str  # "A" | "B"
+    phase: str  # "A" (recall) | "C" (precision) | "B" (abstention)
     hypothesis: str
     grid: list[dict[str, Any]]
     trigger: str | None = None  # diagnosis-based gate: category name whose share must reach 10%
@@ -89,6 +94,18 @@ HYPOTHESES: list[Hypothesis] = [
     Hypothesis("rrf_fusion", "A",
                "A second lexical view (TF-IDF cosine) fused by reciprocal rank can correct BM25 ranking errors.",
                [{"retrieval.fusion": "rrf", "retrieval.rrf_k": k} for k in (20, 60)]),
+    Hypothesis("route_filter", "C",
+               "Most top-5 lists mix the routed contract with passages from unrelated contracts, which can only add non-gold characters; keeping only contracts whose document prior is close to the best one should raise precision.",
+               [{"retrieval.doc_filter_ratio": x} for x in (0.8, 0.9, 1.0)]),
+    Hypothesis("chunk_size_revisit", "C",
+               "Chunk size was chosen before query processing and expansion existed; with a stronger ranker, smaller chunks may now keep recall while cutting non-gold text.",
+               [{"chunking.size": s} for s in (500, 700, 1000)]),
+    Hypothesis("score_cutoff", "C",
+               "Lower-ranked passages far below the top score are rarely gold; dropping passages under a fraction of the top score should raise precision.",
+               [{"retrieval.min_rel_score": x} for x in (0.5, 0.7, 0.85)]),
+    Hypothesis("span_refinement", "C",
+               "'Overly broad' dominates the diagnosis: gold clauses (~400 chars) sit inside 1500-char chunks. Shrinking each passage to its best-matching sentence window should raise precision at little recall cost.",
+               [{"retrieval.refine_max_chars": n} for n in (300, 500, 800)], trigger="overly_broad"),
     Hypothesis("topical_confidence", "B",
                "Contract-identifying names inflate confidence for unsupported questions; scoring confidence only on terms shared by >= N contracts (plus unseen terms) should separate answerable from unanswerable.",
                [{"abstention.topical_min_docs": n} for n in (3, 5, 8, 12, 16)]),
@@ -104,12 +121,27 @@ HYPOTHESES: list[Hypothesis] = [
 # --- threshold fitting (train only) -------------------------------------------------------------
 
 
+def _abstains(ab: AbstentionConfig, r: QueryRun) -> bool:
+    return decide(ab, r.raw.top1, r.raw.top2, len(r.raw.passages), r.raw.doc_match)[0]
+
+
 def _coverage_and_correct(runs: list[QueryRun], ab: AbstentionConfig) -> tuple[float, float]:
     ans = [r for r in runs if r.query.answerable]
     un = [r for r in runs if not r.query.answerable]
-    cov = sum(not decide(ab, r.raw.top1, r.raw.top2, len(r.raw.passages))[0] for r in ans) / max(len(ans), 1)
-    cor = sum(decide(ab, r.raw.top1, r.raw.top2, len(r.raw.passages))[0] for r in un) / max(len(un), 1)
+    cov = sum(not _abstains(ab, r) for r in ans) / max(len(ans), 1)
+    cor = sum(_abstains(ab, r) for r in un) / max(len(un), 1)
     return cov, cor
+
+
+def fit_doc_gate(runs: list[QueryRun]) -> float:
+    """Contract gate: largest min_doc_prior on GATE_GRID that rejects <= GATE_MISS_BUDGET of train
+    *answerable* queries (all of which name an indexed contract). Uses no unanswerable labels."""
+    ans = [r.raw.doc_match for r in runs if r.query.answerable]
+    best = 0.0
+    for g in GATE_GRID:
+        if ans and sum(x < g for x in ans) / len(ans) <= GATE_MISS_BUDGET:
+            best = g
+    return best
 
 
 def fit_abstention(runs: list[QueryRun], base: AbstentionConfig) -> tuple[AbstentionConfig, dict[str, float]]:
@@ -118,6 +150,7 @@ def fit_abstention(runs: list[QueryRun], base: AbstentionConfig) -> tuple[Absten
     For the gap policy the same rule is applied for each min_gap in GAP_GRID and the best correct-abstention
     rate wins (ties -> smaller min_gap). Uses train runs only.
     """
+    base = dataclasses.replace(base, min_doc_prior=fit_doc_gate(runs))
     gaps = GAP_GRID if base.policy == "top_score_gap" else [0.0]
     best: tuple[float, float, AbstentionConfig, float] | None = None
     for gap in gaps:
@@ -136,7 +169,8 @@ def fit_abstention(runs: list[QueryRun], base: AbstentionConfig) -> tuple[Absten
             best = (cor, cov, ab, gap)
     assert best is not None
     cor, cov, ab, _ = best
-    return ab, {"threshold": ab.threshold, "min_gap": ab.min_gap, "coverage": cov, "correct_abstention_rate": cor}
+    return ab, {"threshold": ab.threshold, "min_gap": ab.min_gap, "min_doc_prior": ab.min_doc_prior,
+                "coverage": cov, "correct_abstention_rate": cor}
 
 
 # --- evaluation of one configuration ------------------------------------------------------------
@@ -146,7 +180,7 @@ def evaluate_config(cfg: Config, queries: list[EvalQuery]) -> dict[str, Any]:
     searcher = ContractSearcher.from_config(cfg)
     runs = run_queries(searcher, queries)
     ks = cfg.eval.k_values
-    off = dataclasses.replace(cfg.abstention, threshold=0.0, min_gap=0.0)
+    off = dataclasses.replace(cfg.abstention, threshold=0.0, min_gap=0.0, min_doc_prior=0.0)
     records, agg = evaluate_runs(runs, off, ks)
     fitted, fit = fit_abstention(runs, cfg.abstention)
     return {
@@ -171,6 +205,7 @@ def summary(ev: dict[str, Any]) -> dict[str, Any]:
         build_s=round(ev["build_s"], 3),
         fitted_threshold=ev["fit"]["threshold"],
         fitted_min_gap=ev["fit"]["min_gap"],
+        fitted_min_doc_prior=ev["fit"].get("min_doc_prior", 0.0),
         fitted_coverage=ev["fit"]["coverage"],
         fitted_correct_abstention=ev["fit"]["correct_abstention_rate"],
     )
@@ -191,6 +226,14 @@ def guardrails(phase: str, cand: dict[str, Any], inc: dict[str, Any], base: dict
         add("G4:mean_latency_ms", c["mean_latency_ms"], lim, c["mean_latency_ms"] <= lim)
         lim = CHUNK_FACTOR * b["n_chunks"]
         add("G5:n_chunks", c["n_chunks"], lim, c["n_chunks"] <= lim)
+    elif phase == "C":
+        for m in ("recall@5", "recall@1"):
+            lim = i[m] - PHASE_C_RECALL_TOLERANCE
+            add(f"GC:{m}", c[m], lim, c[m] >= lim)
+        lim = min(LATENCY_FACTOR * b["mean_latency_ms"], MAX_LATENCY_MS)
+        add("G4:mean_latency_ms", c["mean_latency_ms"], lim, c["mean_latency_ms"] <= lim)
+        lim = CHUNK_FACTOR * b["n_chunks"]
+        add("G5:n_chunks", c["n_chunks"], lim, c["n_chunks"] <= lim)
     else:
         add("G2:fitted_coverage", c["fitted_coverage"], MIN_COVERAGE, c["fitted_coverage"] >= MIN_COVERAGE)
         for m in ("recall@5", "precision@5"):
@@ -202,7 +245,11 @@ def guardrails(phase: str, cand: dict[str, Any], inc: dict[str, Any], base: dict
 
 
 def objective(phase: str, ev: dict[str, Any]) -> float:
-    return ev["retrieval"]["recall@5"] if phase == "A" else ev["fit"]["correct_abstention_rate"]
+    if phase == "A":
+        return ev["retrieval"]["recall@5"]
+    if phase == "C":
+        return ev["retrieval"]["precision@5"]
+    return ev["fit"]["correct_abstention_rate"]
 
 
 def with_fitted_abstention(ev: dict[str, Any]) -> Config:
@@ -284,7 +331,7 @@ def optimize(config_path: str, iterations: int, out_config: str, experiments_dir
         pool = passing or evals
         changes, cand, g, obj = max(pool, key=lambda e: e[3])  # first max wins ties (grid order)
         cur = objective(hyp.phase, incumbent)
-        need = MIN_IMPROVEMENT_A if hyp.phase == "A" else MIN_IMPROVEMENT_B
+        need = {"A": MIN_IMPROVEMENT_A, "C": MIN_IMPROVEMENT_C, "B": MIN_IMPROVEMENT_B}[hyp.phase]
         gain = obj - cur
         if not passing:
             decision, why = "rejected", "every grid point violated at least one guardrail; best candidate shown"
@@ -295,7 +342,8 @@ def optimize(config_path: str, iterations: int, out_config: str, experiments_dir
         cand_diag = diagnose(cand["records"], 5, None, 0)
         out = {
             **row_common, "iteration": done, "type": "iteration",
-            "objective": "recall@5 (no abstention)" if hyp.phase == "A" else "correct_abstention_rate at rule-R threshold",
+            "objective": {"A": "recall@5 (no abstention)", "C": "precision@5 (no abstention)",
+                          "B": "correct_abstention_rate at rule-R threshold"}[hyp.phase],
             "candidate_config_hash": cand["cfg"].hash(), "changed_parameters": changes,
             "metrics_before": summary(incumbent), "metrics_after": summary(cand),
             "objective_before": cur, "objective_after": obj,
@@ -326,7 +374,7 @@ def optimize(config_path: str, iterations: int, out_config: str, experiments_dir
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Train-only improvement loop (never touches the test split).")
     ap.add_argument("--config", default="configs/baseline.yaml")
-    ap.add_argument("--iterations", type=int, default=10)
+    ap.add_argument("--iterations", type=int, default=14)
     ap.add_argument("--out-config", default="configs/final.yaml")
     ap.add_argument("--experiments-dir", default=None)
     ap.add_argument("--note", default="", help="free-text note stored in the baseline row of this run")

@@ -10,7 +10,14 @@ from pathlib import Path
 from typing import Any
 
 from .config import ConfigError, load_config
-from .data import DataValidationError, build_manifest, load_queries, manifest_hash
+from .data import (
+    DataValidationError,
+    build_manifest,
+    build_out_of_corpus_probe,
+    load_out_of_corpus_probe,
+    load_queries,
+    manifest_hash,
+)
 from .diagnostics import diagnose
 from .evaluation import (
     append_jsonl,
@@ -69,7 +76,7 @@ def _cmd_search(a: argparse.Namespace) -> int:
     if not a.query.strip():
         print("error: empty query", file=sys.stderr)
         return 2
-    resp = s.search(a.query.strip(), a.top_k)
+    resp = s.search(a.query.strip(), a.top_k, a.contract)
     if a.json:
         print(json.dumps(resp.to_dict(), indent=2, ensure_ascii=False))
         return 0
@@ -122,6 +129,38 @@ def _cmd_evaluate(a: argparse.Namespace) -> int:
     return 0
 
 
+PROBE_FILE = "data/out_of_corpus_probe.jsonl"
+
+
+def _cmd_build_probe(a: argparse.Namespace) -> int:
+    cfg = load_config(a.config)
+    rows = build_out_of_corpus_probe(cfg.paths.benchmark_file, a.n)
+    write_jsonl(a.out, rows)
+    counts = {s: sum(r["split"] == s for r in rows) for s in ("train", "test")}
+    print(f"wrote {len(rows)} out-of-corpus questions to {a.out} (train {counts['train']} / test {counts['test']})")
+    return 0
+
+
+def _cmd_probe(a: argparse.Namespace) -> int:
+    """Abstention on questions about contracts that are not indexed (evaluation only)."""
+    cfg = load_config(a.config)
+    queries = load_out_of_corpus_probe(a.probe)
+    searcher = load_searcher(a.config, cfg)
+    records, agg = evaluate_runs(run_queries(searcher, queries), cfg.abstention, cfg.eval.k_values)
+    by_split = {s: [r for r in records if r["split"] == s] for s in ("train", "test")}
+    summary = {"config": cfg.name, "n": len(records), "correct_abstentions": agg["correct_abstentions"],
+               "correct_abstention_rate": agg["correct_abstention_rate"],
+               "by_split": {s: {"n": len(v), "correct_abstentions": sum(r["abstained"] for r in v)} for s, v in by_split.items()},
+               "abstain_reasons": dict(sorted({k: sum(1 for r in records if r["abstain_reason"].startswith(k))
+                                               for k in ("the question does not match", "top confidence", "no passage")}.items()))}
+    out = Path(a.out or Path(cfg.paths.experiments_dir) / "results")
+    write_json(out / f"{cfg.name}_out_of_corpus_metrics.json",
+               {"meta": run_metadata(cfg.hash(), None, "out_of_corpus_probe", {"config": cfg.name}), "summary": summary})
+    write_jsonl(out / f"{cfg.name}_out_of_corpus_per_query.jsonl", records)
+    print(json.dumps(summary, indent=2))
+    return 0
+
+
 def _cmd_diagnose(a: argparse.Namespace) -> int:
     cfg = load_config(a.config)
     if a.split == "test" and not a.final:
@@ -166,10 +205,17 @@ def build_parser() -> argparse.ArgumentParser:
     sp.add_argument("query")
     sp.add_argument("--top-k", type=int, default=None, help="number of passages (default: eval.top_k from config)")
     sp.add_argument("--json", action="store_true", help="print the stable JSON result schema")
+    sp.add_argument("--contract", default=None, help="restrict to one indexed contract (path or case-insensitive substring)")
     sp = add("evaluate", _cmd_evaluate, "Evaluate a split (train, or test with --final) and save metrics + per-query results", "configs/baseline.yaml")
     sp.add_argument("--split", choices=["train", "test"], default="train")
     sp.add_argument("--final", action="store_true", help="declare this the final held-out test run (logged; required for --split test)")
     sp.add_argument("--out", default=None, help="output directory (default experiments/results)")
+    sp = add("build-probe", _cmd_build_probe, "Derive the out-of-corpus probe (questions about non-indexed CUAD contracts)")
+    sp.add_argument("--n", type=int, default=60)
+    sp.add_argument("--out", default=PROBE_FILE)
+    sp = add("probe", _cmd_probe, "Measure abstention on the out-of-corpus probe (evaluation only, never used for tuning)")
+    sp.add_argument("--probe", default=PROBE_FILE)
+    sp.add_argument("--out", default=None)
     sp = add("diagnose", _cmd_diagnose, "Categorise failures on a split with concrete examples")
     sp.add_argument("--split", choices=["train", "test"], default="train")
     sp.add_argument("--final", action="store_true", help="required for --split test")

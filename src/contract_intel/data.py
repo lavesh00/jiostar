@@ -255,3 +255,39 @@ def load_train_queries(
 ) -> list[EvalQuery]:
     """Train-only loader: the optimizer and its diagnostics import this and nothing that can return test."""
     return load_queries(benchmark_file, corpus_root, unanswerable_file, "train")
+
+
+# --- out-of-corpus probe (evaluation only; never used for tuning) -------------------------------
+
+
+def build_out_of_corpus_probe(benchmark_file: str | Path, n: int = 60) -> list[dict[str, Any]]:
+    """Deterministic probe of questions about contracts that are NOT indexed.
+
+    Takes CUAD benchmark questions whose gold contracts are outside the 194-query mini selection (so the
+    indexed corpus cannot answer them), at most one per contract, ordered by sha1 of the query text.
+    Built after the loop design was fixed and used only to *report* out-of-corpus abstention.
+    """
+    tests = load_raw_tests(benchmark_file)
+    indexed = {s["file_path"] for t in mini(tests) for s in t["snippets"]}
+    pool = [t for t in tests if not ({s["file_path"] for s in t["snippets"]} & indexed)]
+    pool.sort(key=lambda t: hashlib.sha1(t["query"].strip().encode("utf-8")).hexdigest())
+    out, seen = [], set()
+    for t in pool:
+        fp = t["snippets"][0]["file_path"]
+        if fp in seen:
+            continue
+        seen.add(fp)
+        q = t["query"]
+        out.append({"id": "ooc-" + hashlib.sha1(q.strip().encode("utf-8")).hexdigest()[:10], "query": q,
+                    "label": "out_of_corpus", "contract_not_indexed": fp, "split": assign_split(q)})
+        if len(out) == n:
+            break
+    return out
+
+
+def load_out_of_corpus_probe(path: str | Path) -> list[EvalQuery]:
+    p = Path(path)
+    if not p.exists():
+        raise DataValidationError(f"out-of-corpus probe not found: {p}. Run `contract-intel build-probe`.")
+    rows = [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+    return [EvalQuery(r["id"], r["query"], r["split"], False, (), (r["contract_not_indexed"],)) for r in rows]

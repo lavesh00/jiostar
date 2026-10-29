@@ -9,6 +9,8 @@ Signals (all computed from the lexical retriever, never from gold labels):
 Policies
   top_score      abstain iff top1 < threshold
   top_score_gap  abstain iff top1 < threshold or gap < min_gap
+  doc_match  best document-level BM25 match of the full question (contract identification); below
+             ``min_doc_prior`` the named contract is probably not indexed. It is 1.0 when the user picks a contract.
 Abstain always when nothing matched (no candidate passage). ``threshold == 0`` disables the score test.
 """
 
@@ -17,10 +19,15 @@ from __future__ import annotations
 from .config import AbstentionConfig
 
 
-def decide(cfg: AbstentionConfig, top1: float, top2: float, n_results: int) -> tuple[bool, str]:
+def decide(
+    cfg: AbstentionConfig, top1: float, top2: float, n_results: int, doc_match: float = 1.0
+) -> tuple[bool, str]:
     """Return ``(abstain, reason)``; ``reason`` is '' when not abstaining."""
     if n_results == 0:
         return True, "no passage matched any query term"
+    if doc_match < cfg.min_doc_prior:
+        return True, (f"the question does not match any indexed contract well (match {doc_match:.3f} < "
+                      f"{cfg.min_doc_prior:.3f}); the contract may not be in the corpus - choose a contract explicitly")
     if top1 < cfg.threshold:
         return True, f"top confidence {top1:.3f} below threshold {cfg.threshold:.3f}"
     if cfg.policy == "top_score_gap":

@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "timestamp": "2026-10-29T18:31:14+00:00",
+    "git_commit": "1215cfd",
+    "config_hash": "418125179766",
+    "manifest_hash": null,
+    "split": "out_of_corpus_probe",
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "config": "final"
+  },
+  "summary": {
+    "config": "final",
+    "n": 60,
+    "correct_abstentions": 0,
+    "correct_abstention_rate": 0.0,
+    "by_split": {
+      "train": {
+        "n": 40,
+        "correct_abstentions": 0
+      },
+      "test": {
+        "n": 20,
+        "correct_abstentions": 0
+      }
+    },
+    "abstain_reasons": {
+      "no passage": 0,
+      "the question does not match": 0,
+      "top confidence": 0
+    }
+  }
+}
