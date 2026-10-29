@@ -32,6 +32,15 @@ def test_config_roundtrip_and_hash_ignores_name_and_paths(tmp_path):
     assert other.hash() == cfg.hash() and cfg.with_changes({"chunking.size": 500}).hash() != cfg.hash()
 
 
+def test_later_options_at_default_keep_earlier_config_hashes():
+    # Hashes recorded in experiments/ (baseline and Run 5 final) must not move when new options are added.
+    assert load_config(ROOT / "configs/baseline.yaml").hash() == "989b96530441"
+    run5 = load_config(ROOT / "experiments/run5/final_run5.yaml")
+    assert run5.hash() == "78a53ef0d1aa"
+    for change in ({"retrieval.stemmer": "extended"}, {"abstention.peak_skip_opening": True}):
+        assert run5.with_changes(change).hash() != run5.hash()
+
+
 @pytest.mark.parametrize(
     "raw",
     [
@@ -44,6 +53,7 @@ def test_config_roundtrip_and_hash_ignores_name_and_paths(tmp_path):
         {"retrieval": {"fusion": "x"}},
         {"abstention": {"threshold": 2}},
         {"abstention": {"signal": "magic"}},
+        {"retrieval": {"stemmer": "porter"}},
         {"eval": {"k_values": [1, 3], "top_k": 2}},
         {"chunking": {"nope": 1}},
         {"chunking": 5},

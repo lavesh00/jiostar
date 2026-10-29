@@ -85,3 +85,15 @@ def test_offsets_are_character_not_byte_offsets():
     text = "€€€ hello world €€"  # '€' is 3 bytes in UTF-8
     (s, e), = chunk_spans(text, ChunkingConfig(size=100))
     assert (s, e) == (0, len(text)) and len(text.encode("utf-8")) > len(text)
+
+
+def test_extended_stemmer_folds_verb_and_noun_forms():
+    from contract_intel.config import RetrievalConfig
+    from contract_intel.indexing import Tokenizer
+
+    basic = Tokenizer(RetrievalConfig(stem=True))
+    ext = Tokenizer(RetrievalConfig(stem=True, stemmer="extended"))
+    words = "expire expires expired expiration"
+    assert len(set(ext(words))) == 1 and len(set(basic(words))) > 1
+    assert len(set(ext("terminate terminated termination"))) == 1
+    assert ext("date fee the") == ["date", "fee", "the"]  # short words are left alone

@@ -94,6 +94,8 @@ def test_retrieval_module_only_reads_contract_list_from_manifest(cfg):
         {"retrieval.expand_query": True, "retrieval.stem": True, "retrieval.remove_stopwords": True},
         {"abstention.signal": "doc_peakedness"},
         {"abstention.topical_min_docs": 2},
+        {"retrieval.stem": True, "retrieval.stemmer": "extended"},
+        {"abstention.signal": "doc_peakedness", "abstention.peak_skip_opening": True},
     ],
 )
 def test_every_option_preserves_exact_offsets(cfg, flags):

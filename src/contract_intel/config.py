@@ -33,6 +33,7 @@ class RetrievalConfig:
     lowercase: bool = True
     remove_stopwords: bool = False
     stem: bool = False  # light suffix stripping
+    stemmer: str = "basic"  # used when stem is true: "basic" | "extended" (also folds -ate/-e: expire ~ expiration)
     strip_query_context: bool = False  # drop a leading "Consider the <contract>;" clause
     expand_query: bool = False  # append hand-written legal lexicon terms (see lexicon.py)
     fusion: str = "none"  # "rrf": fuse BM25 with TF-IDF cosine
@@ -54,6 +55,7 @@ class AbstentionConfig:
     strip_context: bool = False  # confidence uses the query without its 'Consider the <contract>;' prefix
     min_doc_prior: float = 0.0  # >0: abstain when the best contract match is weaker (named contract not indexed)
     topical_min_docs: int = 0  # >0: confidence ignores query terms found in fewer than N contracts (names)
+    peak_skip_opening: bool = False  # doc_peakedness: take the peak outside the contract's opening chunk (title/parties)
 
 
 @dataclass(frozen=True)
@@ -92,6 +94,9 @@ class Config:
         d = self.to_dict()
         d.pop("name")
         d.pop("paths")
+        for (section, key), default in _HASH_NEUTRAL_DEFAULTS.items():
+            if d[section][key] == default:  # options added later leave earlier config hashes unchanged
+                del d[section][key]
         return hashlib.sha256(json.dumps(d, sort_keys=True).encode()).hexdigest()[:12]
 
     def with_changes(self, changes: dict[str, Any]) -> Config:
@@ -106,6 +111,11 @@ class Config:
         validate(cfg)
         return cfg
 
+
+_HASH_NEUTRAL_DEFAULTS: dict[tuple[str, str], Any] = {
+    ("retrieval", "stemmer"): "basic",
+    ("abstention", "peak_skip_opening"): False,
+}
 
 _SECTIONS = {
     "chunking": ChunkingConfig,
@@ -138,6 +148,8 @@ def validate(cfg: Config) -> None:
         raise ConfigError("abstention.policy must be 'top_score' or 'top_score_gap'")
     if a.signal not in ("normalized_score", "doc_peakedness"):
         raise ConfigError("abstention.signal must be 'normalized_score' or 'doc_peakedness'")
+    if r.stemmer not in ("basic", "extended"):
+        raise ConfigError("retrieval.stemmer must be 'basic' or 'extended'")
     if a.topical_min_docs < 0:
         raise ConfigError("abstention.topical_min_docs must be >= 0")
     if not 0 <= a.threshold <= 1 or not 0 <= a.min_gap <= 1:

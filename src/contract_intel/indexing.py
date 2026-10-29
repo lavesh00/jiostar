@@ -34,9 +34,24 @@ def _stem(tok: str) -> str:
     return tok
 
 
+_EXT_SUFFIXES = ("ations", "ation", "ating", "ated", "ates", "ate", "ings", "ing", "edly", "ed", "ies", "es", "s")
+
+
+def _stem_extended(tok: str) -> str:
+    """Like ``_stem`` but also folds -ate/-ated/-ating and a final -e, so 'expire', 'expired', 'expiration' and
+    'terminate', 'termination' share a stem. Stems keep at least 3 characters."""
+    for suf in _EXT_SUFFIXES:
+        if tok.endswith(suf) and len(tok) - len(suf) >= 3:
+            return tok[: -len(suf)] + ("y" if suf == "ies" else "")
+    if tok.endswith("e") and len(tok) >= 5:
+        return tok[:-1]
+    return tok
+
+
 class Tokenizer:
     def __init__(self, cfg: RetrievalConfig) -> None:
         self.lowercase, self.stop, self.stem = cfg.lowercase, cfg.remove_stopwords, cfg.stem
+        self._stem = _stem_extended if cfg.stemmer == "extended" else _stem
 
     def __call__(self, text: str) -> list[str]:
         if self.lowercase:
@@ -45,7 +60,7 @@ class Tokenizer:
         if self.stop:
             toks = [t for t in toks if t not in STOPWORDS]
         if self.stem:
-            toks = [_stem(t) for t in toks]
+            toks = [self._stem(t) for t in toks]
         return toks
 
 

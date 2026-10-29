@@ -134,21 +134,26 @@ class ContractSearcher:
         """Confidence = how far the best literal-question match in the passage's contract stands above that
         contract's median chunk: (peak - median) / peak in [0, 1). Flat score profiles (nothing specific to the
         question) give ~0; a clause that literally answers it gives a clear peak. Uses unexpanded question terms
-        (optionally only terms found in >= topical_min_docs contracts, so contract names do not count)."""
+        (optionally only terms found in >= topical_min_docs contracts, so contract names do not count).
+        With ``peak_skip_opening`` the peak is taken outside the contract's first chunk: the title/parties block
+        matches party and entity words ('limited liability company') in almost any question about that contract."""
         tokens = self.tokenize(question)
         n = self.cfg.abstention.topical_min_docs
         if n > 0:
             assert self.doc_index is not None
             tokens = [t for t in tokens if (df := len(self.doc_index.postings.get(t, ()))) == 0 or df >= n]
         raw, _ = self.index.bm25(tokens)
+        skip = 1 if self.cfg.abstention.peak_skip_opening else 0
         by_doc: dict[str, float] = {}
         out = {}
         for c in kept:
             fp = c.chunk.file_path
             if fp not in by_doc:
-                vals = sorted(raw.get(i, 0.0) for i in self.doc_chunks[fp])
-                peak, med = vals[-1], statistics.median(vals)
-                by_doc[fp] = (peak - med) / peak if peak > 0 else 0.0
+                idxs = self.doc_chunks[fp]
+                vals = sorted(raw.get(i, 0.0) for i in idxs)
+                peak = max((raw.get(i, 0.0) for i in idxs[skip:]), default=0.0)
+                med = statistics.median(vals)
+                by_doc[fp] = max(0.0, (peak - med) / peak) if peak > 0 else 0.0
             out[c.idx] = by_doc[fp]
         return out
 

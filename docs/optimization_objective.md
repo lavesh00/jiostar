@@ -103,3 +103,19 @@ A measurement after Run 4 also showed it abstained on 0/60 questions about CUAD 
 * The frozen unanswerable set, metrics and the train/test split are unchanged. Run 5 starts again from `configs/baseline.yaml`;
   Runs 1-4 stay in the log. The test split was evaluated twice before this revision (Run 4 final and baseline); any new test
   evaluation is logged and counted.
+
+## Revision 1.6 — Run 6: two new hypotheses (declared before Run 6; objective, guardrails and thresholds unchanged)
+Run 5's error analysis (REPORT §6) left two measured problems on train:
+* **False acceptance from the opening block.** In every train false acceptance the top passage is the contract's opening
+  block. Free-form questions share party and entity words with it (for example "liability" in "limited liability company").
+  New config option `abstention.peak_skip_opening` takes the peakedness peak outside the contract's first chunk.
+  New phase-B hypothesis `opening_block_confidence`, placed after `confidence_signal`.
+* **Stemmer misses.** The light stemmer maps "expire" and "expiration" to different stems (failure 9). New option
+  `retrieval.stemmer: extended` also folds -ate/-ated/-ating and a final -e. New phase-A hypothesis `stemmer`, placed after
+  `rrf_fusion`.
+
+Disclosure: before this revision both ideas were pre-screened with throw-away scripts on the **train** split only (no test
+data). The loop decides by the same rules as Run 5. Both options default to the old behaviour, and defaults are left out of
+the config hash, so the baseline and Run 5 hashes (`989b96530441`, `78a53ef0d1aa`) are unchanged. Run 6 starts again from
+`configs/baseline.yaml` with 16 iterations. Run 5's final config is kept as `experiments/run5/final_run5.yaml`. The test
+split had been evaluated 3 times before this revision; any new test evaluation is logged and counted.
