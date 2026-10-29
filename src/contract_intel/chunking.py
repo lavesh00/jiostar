@@ -14,6 +14,7 @@ Strategies
 
 from __future__ import annotations
 
+import itertools
 import re
 from dataclasses import dataclass
 
@@ -30,7 +31,7 @@ class Chunk:
 _BLANK = re.compile(r"\n[ \t\r\f\v]*\n")
 _HEADING = re.compile(
     r"^[ \t]*(?:(?:ARTICLE|Article|SECTION|Section)\s+[0-9IVXivx]+\b|\d{1,3}(?:\.\d{1,3}){0,3}\.?[ \t]+[A-Z][^\n]{0,80})",
-    re.M,
+    re.MULTILINE,
 )
 _SENT_END = re.compile(r"[.;:]\s")
 _MIN_FILL = 1 / 3
@@ -136,7 +137,7 @@ def chunk_spans(text: str, cfg: ChunkingConfig) -> list[tuple[int, int]]:
     elif cfg.strategy == "section":
         cuts = sorted({m.start() for m in _HEADING.finditer(text)} | {0, n})
         spans = []
-        for a, b in zip(cuts, cuts[1:], strict=False):
+        for a, b in itertools.pairwise(cuts):
             spans.extend(_pack(text, _blocks(text, a, b), cfg, 1.0))
     else:  # pragma: no cover - validated in config
         raise ValueError(f"unknown chunking strategy {cfg.strategy!r}")

@@ -1,0 +1,452 @@
+{
+  "meta": {
+    "timestamp": "2026-10-29T18:07:40+00:00",
+    "git_commit": "a9e8771",
+    "config_hash": "1cec43a77086",
+    "manifest_hash": "e2a5024fd7e7ef0b",
+    "split": "test",
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "config": "final",
+    "config_file": "configs/final.yaml",
+    "n_answerable": 54,
+    "n_unanswerable": 6,
+    "kind": "final_test",
+    "index_build_s": 0.472,
+    "n_chunks": 821,
+    "test_run_number": 1
+  },
+  "metrics": {
+    "n_answerable": 54,
+    "n_unanswerable": 6,
+    "precision@1": 0.13123193513301434,
+    "recall@1": 0.46885861846433746,
+    "doc_hit@1": 0.7962962962962963,
+    "span_hit@1": 0.5925925925925926,
+    "micro_precision@1": 0.14599365604744174,
+    "micro_recall@1": 0.3363945470145222,
+    "precision@3": 0.07179044560371944,
+    "recall@3": 0.6183670489569285,
+    "doc_hit@3": 0.7962962962962963,
+    "span_hit@3": 0.7037037037037037,
+    "micro_precision@3": 0.07942228373323101,
+    "micro_recall@3": 0.552543773237154,
+    "precision@5": 0.0491354633246289,
+    "recall@5": 0.6554026870059171,
+    "doc_hit@5": 0.8148148148148148,
+    "span_hit@5": 0.7037037037037037,
+    "micro_precision@5": 0.05429036860489906,
+    "micro_recall@5": 0.6311926022434777,
+    "mrr_span": 0.6419753086419753,
+    "false_abstentions": 5,
+    "false_abstention_rate": 0.09259259259259259,
+    "coverage": 0.9074074074074074,
+    "correct_abstentions": 3,
+    "correct_abstention_rate": 0.5,
+    "false_acceptances": 3,
+    "false_acceptance_rate": 0.5,
+    "mean_latency_ms": 1.5824400024333347
+  },
+  "diagnostics": {
+    "k": 5,
+    "categories": {
+      "wrong_document": 5,
+      "overly_broad": 34,
+      "false_abstention": 5,
+      "success": 2,
+      "right_doc_wrong_section": 6,
+      "incomplete_coverage": 2,
+      "correct_abstention": 3,
+      "false_acceptance": 3
+    },
+    "tags": {
+      "query_wording_mismatch": 52,
+      "cross_reference_dependency": 22
+    },
+    "answerable_failure_share": {
+      "wrong_document": 0.0926,
+      "overly_broad": 0.6296,
+      "false_abstention": 0.0926,
+      "right_doc_wrong_section": 0.1111,
+      "incomplete_coverage": 0.037
+    },
+    "examples": {
+      "wrong_document": [
+        {
+          "id": "cuad-ec6283c4e4",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; What is the expiration date of this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.8849,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 693,
+              "end": 859,
+              "text": "Your employment shall commence on 26  September 2019 and shall continue unless and until either party gives notice to the other in accordance with paragraph 11 below."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+            "start": 48001,
+            "end": 49500,
+            "text": "for publication or display with a third party, prior to the effective date of expiration or termination; and (ii) PAPA JOHN'S shall have the right, without restriction, to the in-house, non-commercial use of any Materials. Such use may include in-house exhibition for historical, educational or comme"
+          }
+        },
+        {
+          "id": "cuad-4d5e7051b2",
+          "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; Can this contract be terminated for convenience, and under what conditions?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+              "start": 18172,
+              "end": 18336,
+              "text": "The Parties may terminate its performance of related obligations under this Agreement within thirty (30) days of receipt by the Party of written termination notice."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+            "start": 18000,
+            "end": 19500,
+            "text": "in or appurtenant  to any of the foregoing, or any associated goodwill and that its rights thereunder are strictly limited to those specifically granted in this  Agreement. ISA shall not contest ownership by Rubicon of any of the foregoing. No license, release or other right is granted by implicatio"
+          }
+        },
+        {
+          "id": "cuad-0c5c5e9b75",
+          "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; Is there a minimum commitment required under this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 1116,
+              "end": 1204,
+              "text": "The Company shall produce no less than forty (40) original episodes of the Show per year"
+            },
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 2160,
+              "end": 2302,
+              "text": "The Company agrees to feature not less than two (2) persons designated by Cano as guests on not less than six (6)  separate episodes per year."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+            "start": 33000,
+            "end": 34500,
+            "text": "rs, members or partners, as the case may be, in excess of the Minimum Distribution in accordance with Article 6.2;\n\n(d) approve any merger of the Operating Company or any acquisition of another entity or all or substantially all of another entity's assets by the Operating Company;\n\n(e) the sale, dis"
+          }
+        }
+      ],
+      "overly_broad": [
+        {
+          "id": "cuad-fe6c822e61",
+          "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; What is the governing law for this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.9039,
+          "gold": [
+            {
+              "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+              "start": 32015,
+              "end": 32250,
+              "text": "This Agreement and any dispute or claim arising out of or in connection with it or its subject matter or formation (including non-contractual disputes or claims) shall be governed by and construed in accordance with the law of England."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+            "start": 31500,
+            "end": 32861,
+            "text": ".9 This Agreement may be executed in any number of counterparts, each of which, when executed and delivered, shall be an original, and all the counterparts together shall constitute one and the same agreement. 24.10 The Contracts (Rights of Third Parties) Act 1999 shall only apply to this Agreement "
+          }
+        },
+        {
+          "id": "cuad-ec1f801744",
+          "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; Does this contract provide for joint intellectual property ownership?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.7472,
+          "gold": [
+            {
+              "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+              "start": 16945,
+              "end": 17247,
+              "text": "To the extent that the Company IP does not vest automatically in the Company the Executive hereby assigns all right, title and interest in the Company IP to the Company with full title guarantee by way of a present assignment of all future rights and shall otherwise hold them on trust for the Compan"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+            "start": 15000,
+            "end": 16499,
+            "text": "always that during the term of the employment the Permitted Investment shall not constitute more than 3% of the issued share capital of the entity concerned . 15. Confidential Information 15.1 Without prejudice to the Executive's common law and fiduciary duties, the Executive shall not during employ"
+          }
+        },
+        {
+          "id": "cuad-3f0ea456f6",
+          "query": "Consider the Sponsorship Agreement between Excite, Inc. and Vitamin Shoppe Industries Inc. for Promotion on WebCrawler Channels; Is there uncapped liability under this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/VITAMINSHOPPECOMINC_09_13_1999-EX-10.26-SPONSORSHIP AGREEMENT.txt",
+              "start": 54279,
+              "end": 54600,
+              "text": "EXCEPT UNDER SECTIONS 13(a) AND 13(b), THE LIABILITY OF EITHER                  PARTY FOR DAMAGES OR ALLEGED DAMAGES HEREUNDER, WHETHER IN                  CONTRACT, TORT OR ANY OTHER LEGAL THEORY, IS LIMITED TO, AND                  WILL NOT EXCEED, THE AMOUNTS TO BE PAID BY CLIENT TO EXCITE       "
+            }
+          ],
+          "top_result": {
+            "file": "cuad/VITAMINSHOPPECOMINC_09_13_1999-EX-10.26-SPONSORSHIP AGREEMENT.txt",
+            "start": 54000,
+            "end": 55500,
+            "text": "FOR ANY SPECIAL, INCIDENTAL OR                  CONSEQUENTIAL DAMAGES, WHETHER BASED ON BREACH OF CONTRACT,                  TORT (INCLUDING NEGLIGENCE) OR OTHERWISE, WHETHER OR NOT THAT                  PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                  EXCEPT UNDER SECTIONS"
+          }
+        }
+      ],
+      "false_abstention": [
+        {
+          "id": "cuad-f5fd1dec27",
+          "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; What is the governing law for this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.6398,
+          "gold": [
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 4159,
+              "end": 4489,
+              "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of Texas and venue for  any legal action brought in State Court shall lie exclusively in Tarrant County, Texas and venue for any action brought in federal court shall  lie exclusively in the Northern District "
+            }
+          ],
+          "top_result": null
+        },
+        {
+          "id": "cuad-54a5a09654",
+          "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Are there any services to be provided after the termination of this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.6585,
+          "gold": [
+            {
+              "file": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+              "start": 12612,
+              "end": 12792,
+              "text": "Each Party shall retain the financial records relating to all payments owed and/or paid under this Agreement for a period of six  years from the date such payment obligation arose."
+            }
+          ],
+          "top_result": null
+        },
+        {
+          "id": "cuad-3d4d98175e",
+          "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Does this contract include an exclusivity agreement?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.6436,
+          "gold": [
+            {
+              "file": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+              "start": 7970,
+              "end": 8101,
+              "text": "Dynamex agrees not to provide sameday delivery services for any other        provider of next day or multiple day courier services."
+            }
+          ],
+          "top_result": null
+        }
+      ],
+      "right_doc_wrong_section": [
+        {
+          "id": "cuad-65cdade3c3",
+          "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there a non-compete clause in this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 28888,
+              "end": 29204,
+              "text": "Except as expressly contemplated by this Agreement (including Article XIII hereof) and subject to Section 13.1 hereof, King shall not promote, market or distribute any product containing metformin hydrochloride as the sole active ingredient in the Territory during the Term of this Agreement, other t"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+            "start": 144000,
+            "end": 145500,
+            "text": "closure by both parties, either party may make subsequent public disclosure of the contents of such statement without the further approval of the other party. The provisions of this Article 12 shall survive termination of the agreement and shall remain in effect until a date three years after the Te"
+          }
+        },
+        {
+          "id": "cuad-5938744c36",
+          "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Are there any services to be provided after the termination of this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.8534,
+          "gold": [
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 103074,
+              "end": 103212,
+              "text": "This right to audit shall extend throughout the term of this Agreement and for one year after expiration or termination of this Agreement."
+            },
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 105475,
+              "end": 105918,
+              "text": "Following the termination of this Agreement at the conclusion of the initial five year term or any additional term, for each of the eight full calendar quarters following such termination, Depomed shall pay to King an amount equal to, in each of the first four such calendar quarters, [***]% of the N"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+            "start": 118500,
+            "end": 120000,
+            "text": "under Rule 24b-2 of the Securities Exchange Act of 1934.\n\n34\n\n\n\n\n\n\n\n(a) No additional payment obligations arising under Article VII hereof shall accrue after the date of expiration or termination of this Agreement except as set forth in Section 7.4; provided, however, that expiration or termination "
+          }
+        },
+        {
+          "id": "cuad-08c378a1b8",
+          "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there a covenant not to sue included in this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.9297,
+          "gold": [
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 64934,
+              "end": 65583,
+              "text": "King recognizes Depomed's title to the Depomed Trademarks, and shall not at any time, during or after the Term, do or knowingly suffer to be done any act or thing which will in any way impair the rights of Depomed in or to the Depomed Trademarks. King acknowledges and agrees that it shall not acquir"
+            },
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 66237,
+              "end": 66474,
+              "text": "Depomed recognizes King's title to the King Trademarks, and shall not at any time, during or after the Term, do or knowingly suffer to be done any act or thing which will in any way impair the rights of King in or to the King Trademarks."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+            "start": 132000,
+            "end": 133500,
+            "text": "TY AND WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE.\n\nSection 9.4 King Disclaimer. EXCEPT AS EXPRESSLY PROVIDED HEREIN, KING DISCLAIMS ALL OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING THE WARRANTY OF MERCHANTABILITY AND WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE.\n\nARTICLE X\n\nINTELLECTUAL PROPER"
+          }
+        }
+      ],
+      "incomplete_coverage": [
+        {
+          "id": "cuad-635d48eec1",
+          "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Is there a non-disparagement clause in this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+              "start": 13350,
+              "end": 13670,
+              "text": "PAPA JOHN'S shall not, during the Term or at any time thereafter: (I) defame or disparage CELEBRITY or the Personality Rights (or any portion thereof), nor shall PAPA JOHN'S place the CELEBRITY or the Personality Rights (or any portion thereof) in a negative light, whether in connection with this Ag"
+            },
+            {
+              "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+              "start": 61086,
+              "end": 61257,
+              "text": "All Parties agree not to disparage or make derogatory comments, verbal or written, regarding the other Party during the Term of the Agreement, and for one year thereafter."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+            "start": 60000,
+            "end": 61500,
+            "text": "esignated by the other Party, and to conduct such other discovery as the arbitrator deems appropriate. The award or decision rendered by the arbitrator shall be final, binding and conclusive and judgment may be entered upon such award by any court.\n\n10. Confidentiality and Non-Disparagement. Each Pa"
+          }
+        },
+        {
+          "id": "cuad-bc1a3df143",
+          "query": "Consider the Joint Venture Agreement between Tate & Lyle Fermentation Products Ltd. and Igene Biotechnology, Inc. for Astaxanthin Production; Does this contract include any right of first refusal, right of first offer, or right of first negotiation?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.9413,
+          "gold": [
+            {
+              "file": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+              "start": 25059,
+              "end": 25887,
+              "text": "If, after the date of this Agreement and continuing as long as either Party is a partner, member, or shareholder of the Operating Company, such Party or any of its Affiliates receives or discovers any opportunity to use Astaxanthin as a Neutraceutical (a \"Neutraceutical Opportunity\"), including with"
+            },
+            {
+              "file": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+              "start": 27242,
+              "end": 28070,
+              "text": "If, after the date of this Agreement and continuing as long as a Party is a partner, member, or shareholder of the Operating Company, the Joint Venture develops or completes the development of, or discovers, or acquires proprietary rights over, a process or product which at, or after, the time of it"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+            "start": 39000,
+            "end": 40499,
+            "text": "pany to obtain such services for the Joint Venture independently. Such transition period shall not exceed 24 months for the services set forth in Article 11.1.1 and Article 11.1.2 and shall not exceed 36 months for the services set forth in Article 11.1.4; provided, however, if T&L shall give notice"
+          }
+        }
+      ],
+      "false_acceptance": [
+        {
+          "id": "unans-020",
+          "query": "May The ARC Group assign its Jaguars sponsorship rights to a franchisee of Dick's Wings and Grill?",
+          "tags": [],
+          "top1_confidence": 0.696,
+          "top_result": {
+            "file": "cuad/ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1500,
+            "text": "Exhibit 10.1   JACKSONVILLE JAGUARS SPONSORSHIP AGREEMENT   This Sponsorship Agreement (this \"Agreement\") is entered into as of November 27, 2017 (the \"Execution Date\") by and between Jacksonville Jaguars, LLC, a Delaware limited liability company (\"Club\"), and The ARC Group, Inc., a Florida corpora"
+          }
+        },
+        {
+          "id": "unans-035",
+          "query": "How many units is the minimum order quantity (MOQ) that Inde Living Holdings must order from Vayyar during the Initial Term?",
+          "tags": [],
+          "top1_confidence": 0.9017,
+          "top_result": {
+            "file": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+            "start": 0,
+            "end": 1500,
+            "text": "WALABOT-HOME RESELLER AGREEMENT This Walabot-HOME Reseller Agreement (\"Agreement\") is made and entered into as of this 31 day of July 2019 (\"Effective Date\") by and between Vayyar Imaging Ltd., having its principal place of business at 3 Avraham Giron St., POB. 325, Yehud 5621717, Israel (\"Supplier\""
+          }
+        },
+        {
+          "id": "unans-038",
+          "query": "Does the Loop Industries marketing agreement with Indorama Loop Technologies require Loop to maintain insurance?",
+          "tags": [],
+          "top1_confidence": 0.6986,
+          "top_result": {
+            "file": "cuad/Loop Industries, Inc. - Marketing Agreement.txt",
+            "start": 0,
+            "end": 1500,
+            "text": "EXHIBIT 10.3 Execution Copy MARKETING AGREEMENT This Marketing Agreement (this \"Agreement\") is made and entered into as of September __, 2018 (the \"Effective Date\"), between Loop Industries, Inc., a Nevada corporation with a principal place of business at 480 Fernand-Poitras, Terrebonne, Quebec, Can"
+          }
+        }
+      ]
+    }
+  }
+}

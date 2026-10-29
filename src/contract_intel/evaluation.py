@@ -129,7 +129,7 @@ def evaluate_runs(
 def git_commit(cwd: str | Path = ".") -> str | None:
     try:
         out = subprocess.run(
-            ["git", "rev-parse", "--short", "HEAD"], cwd=cwd, capture_output=True, text=True, timeout=10
+            ["git", "rev-parse", "--short", "HEAD"], cwd=cwd, capture_output=True, text=True, timeout=10, check=False
         )
         return out.stdout.strip() or None if out.returncode == 0 else None
     except (OSError, subprocess.SubprocessError):
@@ -138,7 +138,7 @@ def git_commit(cwd: str | Path = ".") -> str | None:
 
 def run_metadata(cfg_hash: str, manifest_hash: str | None, split: str, extra: dict[str, Any] | None = None) -> dict[str, Any]:
     meta = {
-        "timestamp": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+        "timestamp": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
         "git_commit": git_commit(),
         "config_hash": cfg_hash,
         "manifest_hash": manifest_hash,

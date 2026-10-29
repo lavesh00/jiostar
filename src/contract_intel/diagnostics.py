@@ -20,14 +20,14 @@ import re
 from collections import Counter
 from typing import Any
 
+from .config import RetrievalConfig
 from .documents import DocumentStore
 from .indexing import Tokenizer, strip_query_context
-from .config import RetrievalConfig
 
 RECALL_OK = 0.5
 PRECISION_OK = 0.25
 WORDING_JACCARD = 0.10
-_XREF = re.compile(r"\b(?:Section|Article|Exhibit|Schedule|Paragraph|clause)\s+[\dIVXA-Z]|as defined|hereof|set forth (?:above|below|in)", re.I)
+_XREF = re.compile(r"\b(?:Section|Article|Exhibit|Schedule|Paragraph|clause)\s+[\dIVXA-Z]|as defined|hereof|set forth (?:above|below|in)", re.IGNORECASE)
 _TOK = Tokenizer(RetrievalConfig(remove_stopwords=True))
 
 

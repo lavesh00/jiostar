@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 import subprocess
 import sys
-from pathlib import Path
 
 import pytest
 import yaml
@@ -130,7 +129,7 @@ def test_threshold_fit_respects_coverage():
     from contract_intel.config import AbstentionConfig
     from contract_intel.data import EvalQuery
     from contract_intel.evaluation import QueryRun
-    from contract_intel.retrieval import RawSearch, Passage
+    from contract_intel.retrieval import Passage, RawSearch
 
     def run(answerable, conf):
         q = EvalQuery("i", "q", "train", answerable)
@@ -202,7 +201,7 @@ def test_cli_evaluate_train_and_final_logging(cli_cfg, tmp_path, capsys):
 def test_cli_build_index_and_help(cli_cfg, capsys):
     assert cli.main(["build-index", "--config", cli_cfg]) == 0
     assert json.loads(capsys.readouterr().out)["contracts"] == 3
-    r = subprocess.run([sys.executable, "-m", "contract_intel.cli", "--help"], capture_output=True, text=True)
+    r = subprocess.run([sys.executable, "-m", "contract_intel.cli", "--help"], capture_output=True, text=True, check=False)
     assert r.returncode == 0 and "evaluate" in r.stdout and "optimize" in r.stdout
 
 

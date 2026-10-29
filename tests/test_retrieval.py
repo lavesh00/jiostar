@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import inspect
 import json
+from pathlib import Path
 
 import pytest
 
@@ -76,7 +77,7 @@ def test_search_raw_matches_search_when_not_abstaining(searcher):
 
 
 def test_retrieval_module_only_reads_contract_list_from_manifest(cfg):
-    m = json.loads(open(cfg.paths.manifest_file, encoding="utf-8").read())
+    m = json.loads(Path(cfg.paths.manifest_file).read_text(encoding="utf-8"))
     assert "queries" in m  # the manifest does hold gold offsets; the service must ignore them
     assert R.allowed_contract_paths(cfg.paths.manifest_file) == [c["file_path"] for c in m["contracts"]]
     src = inspect.getsource(R)

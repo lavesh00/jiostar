@@ -8,7 +8,7 @@ import pytest
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from contract_intel.config import Config, PathsConfig  # noqa: E402
+from contract_intel.config import Config, PathsConfig
 
 FIX = Path(__file__).parent / "fixtures"
 REAL_BENCH = ROOT / "data/raw/legalbench-rag/benchmarks/cuad.json"

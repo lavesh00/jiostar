@@ -1,0 +1,326 @@
+{
+  "meta": {
+    "timestamp": "2026-10-29T18:07:41+00:00",
+    "git_commit": "a9e8771",
+    "config_hash": "d3989b03f063",
+    "manifest_hash": "e2a5024fd7e7ef0b",
+    "split": "test",
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "config": "baseline",
+    "config_file": "configs/baseline.yaml",
+    "n_answerable": 54,
+    "n_unanswerable": 6,
+    "kind": "final_test",
+    "index_build_s": 0.166,
+    "n_chunks": 1229,
+    "test_run_number": 2
+  },
+  "metrics": {
+    "n_answerable": 54,
+    "n_unanswerable": 6,
+    "precision@1": 0.003074074074074074,
+    "recall@1": 0.018518518518518517,
+    "doc_hit@1": 1.0,
+    "span_hit@1": 0.018518518518518517,
+    "micro_precision@1": 0.003215496368038741,
+    "micro_recall@1": 0.005275032571737265,
+    "precision@3": 0.0087456441352739,
+    "recall@3": 0.08768852208671775,
+    "doc_hit@3": 1.0,
+    "span_hit@3": 0.1111111111111111,
+    "micro_precision@3": 0.009384676242310158,
+    "micro_recall@3": 0.04372557119705107,
+    "precision@5": 0.008549750715454671,
+    "recall@5": 0.13583822066488221,
+    "doc_hit@5": 1.0,
+    "span_hit@5": 0.18518518518518517,
+    "micro_precision@5": 0.008745528749940909,
+    "micro_recall@5": 0.07054561632082366,
+    "mrr_span": 0.07222222222222222,
+    "false_abstentions": 0,
+    "false_abstention_rate": 0.0,
+    "coverage": 1.0,
+    "correct_abstentions": 0,
+    "correct_abstention_rate": 0.0,
+    "false_acceptances": 6,
+    "false_acceptance_rate": 1.0,
+    "mean_latency_ms": 3.1510116707067937
+  },
+  "diagnostics": {
+    "k": 5,
+    "categories": {
+      "overly_broad": 7,
+      "right_doc_wrong_section": 44,
+      "incomplete_coverage": 3,
+      "false_acceptance": 6
+    },
+    "tags": {
+      "query_wording_mismatch": 52,
+      "cross_reference_dependency": 22
+    },
+    "answerable_failure_share": {
+      "overly_broad": 0.1296,
+      "right_doc_wrong_section": 0.8148,
+      "incomplete_coverage": 0.0556
+    },
+    "examples": {
+      "overly_broad": [
+        {
+          "id": "cuad-ec6283c4e4",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; What is the expiration date of this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.2864,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 693,
+              "end": 859,
+              "text": "Your employment shall commence on 26  September 2019 and shall continue unless and until either party gives notice to the other in accordance with paragraph 11 below."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.11\n\nDATED 26 September 2019\n\nBicycleTX Ltd\n\nand\n\nNigel Crockett\n\n___________________________________________________\n\nSERVICE AGREEMENT\n\n___________________________________________________\n\n\n\n\n\nTHIS AGREEMENT is made on 26 September 2019\n\nBETWEEN:\n\n(1) BICYCLETX LIMITED a company incorpor"
+          }
+        },
+        {
+          "id": "cuad-fe6c822e61",
+          "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; What is the governing law for this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.405,
+          "gold": [
+            {
+              "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+              "start": 32015,
+              "end": 32250,
+              "text": "This Agreement and any dispute or claim arising out of or in connection with it or its subject matter or formation (including non-contractual disputes or claims) shall be governed by and construed in accordance with the law of England."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.2\n\nSTRICTLY PRIVATE AND CONFIDENTIAL\n\n1 April, 2020\n\nTHERAVANCE BIOPHARMA UK LIMITED and BRETT HAUMANN\n\nSERVICE AGREEMENT\n\n\n\n\n\nTHIS AGREEMENT is entered into between the parties on 1 April, 2020.\n\nPARTIES (1) Theravance Biopharma UK Limited is a company registered in the United Kingdom an"
+          }
+        },
+        {
+          "id": "cuad-3b82fa146c",
+          "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; Is there an anti-assignment clause in this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.3431,
+          "gold": [
+            {
+              "file": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+              "start": 16222,
+              "end": 16306,
+              "text": "FCC may not assign or delegate its rights or obligations pursuant to this Agreement."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.1\n\nInformation identified with \"[***]\" has been excluded from this exhibit because it is both not material and would likely cause competitive harm to the registrant if publicly disclosed.\n\nSUPPLY AGREEMENT\n\nThis Supply Agreement (the \"Agreement\") is entered into as of February 28, 2019 by"
+          }
+        }
+      ],
+      "right_doc_wrong_section": [
+        {
+          "id": "cuad-4d5e7051b2",
+          "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; Can this contract be terminated for convenience, and under what conditions?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.2981,
+          "gold": [
+            {
+              "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+              "start": 18172,
+              "end": 18336,
+              "text": "The Parties may terminate its performance of related obligations under this Agreement within thirty (30) days of receipt by the Party of written termination notice."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+            "start": 3000,
+            "end": 4000,
+            "text": ".......................... 8 21. Early Termination...................................................................................................................... 8 22. Captions....................................................................................................................."
+          }
+        },
+        {
+          "id": "cuad-ec1f801744",
+          "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; Does this contract provide for joint intellectual property ownership?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.3667,
+          "gold": [
+            {
+              "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+              "start": 16945,
+              "end": 17247,
+              "text": "To the extent that the Company IP does not vest automatically in the Company the Executive hereby assigns all right, title and interest in the Company IP to the Company with full title guarantee by way of a present assignment of all future rights and shall otherwise hold them on trust for the Compan"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.2\n\nSTRICTLY PRIVATE AND CONFIDENTIAL\n\n1 April, 2020\n\nTHERAVANCE BIOPHARMA UK LIMITED and BRETT HAUMANN\n\nSERVICE AGREEMENT\n\n\n\n\n\nTHIS AGREEMENT is entered into between the parties on 1 April, 2020.\n\nPARTIES (1) Theravance Biopharma UK Limited is a company registered in the United Kingdom an"
+          }
+        },
+        {
+          "id": "cuad-f5fd1dec27",
+          "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; What is the governing law for this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.3902,
+          "gold": [
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 4159,
+              "end": 4489,
+              "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of Texas and venue for  any legal action brought in State Court shall lie exclusively in Tarrant County, Texas and venue for any action brought in federal court shall  lie exclusively in the Northern District "
+            }
+          ],
+          "top_result": {
+            "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "QuickLinks -- Click here to rapidly navigate through this document\n\n    EXHIBIT 10.1\n\nSponsorship Agreement\n\nTHIS AGREEMENT made this 5th day of December, 2007, between R. C. Boyd Enterprises, LLC, a Texas limited liability company, whose principal  place of business is located at 2003 Navasota Cove"
+          }
+        }
+      ],
+      "incomplete_coverage": [
+        {
+          "id": "cuad-0c5c5e9b75",
+          "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; Is there a minimum commitment required under this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.3773,
+          "gold": [
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 1116,
+              "end": 1204,
+              "text": "The Company shall produce no less than forty (40) original episodes of the Show per year"
+            },
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 2160,
+              "end": 2302,
+              "text": "The Company agrees to feature not less than two (2) persons designated by Cano as guests on not less than six (6)  separate episodes per year."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "QuickLinks -- Click here to rapidly navigate through this document\n\n    EXHIBIT 10.1\n\nSponsorship Agreement\n\nTHIS AGREEMENT made this 5th day of December, 2007, between R. C. Boyd Enterprises, LLC, a Texas limited liability company, whose principal  place of business is located at 2003 Navasota Cove"
+          }
+        },
+        {
+          "id": "cuad-3d4d98175e",
+          "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Does this contract include an exclusivity agreement?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.4418,
+          "gold": [
+            {
+              "file": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+              "start": 7970,
+              "end": 8101,
+              "text": "Dynamex agrees not to provide sameday delivery services for any other        provider of next day or multiple day courier services."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "1                                                                     EXHIBIT 10.4\n\n             MARKETING AND TRANSPORTATION SERVICES AGREEMENT\n\n  THIS AGREEMENT made in duplicate this 20 day of November, 1995.\n\nB E T W E E N:\n\n                         PUROLATOR COURIER LTD.                        "
+          }
+        },
+        {
+          "id": "cuad-444becf64f",
+          "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Are there any services to be provided after the termination of this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.3732,
+          "gold": [
+            {
+              "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+              "start": 47413,
+              "end": 48223,
+              "text": "Upon expiration or termination of this Agreement by PAPA JOHN'S (but not in the event of termination by ABG), and subject to PAPA JOHN'S ongoing compliance with the terms and conditions of this Agreement, PAPA JOHN'S shall have the following rights to use the Celebrity Endorsement solely as follows:"
+            },
+            {
+              "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+              "start": 51519,
+              "end": 52259,
+              "text": "If this Agreement is terminated by ABG for any of the reasons provided in Section 7.B. above, then CELEBRITY shall be entitled to immediately vest in all of the RSUs for the eighteen (18) months following the effective date of termination (including, without limitation, any balance of unvested RSUs "
+            }
+          ],
+          "top_result": {
+            "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+            "start": 0,
+            "end": 999,
+            "text": "Exhibit 10.1\n\nENDORSEMENT AGREEMENT\n\nTHIS ENDORSEMENT AGREEMENT (\"Agreement\") is made and entered into effective March 15, 2019 (the \"Effective Date\") by and among, on the one hand, ABG-Shaq, LLC, a Delaware limited liability company (\"ABG\") for the personal services of Shaquille O'Neal, (\"CELEBRITY"
+          }
+        }
+      ],
+      "false_acceptance": [
+        {
+          "id": "unans-002",
+          "query": "What liability insurance must R. C. Boyd Enterprises maintain for the Honey Hole show under the Cano Petroleum sponsorship?",
+          "tags": [],
+          "top1_confidence": 0.4165,
+          "top_result": {
+            "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "QuickLinks -- Click here to rapidly navigate through this document\n\n    EXHIBIT 10.1\n\nSponsorship Agreement\n\nTHIS AGREEMENT made this 5th day of December, 2007, between R. C. Boyd Enterprises, LLC, a Texas limited liability company, whose principal  place of business is located at 2003 Navasota Cove"
+          }
+        },
+        {
+          "id": "unans-019",
+          "query": "Is the Jaguars sponsorship agreement with The ARC Group subject to binding arbitration of disputes?",
+          "tags": [],
+          "top1_confidence": 0.367,
+          "top_result": {
+            "file": "cuad/ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.1   JACKSONVILLE JAGUARS SPONSORSHIP AGREEMENT   This Sponsorship Agreement (this \"Agreement\") is entered into as of November 27, 2017 (the \"Execution Date\") by and between Jacksonville Jaguars, LLC, a Delaware limited liability company (\"Club\"), and The ARC Group, Inc., a Florida corpora"
+          }
+        },
+        {
+          "id": "unans-020",
+          "query": "May The ARC Group assign its Jaguars sponsorship rights to a franchisee of Dick's Wings and Grill?",
+          "tags": [],
+          "top1_confidence": 0.3993,
+          "top_result": {
+            "file": "cuad/ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.1   JACKSONVILLE JAGUARS SPONSORSHIP AGREEMENT   This Sponsorship Agreement (this \"Agreement\") is entered into as of November 27, 2017 (the \"Execution Date\") by and between Jacksonville Jaguars, LLC, a Delaware limited liability company (\"Club\"), and The ARC Group, Inc., a Florida corpora"
+          }
+        }
+      ]
+    }
+  }
+}

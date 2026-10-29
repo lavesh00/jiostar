@@ -14,12 +14,10 @@ from collections.abc import Iterable, Sequence
 from .config import RetrievalConfig
 
 _TOKEN = re.compile(r"\w+")
-_CONTEXT_PREFIX = re.compile(r"^\s*Consider\s+(?:the\s+)?[^;]{0,500};\s*", re.I)
+_CONTEXT_PREFIX = re.compile(r"^\s*Consider\s+(?:the\s+)?[^;]{0,500};\s*", re.IGNORECASE)
 
 STOPWORDS = frozenset(
-    "a an and are as at be been but by can could did do does for from had has have if in into is it its "
-    "may not of on or shall should so such that the their them then there these they this to under upon "
-    "was were what when where which who whom whose will with would any all each other".split()
+    ["a", "an", "and", "are", "as", "at", "be", "been", "but", "by", "can", "could", "did", "do", "does", "for", "from", "had", "has", "have", "if", "in", "into", "is", "it", "its", "may", "not", "of", "on", "or", "shall", "should", "so", "such", "that", "the", "their", "them", "then", "there", "these", "they", "this", "to", "under", "upon", "was", "were", "what", "when", "where", "which", "who", "whom", "whose", "will", "with", "would", "any", "all", "each", "other"]
 )
 
 

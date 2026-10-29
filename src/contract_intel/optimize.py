@@ -20,7 +20,6 @@ import dataclasses
 import datetime as dt
 import sys
 import time
-from collections import Counter
 from pathlib import Path
 from typing import Any
 
@@ -28,7 +27,6 @@ from .abstention import decide
 from .config import AbstentionConfig, Config, ConfigError, dump_config, load_config
 from .data import EvalQuery, load_train_queries, manifest_hash
 from .diagnostics import diagnose
-from .documents import DocumentStore
 from .evaluation import (
     QueryRun,
     append_jsonl,
@@ -49,8 +47,8 @@ LATENCY_FACTOR = 5.0
 CHUNK_FACTOR = 10.0  # G5
 MIN_COVERAGE = 0.90  # G2
 PHASE_B_RETRIEVAL_TOLERANCE = 0.002
-THRESHOLD_GRID = [round(i * 0.005, 3) for i in range(0, 191)]  # 0.000 .. 0.950
-GAP_GRID = [round(i * 0.05, 2) for i in range(0, 11)]
+THRESHOLD_GRID = [round(i * 0.005, 3) for i in range(191)]  # 0.000 .. 0.950
+GAP_GRID = [round(i * 0.05, 2) for i in range(11)]
 
 
 @dataclasses.dataclass(frozen=True)
@@ -218,7 +216,7 @@ def optimize(config_path: str, iterations: int, out_config: str, experiments_dir
     base_cfg = load_config(config_path)
     exp = Path(experiments_dir or base_cfg.paths.experiments_dir)
     log_path = exp / "iterations.jsonl"
-    run_id = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    run_id = dt.datetime.now(dt.UTC).strftime("%Y%m%dT%H%M%SZ")
     p = base_cfg.paths
     queries = load_train_queries(p.benchmark_file, p.corpus_root, p.unanswerable_file)
     assert all(q.split == "train" for q in queries)
@@ -249,7 +247,7 @@ def optimize(config_path: str, iterations: int, out_config: str, experiments_dir
             break
         diag = diagnose(incumbent["records"], 5, None, 0)
         row_common = {
-            "run_id": run_id, "timestamp": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+            "run_id": run_id, "timestamp": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
             "git_commit": git_commit(), "phase": hyp.phase, "hypothesis_name": hyp.name, "hypothesis": hyp.hypothesis,
             "proposer": "grid_search" if hyp.trigger is None else "rule+grid_search",
             "parent_config_hash": incumbent["cfg"].hash(), "diagnosis_before": diag["answerable_failure_share"],
@@ -316,7 +314,7 @@ def optimize(config_path: str, iterations: int, out_config: str, experiments_dir
     final = dataclasses.replace(final, name="final")
     ab_changed = final.abstention != incumbent["cfg"].abstention
     append_jsonl(log_path, {"run_id": run_id, "iteration": None, "type": "finalize", "proposer": "threshold_fit(rule R)",
-                            "timestamp": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+                            "timestamp": dt.datetime.now(dt.UTC).isoformat(timespec="seconds"),
                             "git_commit": git_commit(), "final_config_hash": final.hash(),
                             "fitted_abstention": dataclasses.asdict(final.abstention), "fit": incumbent["fit"],
                             "abstention_changed_by_fit": ab_changed, "metrics": summary(incumbent)})
