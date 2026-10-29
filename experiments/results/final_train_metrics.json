@@ -1,18 +1,18 @@
 {
   "meta": {
-    "timestamp": "2026-10-29T18:34:03+00:00",
-    "git_commit": "14f97ba",
-    "config_hash": "78a53ef0d1aa",
+    "timestamp": "2026-10-29T19:57:17+00:00",
+    "git_commit": "8dd883b",
+    "config_hash": "68b6994fb870",
     "manifest_hash": "e2a5024fd7e7ef0b",
     "split": "train",
-    "python": "3.12.0",
-    "platform": "Windows-11-10.0.26100-SP0",
+    "python": "3.13.0",
+    "platform": "Windows-11-10.0.26200-SP0",
     "config": "final",
     "config_file": "configs/final.yaml",
     "n_answerable": 140,
     "n_unanswerable": 33,
     "kind": "train",
-    "index_build_s": 0.477,
+    "index_build_s": 0.521,
     "n_chunks": 821
   },
   "metrics": {
@@ -40,11 +40,11 @@
     "false_abstentions": 14,
     "false_abstention_rate": 0.1,
     "coverage": 0.9,
-    "correct_abstentions": 24,
-    "correct_abstention_rate": 0.7272727272727273,
-    "false_acceptances": 9,
-    "false_acceptance_rate": 0.2727272727272727,
-    "mean_latency_ms": 1.1838075140964863
+    "correct_abstentions": 27,
+    "correct_abstention_rate": 0.8181818181818182,
+    "false_acceptances": 6,
+    "false_acceptance_rate": 0.18181818181818182,
+    "mean_latency_ms": 1.8708352599998046
   },
   "diagnostics": {
     "k": 5,
@@ -54,8 +54,8 @@
       "incomplete_coverage": 3,
       "right_doc_wrong_section": 14,
       "success": 1,
-      "correct_abstention": 24,
-      "false_acceptance": 9
+      "correct_abstention": 27,
+      "false_acceptance": 6
     },
     "tags": {
       "query_wording_mismatch": 138,
@@ -354,22 +354,10 @@
       ],
       "false_acceptance": [
         {
-          "id": "unans-003",
-          "query": "Does Cano Petroleum have an option to renew its Honey Hole lead sponsorship for 2009?",
-          "tags": [],
-          "top1_confidence": 0.712,
-          "top_result": {
-            "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
-            "start": 0,
-            "end": 1500,
-            "text": "QuickLinks -- Click here to rapidly navigate through this document\n\n    EXHIBIT 10.1\n\nSponsorship Agreement\n\nTHIS AGREEMENT made this 5th day of December, 2007, between R. C. Boyd Enterprises, LLC, a Texas limited liability company, whose principal  place of business is located at 2003 Navasota Cove"
-          }
-        },
-        {
           "id": "unans-023",
           "query": "Is the supply agreement between Florida Chemical Company and Flotek Chemistry subject to arbitration?",
           "tags": [],
-          "top1_confidence": 0.6806,
+          "top1_confidence": 0.6647,
           "top_result": {
             "file": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
             "start": 0,
@@ -378,15 +366,27 @@
           }
         },
         {
-          "id": "unans-025",
-          "query": "Does the Good Sam endorsement agreement between Holiday RV Superstores and Affinity Group excuse performance during force majeure events?",
+          "id": "unans-027",
+          "query": "What fee does Dr. George D. Green receive for services under the Union Dental business affiliate agreement?",
           "tags": [],
-          "top1_confidence": 0.7123,
+          "top1_confidence": 0.6603,
           "top_result": {
-            "file": "cuad/HOLIDAYRVSUPERSTORESINC_04_15_2002-EX-10.13-ENDORSEMENT AGREEMENT.txt",
+            "file": "cuad/UnionDentalHoldingsInc_20050204_8-KA_EX-10_3345577_EX-10_Affiliate Agreement.txt",
             "start": 0,
-            "end": 1499,
-            "text": "EXHIBIT 10.13\n\n                             ENDORSEMENT AGREEMENT\n\n               This Agreement is made as of the 20th day of March 2002, by and between Holiday RV Superstores, Inc., d/b/a Recreation USA (the \"Company\"), a Delaware corporation having its principal office at 200 East Broward Bouleva"
+            "end": 1500,
+            "text": "EXHIBIT 10.1\n\n                          BUSINESS AFFILIATE AGREEMENT\n\nThis  Business  Affiliate  Agreement   (\"Agreement\")  dated  January  28,  2005, effective  as of October 15,  2004,  (\"Effective  Date\") is entered  into by and between Dr. George D. Green (the \"Business Affiliate\") and UNION DEN"
+          }
+        },
+        {
+          "id": "unans-031",
+          "query": "Does the PC Quote and A.B. Watley co-branding agreement require escrow of the PC Quote software source code?",
+          "tags": [],
+          "top1_confidence": 0.8471,
+          "top_result": {
+            "file": "cuad/PcquoteComInc_19990721_S-1A_EX-10.11_6377149_EX-10.11_Co-Branding Agreement1.txt",
+            "start": 19500,
+            "end": 19851,
+            "text": "--------\n\nSCHEDULE A TO THE CO-BRANDING AGREEMENT BETWEEN PC QUOTE, INC. AND A.B. WATLEY, INC. DATED OCTOBER 11, 1996\n\nSCHEDULE OF SERVICES AND FEES\n\n[***]\n\nBy:  PC Quote, Inc. By:  A.B. Watley, Inc.\n\n/s/ Richard F. Chappeto /s/ Steven Malin - -------------------------------- -----------------------"
           }
         }
       ]

@@ -11,6 +11,7 @@ retrieval:
   lowercase: true
   remove_stopwords: true
   stem: true
+  stemmer: basic
   strip_query_context: true
   expand_query: true
   fusion: rrf
@@ -29,6 +30,7 @@ abstention:
   strip_context: false
   min_doc_prior: 0.59
   topical_min_docs: 0
+  peak_skip_opening: true
 eval:
   k_values:
   - 1

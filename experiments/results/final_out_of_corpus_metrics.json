@@ -1,12 +1,12 @@
 {
   "meta": {
-    "timestamp": "2026-10-29T18:34:07+00:00",
-    "git_commit": "14f97ba",
-    "config_hash": "78a53ef0d1aa",
+    "timestamp": "2026-10-29T19:57:19+00:00",
+    "git_commit": "8dd883b",
+    "config_hash": "68b6994fb870",
     "manifest_hash": null,
     "split": "out_of_corpus_probe",
-    "python": "3.12.0",
-    "platform": "Windows-11-10.0.26100-SP0",
+    "python": "3.13.0",
+    "platform": "Windows-11-10.0.26200-SP0",
     "config": "final"
   },
   "summary": {
@@ -26,7 +26,7 @@
     },
     "abstain_reasons": {
       "no passage": 1,
-      "the question does not match": 59,
+      "the question could not be matched": 59,
       "top confidence": 0
     }
   }
