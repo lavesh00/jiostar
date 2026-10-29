@@ -197,7 +197,7 @@ Test-suite status at the end of this work: `pytest` → **194 passed** (`-m "not
 | Final config via predeclared rule; test run after freeze; test-run count | PASS | `configs/final.yaml`; tag `config-frozen`; 2 test runs |
 | ≥ 10 real failures analysed | PASS | 16 in §6 |
 | Tests executed and recorded | PASS | 194 passed |
-| README reproducible from fresh clone | PARTIAL | Commands verified in this checkout; not re-run in a clean clone on another machine |
+| README reproducible from fresh clone | PARTIAL | A fresh `git clone` ran `pytest`: 191 passed, 3 skipped (data absent). `setup` download and full evaluation were run in this checkout, not in a second clean environment |
 | License/provenance reviewed | PARTIAL | `THIRD_PARTY_NOTICES.md`; the project's own license is not chosen |
 | No secrets or confidential assignment material committed | PASS | `.gitignore`, `.env.example`; PDFs ignored |
 | AI usage disclosed; limitations explicit | PASS | README, §7 |
