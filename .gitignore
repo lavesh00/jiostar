@@ -15,3 +15,5 @@ scratch/
 legal-retrieval-benchmark/
 # confidential assignment material must never be committed
 *.pdf
+# local editor / tool settings
+.claude/

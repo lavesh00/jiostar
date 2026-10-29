@@ -9,7 +9,7 @@ plus an evaluation harness and a train-only self-improvement loop. The data is t
 Results and analysis are in [REPORT.md](REPORT.md).
 
 ## Setup
-Python 3.11 or 3.12 (developed on 3.12.0, Windows 11).
+Python 3.11 or 3.12 (developed on 3.12.0, Windows 11). The latest loop run also ran on 3.13.0, installed with `pip install --ignore-requires-python -e ".[data,app,dev]"`.
 
 ```bash
 python -m venv .venv
@@ -35,7 +35,7 @@ needed. `.env.example` lists only an optional `HF_TOKEN` for faster downloads.
 | Test evaluation (final reporting only) | `contract-intel evaluate --split test --final --config configs/final.yaml` |
 | Out-of-corpus abstention probe | `contract-intel probe --config configs/final.yaml` |
 | Failure diagnosis | `contract-intel diagnose --split train` |
-| Improvement loop | `contract-intel optimize --config configs/baseline.yaml --iterations 14` |
+| Improvement loop | `contract-intel optimize --config configs/baseline.yaml --iterations 16` |
 | Tests | `contract-intel test` or `pytest` |
 
 `python -m contract_intel.cli …` works the same as `contract-intel …`.
@@ -85,10 +85,10 @@ After `setup` (about 30 s), run these from the repository root:
 | Step | Command | Time |
 |---|---|---|
 | Train metrics, baseline and final | `contract-intel evaluate --split train --config configs/baseline.yaml` and `… configs/final.yaml` | ~3 s each |
-| Re-derive the final config | `contract-intel optimize --config configs/baseline.yaml --iterations 14` → `configs/final.yaml`, config hash `78a53ef0d1aa` | ~50 s |
+| Re-derive the final config | `contract-intel optimize --config configs/baseline.yaml --iterations 16` → `configs/final.yaml`, config hash `68b6994fb870` | ~60 s |
 | Test metrics | `contract-intel evaluate --split test --final --config configs/final.yaml` (logged as an extra test run) | ~3 s |
 | Out-of-corpus probe | `contract-intel probe --config configs/final.yaml` | ~3 s |
-| Tests | `pytest`: 203 tests; 3 of them need `data/raw` and are skipped without it | ~7 s |
+| Tests | `pytest`: 208 tests; 3 of them need `data/raw` and are skipped without it | ~7 s |
 
 * **Outputs:** metrics and per-query results go to `experiments/results/`.
 * **Committed results:** the runs used in the report are already committed (`experiments/results/`, `experiments/final_test_runs.jsonl`,

@@ -1,6 +1,6 @@
 # Self-improvement loop
 
-`contract-intel optimize --config configs/baseline.yaml --iterations 14` runs one command, in about 50 s. It starts from the
+`contract-intel optimize --config configs/baseline.yaml --iterations 16` runs one command, in about 60 s. It starts from the
 baseline, tries one hypothesis at a time on the **train split only**, keeps a change only if a rule declared in advance says it helped, logs
 every attempt, and writes the winner to `configs/final.yaml`. The code is in `src/contract_intel/optimize.py`. The objective it
 optimises is frozen in [optimization_objective.md](optimization_objective.md). The results of each run are in
@@ -83,12 +83,14 @@ The proposer is a fixed, ordered list (`optimize.HYPOTHESES`). Each entry has a 
 | A | `query_expansion` legal lexicon | 2 variants, trigger `right_doc_wrong_section` |
 | A | `bm25_params` | k1 ∈ {0.8, 1.2, 1.6, 2.0} × b ∈ {0.5, 0.75, 0.9} |
 | A | `rrf_fusion` with TF-IDF | rrf_k 20, 60 |
+| A | `stemmer` extended suffix folding (Run 6) | extended |
 | C | `route_filter` | ratio 0.8, 0.9, 1.0 |
 | C | `chunk_size_revisit` | 500, 700, 1000 |
 | C | `score_cutoff` | 0.5, 0.7, 0.85 |
 | C | `span_refinement` | ≤ 300 / 500 / 800 chars, trigger `overly_broad` |
 | B | `topical_confidence` | min contracts 3–16 |
 | B | `confidence_signal` peakedness | 4 variants |
+| B | `opening_block_confidence` peak outside the opening chunk (Run 6) | on |
 | B | `gap_policy` | min_gap 0.05–0.3 |
 
 No LLM proposer is used: the system has no LLM, and a deterministic grid makes every run reproducible.
@@ -108,7 +110,7 @@ Each line is one event: `baseline`, `iteration`, `skipped` or `finalize`. Iterat
 | `grid` | every grid point that was evaluated, not just the winner |
 | `decision`, `decision_rationale` | accepted / rejected / skipped, with the rule that decided it |
 
-The file has 61 rows across 5 runs. Run 5 produced the current `configs/final.yaml`: 14 iterations, 6 accepted, 8 rejected.
+The file has 79 rows across 6 runs. Run 6 produced the current `configs/final.yaml`: 16 iterations, 7 accepted, 9 rejected.
 Each accepted or rejected candidate config is also saved in `experiments/results/<run_id>_iterNN_candidate.json`.
 
 Quick look at a run:
@@ -132,4 +134,4 @@ python -c "import json; [print(r.get('iteration'), r.get('hypothesis_name'), r.g
 * Gold spans are used for scoring and diagnosis, never as input to the searcher.
 * The unanswerable set and objective were committed before the first loop run, and the unanswerable set has not been edited since.
 * Rejected and skipped attempts are logged with the same detail as accepted ones.
-* Test evaluations are counted in `experiments/final_test_runs.jsonl` (3 so far), and the report discloses each one.
+* Test evaluations are counted in `experiments/final_test_runs.jsonl` (4 so far), and the report discloses each one.

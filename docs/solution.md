@@ -33,6 +33,7 @@ question ──► split off "Consider the <contract>;" ──► legal query ex
 | Separate routing from clause scoring | Benchmark questions name their contract in a long prefix. Scored together, the prefix overwhelms the clause words (67% of train queries were "right contract, wrong section" before this change). Scored separately, the prefix picks the contract and the question picks the clause. |
 | Query-expansion lexicon | CUAD questions are short templates. Adding typical clause vocabulary was the largest single gain (train Recall@5 0.394 → 0.717). |
 | "Peakedness" confidence | Normalised BM25 mostly tracked query length. Asking "does one clause stand out from the rest of this contract?" separates answerable from unanswerable questions much better (train correct abstention 0.333 → 0.727). |
+| Peak outside the opening block | Every remaining false acceptance in Run 5 was "won" by the title/parties block, whose names and entity words match any question about that contract. Leaving it out of the peak raised train correct abstention 0.727 → 0.818 without changing any answerable result (Run 6). |
 | Contract gate | Questions about contracts that are not indexed must not get an answer. The gate is calibrated to reject ≤ 1% of train answerable queries. |
 | Metric-driven loop | Every choice above was proposed, measured on train, and accepted or rejected by a rule declared in advance ([improvement_loop.md](improvement_loop.md)). |
 
@@ -43,18 +44,18 @@ question ──► split off "Consider the <contract>;" ──► legal query ex
 | Char Recall@5 · Precision@5 | 0.136 · 0.009 | **0.798 · 0.061** |
 | Char Recall@1 · Precision@1 | 0.019 · 0.003 | 0.535 · 0.146 |
 | Coverage (answered / answerable) | 54/54 | 50/54 |
-| Correct abstention (unanswerable) | 0/6 | 2/6 |
+| Correct abstention (unanswerable) | 0/6 | 4/6 |
 | Correct abstention, out-of-corpus probe (test part) | 0/20 | 20/20 |
 
-Train for the final config: Recall@5 0.750, Precision@5 0.052, correct abstention 24/33. The test split was evaluated 3 times in
+Train for the final config: Recall@5 0.750, Precision@5 0.052, correct abstention 27/33. The test split was evaluated 4 times in
 total, each run logged in `experiments/final_test_runs.jsonl`.
 
 ## What is weak, and what would come next
 
 * **Precision.** Passages are about 4× longer than gold clauses. Shrinking them raised precision, but recall fell past the guardrail
   (REPORT §5 trade-off table). Next would be a reranker or clause-level segmentation that keeps recall.
-* **Abstention on questions about indexed contracts** is 2/6 on test (24/33 on train). The opening block with the parties' names
-  attracts free-form questions. Next would be removing party names from the confidence signal, plus per-question-type thresholds.
+* **Abstention on questions about indexed contracts** is 4/6 on test (27/33 on train). Party names that recur in signature blocks and exhibits
+  still lift the confidence of some free-form questions, and redacted values (`***`) look like answers. Next would be removing party names from the confidence signal, plus per-question-type thresholds.
 * **Cross-references and definitions** are not resolved (41 of 140 train queries have gold text that refers elsewhere).
 * **Query form.** The lexicon and gate rely on CUAD-style templates. Free-form questions should use the contract selector.
 

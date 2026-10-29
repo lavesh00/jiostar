@@ -66,7 +66,7 @@ For `Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and 
    rankings, and `doc_boost × prior` is added to the fused score.
 5. **Remove duplicates.** `suppress_overlaps` drops a candidate if more than 50% of it is already covered by a kept passage, and stops at `top_k`.
 6. **Confidence.** With `signal: doc_peakedness`, each passage's confidence is `(peak − median) / peak` of the literal-question
-   BM25 scores over the chunks of that passage's contract. If one clause clearly answers the question, the score profile has a
+   BM25 scores over the chunks of that passage's contract, with the peak taken outside the opening (title/parties) chunk (`peak_skip_opening: true`). If one clause clearly answers the question, the score profile has a
    sharp peak. If nothing does, the profile is flat.
 7. **Decide** (`abstention.decide`). Abstain if nothing matched, if the contract match is below `min_doc_prior: 0.59`, or if top-1
    confidence is below `threshold: 0.66`. Each case gives its own reason. Otherwise return passages whose `text == document[start:end]`.
@@ -95,4 +95,4 @@ is limited to that contract.
 * **Add a query-expansion rule:** append a `(triggers, terms)` tuple to `lexicon.RULES`. Write it from contract vocabulary,
   never from gold spans.
 * **Add a loop hypothesis:** see [improvement_loop.md §6](improvement_loop.md#6-adding-a-hypothesis).
-* **Check nothing broke:** run `.venv/Scripts/python -m pytest` (203 tests, about 6 s; 3 need `data/raw`).
+* **Check nothing broke:** run `.venv/Scripts/python -m pytest` (208 tests, about 7 s; 3 need `data/raw`).
