@@ -1,14 +1,14 @@
 {
   "changes": {
-    "chunking.strategy": "section"
+    "chunking.size": 1500
   },
-  "decision": "rejected",
+  "decision": "accepted",
   "config": {
     "name": "baseline",
     "seed": 0,
     "chunking": {
-      "strategy": "section",
-      "size": 1000,
+      "strategy": "fixed",
+      "size": 1500,
       "overlap": 0,
       "snap_boundaries": false
     },
@@ -51,18 +51,18 @@
     }
   },
   "summary": {
-    "recall@1": 0.0,
-    "recall@3": 0.030209927197978517,
-    "recall@5": 0.10512472529755909,
-    "precision@1": 0.0,
-    "precision@3": 0.007589253533080431,
-    "precision@5": 0.0119883011678083,
-    "n_chunks": 2146,
-    "mean_latency_ms": 4.196,
-    "build_s": 0.208,
-    "fitted_threshold": 0.26,
+    "recall@1": 0.03711485200501795,
+    "recall@3": 0.13964835518920593,
+    "recall@5": 0.2676194987110694,
+    "precision@1": 0.008369489478034203,
+    "precision@3": 0.018275944279775237,
+    "precision@5": 0.019623239433268155,
+    "n_chunks": 821,
+    "mean_latency_ms": 2.375,
+    "build_s": 0.179,
+    "fitted_threshold": 0.3,
     "fitted_min_gap": 0.0,
-    "fitted_coverage": 0.9,
-    "fitted_correct_abstention": 0.18181818181818182
+    "fitted_coverage": 0.9071428571428571,
+    "fitted_correct_abstention": 0.21212121212121213
   }
 }

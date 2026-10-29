@@ -1,29 +1,29 @@
 {
   "changes": {
-    "retrieval.fusion": "rrf",
-    "retrieval.rrf_k": 60
+    "chunking.overlap": 100,
+    "chunking.snap_boundaries": false
   },
-  "decision": "accepted",
+  "decision": "rejected",
   "config": {
     "name": "baseline",
     "seed": 0,
     "chunking": {
       "strategy": "fixed",
       "size": 1500,
-      "overlap": 0,
+      "overlap": 100,
       "snap_boundaries": false
     },
     "retrieval": {
       "k1": 1.2,
       "b": 0.75,
       "lowercase": true,
-      "remove_stopwords": true,
-      "stem": true,
-      "strip_query_context": true,
-      "expand_query": true,
-      "fusion": "rrf",
+      "remove_stopwords": false,
+      "stem": false,
+      "strip_query_context": false,
+      "expand_query": false,
+      "fusion": "none",
       "rrf_k": 60,
-      "doc_boost": 1.0,
+      "doc_boost": 0.0,
       "candidates": 50,
       "max_overlap_frac": 0.5
     },
@@ -52,18 +52,18 @@
     }
   },
   "summary": {
-    "recall@1": 0.5183464184951183,
-    "recall@3": 0.6823193818254502,
-    "recall@5": 0.7194513056851488,
-    "precision@1": 0.15504124188946236,
-    "precision@3": 0.07614687676154927,
-    "precision@5": 0.0497960924282722,
-    "n_chunks": 821,
-    "mean_latency_ms": 1.656,
-    "build_s": 0.586,
-    "fitted_threshold": 0.13,
+    "recall@1": 0.0406293144873012,
+    "recall@3": 0.11509586700586052,
+    "recall@5": 0.2612030200336384,
+    "precision@1": 0.010214285714285714,
+    "precision@3": 0.015559752706573986,
+    "precision@5": 0.017464744806814748,
+    "n_chunks": 877,
+    "mean_latency_ms": 2.626,
+    "build_s": 0.185,
+    "fitted_threshold": 0.3,
     "fitted_min_gap": 0.0,
-    "fitted_coverage": 0.9,
-    "fitted_correct_abstention": 0.0
+    "fitted_coverage": 0.9142857142857143,
+    "fitted_correct_abstention": 0.15151515151515152
   }
 }

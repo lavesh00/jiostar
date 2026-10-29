@@ -1,9 +1,9 @@
 {
   "changes": {
-    "retrieval.k1": 2.0,
-    "retrieval.b": 0.5
+    "retrieval.expand_query": true,
+    "retrieval.remove_stopwords": true
   },
-  "decision": "rejected",
+  "decision": "accepted",
   "config": {
     "name": "baseline",
     "seed": 0,
@@ -14,8 +14,8 @@
       "snap_boundaries": false
     },
     "retrieval": {
-      "k1": 2.0,
-      "b": 0.5,
+      "k1": 1.2,
+      "b": 0.75,
       "lowercase": true,
       "remove_stopwords": true,
       "stem": true,
@@ -52,18 +52,18 @@
     }
   },
   "summary": {
-    "recall@1": 0.5242166984783307,
-    "recall@3": 0.6582869109315862,
-    "recall@5": 0.7170077938366032,
-    "precision@1": 0.1538832547174484,
-    "precision@3": 0.07432050572360391,
-    "precision@5": 0.050199000469603974,
+    "recall@1": 0.5170738413354735,
+    "recall@3": 0.6607047977539052,
+    "recall@5": 0.7168978530262508,
+    "precision@1": 0.15292134995554363,
+    "precision@3": 0.07529150534374132,
+    "precision@5": 0.050129138029832834,
     "n_chunks": 821,
-    "mean_latency_ms": 0.891,
-    "build_s": 0.522,
-    "fitted_threshold": 0.1,
+    "mean_latency_ms": 0.877,
+    "build_s": 0.534,
+    "fitted_threshold": 0.13,
     "fitted_min_gap": 0.0,
-    "fitted_coverage": 0.9142857142857143,
+    "fitted_coverage": 0.9,
     "fitted_correct_abstention": 0.0
   }
 }

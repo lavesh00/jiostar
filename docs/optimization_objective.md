@@ -72,3 +72,16 @@ with threshold 0, so "retrieval-only" metrics were not abstention-free once topi
 dropped from the confidence normaliser, so a question about an absent concept (e.g. "arbitrated") looked as well
 supported as a present one. Fixes: abstain on zero candidates only, and count unseen query terms with maximal idf
 in the normaliser. Run 3 re-runs the same 10 hypotheses from the unchanged baseline; Runs 1-2 stay in the log.
+
+## Revision 1.4 — Run 4 (final run): new phase-B hypothesis (objective, guardrails, thresholds unchanged)
+Run 3 (`20261029T180030Z`) crashed in the last iteration (division by zero in the gap policy when the top confidence
+is 0 -- a bug, fixed) and had already shown phase-B gains of at most 2/33 queries. A train-only diagnostic of the
+confidence signal (AUC of answerable vs unanswerable top-1 confidence: normalised BM25 0.21-0.56, i.e. dominated by
+query form; peakedness of literal question terms within the routed contract ~0.9) motivated a new, config-gated
+signal `abstention.signal: doc_peakedness`. Run 4 replaces the former `confidence_strip_context` hypothesis with
+`confidence_signal` (peakedness, with topical filters 0/3/5/8); the other hypotheses are unchanged. Run 4 is the run
+that produces `configs/final.yaml`. Runs 1-3 remain in `experiments/iterations.jsonl` (Run 3 has no `finalize` row
+because it crashed).
+Caveat: the answerable queries are templated ("Consider the <contract>; <question>") whereas the unanswerable ones
+are free-form, so any signal can partly exploit form differences; the peakedness signal always strips the
+"Consider ..." prefix to limit this, but the effect cannot be ruled out and is reported as a limitation.

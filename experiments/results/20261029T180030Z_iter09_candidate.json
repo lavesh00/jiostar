@@ -1,6 +1,6 @@
 {
   "changes": {
-    "abstention.topical_min_docs": 12
+    "abstention.strip_context": true
   },
   "decision": "rejected",
   "config": {
@@ -30,8 +30,8 @@
       "policy": "top_score",
       "threshold": 0.0,
       "min_gap": 0.0,
-      "strip_context": false,
-      "topical_min_docs": 12
+      "strip_context": true,
+      "topical_min_docs": 3
     },
     "eval": {
       "k_values": [
@@ -51,18 +51,18 @@
     }
   },
   "summary": {
-    "recall@1": 0.4423759811871677,
-    "recall@3": 0.5814298249121712,
-    "recall@5": 0.61856174877187,
-    "precision@1": 0.12962681497862333,
-    "precision@3": 0.06320982149702814,
-    "precision@5": 0.04208202958498973,
+    "recall@1": 0.5183464184951183,
+    "recall@3": 0.6823193818254502,
+    "recall@5": 0.7194513056851488,
+    "precision@1": 0.15504124188946236,
+    "precision@3": 0.07614687676154927,
+    "precision@5": 0.0497960924282722,
     "n_chunks": 821,
-    "mean_latency_ms": 1.623,
-    "build_s": 0.512,
-    "fitted_threshold": 0.0,
+    "mean_latency_ms": 1.72,
+    "build_s": 0.508,
+    "fitted_threshold": 0.035,
     "fitted_min_gap": 0.0,
-    "fitted_coverage": 0.8642857142857143,
-    "fitted_correct_abstention": 0.09090909090909091
+    "fitted_coverage": 0.9,
+    "fitted_correct_abstention": 0.06060606060606061
   }
 }

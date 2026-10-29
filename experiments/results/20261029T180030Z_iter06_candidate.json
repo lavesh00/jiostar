@@ -1,8 +1,9 @@
 {
   "changes": {
-    "chunking.size": 1500
+    "retrieval.k1": 2.0,
+    "retrieval.b": 0.5
   },
-  "decision": "accepted",
+  "decision": "rejected",
   "config": {
     "name": "baseline",
     "seed": 0,
@@ -13,16 +14,16 @@
       "snap_boundaries": false
     },
     "retrieval": {
-      "k1": 1.2,
-      "b": 0.75,
+      "k1": 2.0,
+      "b": 0.5,
       "lowercase": true,
-      "remove_stopwords": false,
-      "stem": false,
-      "strip_query_context": false,
-      "expand_query": false,
+      "remove_stopwords": true,
+      "stem": true,
+      "strip_query_context": true,
+      "expand_query": true,
       "fusion": "none",
       "rrf_k": 60,
-      "doc_boost": 0.0,
+      "doc_boost": 1.0,
       "candidates": 50,
       "max_overlap_frac": 0.5
     },
@@ -51,18 +52,18 @@
     }
   },
   "summary": {
-    "recall@1": 0.03711485200501795,
-    "recall@3": 0.13964835518920593,
-    "recall@5": 0.2676194987110694,
-    "precision@1": 0.008369489478034203,
-    "precision@3": 0.018275944279775237,
-    "precision@5": 0.019623239433268155,
+    "recall@1": 0.5242166984783307,
+    "recall@3": 0.6582869109315862,
+    "recall@5": 0.7170077938366032,
+    "precision@1": 0.1538832547174484,
+    "precision@3": 0.07432050572360391,
+    "precision@5": 0.050199000469603974,
     "n_chunks": 821,
-    "mean_latency_ms": 2.276,
-    "build_s": 0.175,
-    "fitted_threshold": 0.3,
+    "mean_latency_ms": 0.956,
+    "build_s": 0.523,
+    "fitted_threshold": 0.1,
     "fitted_min_gap": 0.0,
-    "fitted_coverage": 0.9071428571428571,
-    "fitted_correct_abstention": 0.21212121212121213
+    "fitted_coverage": 0.9142857142857143,
+    "fitted_correct_abstention": 0.0
   }
 }

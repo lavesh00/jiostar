@@ -14,6 +14,7 @@ Retrieved passages are evidence for a human to read, not legal conclusions.
 from __future__ import annotations
 
 import json
+import statistics
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -25,7 +26,7 @@ from .config import Config
 from .documents import DocumentStore
 from .indexing import LexicalIndex, Tokenizer, strip_query_context
 from .lexicon import expand
-from .ranking import rank_candidates, suppress_overlaps
+from .ranking import Candidate, rank_candidates, suppress_overlaps
 
 
 @dataclass(frozen=True)
@@ -100,6 +101,9 @@ class ContractSearcher:
         self.index = LexicalIndex(
             [self.tokenize(docs.slice(c.file_path, c.start, c.end)) for c in self.chunks], r.k1, r.b
         )
+        self.doc_chunks: dict[str, list[int]] = {}
+        for i, ch in enumerate(self.chunks):
+            self.doc_chunks.setdefault(ch.file_path, []).append(i)
         self.doc_index: LexicalIndex | None = None
         if r.doc_boost > 0 or cfg.abstention.topical_min_docs > 0:
             self.doc_index = LexicalIndex([self.tokenize(docs.text(fp)) for fp in docs.paths()], r.k1, r.b)
@@ -124,6 +128,28 @@ class ContractSearcher:
         raw, bound = self.index.bm25(topical)
         return {i: (raw.get(i, 0.0) / bound if bound > 0 else 0.0) for i in idxs}
 
+    def _peakedness_confidence(self, question: str, kept: list[Candidate]) -> dict[int, float]:
+        """Confidence = how far the best literal-question match in the passage's contract stands above that
+        contract's median chunk: (peak - median) / peak in [0, 1). Flat score profiles (nothing specific to the
+        question) give ~0; a clause that literally answers it gives a clear peak. Uses unexpanded question terms
+        (optionally only terms found in >= topical_min_docs contracts, so contract names do not count)."""
+        tokens = self.tokenize(question)
+        n = self.cfg.abstention.topical_min_docs
+        if n > 0:
+            assert self.doc_index is not None
+            tokens = [t for t in tokens if (df := len(self.doc_index.postings.get(t, ()))) == 0 or df >= n]
+        raw, _ = self.index.bm25(tokens)
+        by_doc: dict[str, float] = {}
+        out = {}
+        for c in kept:
+            fp = c.chunk.file_path
+            if fp not in by_doc:
+                vals = sorted(raw.get(i, 0.0) for i in self.doc_chunks[fp])
+                peak, med = vals[-1], statistics.median(vals)
+                by_doc[fp] = (peak - med) / peak if peak > 0 else 0.0
+            out[c.idx] = by_doc[fp]
+        return out
+
     def search_raw(self, query: str, top_k: int | None = None) -> RawSearch:
         """Ranked passages without applying abstention (used for fast threshold sweeps)."""
         t0 = time.perf_counter()
@@ -136,7 +162,9 @@ class ContractSearcher:
         cands = rank_candidates(self.index, self.chunks, self.tokenize(q_text), r, prior)
         kept = suppress_overlaps(cands, r.max_overlap_frac, top_k)
         conf = {c.idx: c.confidence for c in kept}
-        if self.cfg.abstention.topical_min_docs > 0 and kept:
+        if self.cfg.abstention.signal == "doc_peakedness" and kept:
+            conf = self._peakedness_confidence(strip_query_context(query), kept)
+        elif self.cfg.abstention.topical_min_docs > 0 and kept:
             conf = self._topical_confidence(self.tokenize(conf_text), [c.idx for c in kept])
         passages = [
             Passage(i, c.chunk.file_path, c.chunk.start, c.chunk.end, c.score, conf[c.idx],

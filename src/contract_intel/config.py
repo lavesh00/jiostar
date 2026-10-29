@@ -47,6 +47,7 @@ class AbstentionConfig:
     policy: str = "top_score"  # "top_score" | "top_score_gap"
     threshold: float = 0.0  # on the normalized top score in [0, 1]; 0 disables abstention
     min_gap: float = 0.0  # top_score_gap only: lower bound on (top1 - top2) / top1
+    signal: str = "normalized_score"  # "normalized_score" | "doc_peakedness"
     strip_context: bool = False  # confidence uses the query without its 'Consider the <contract>;' prefix
     topical_min_docs: int = 0  # >0: confidence ignores query terms found in fewer than N contracts (names)
 
@@ -127,6 +128,8 @@ def validate(cfg: Config) -> None:
         raise ConfigError("invalid retrieval.candidates / max_overlap_frac / doc_boost")
     if a.policy not in ("top_score", "top_score_gap"):
         raise ConfigError("abstention.policy must be 'top_score' or 'top_score_gap'")
+    if a.signal not in ("normalized_score", "doc_peakedness"):
+        raise ConfigError("abstention.signal must be 'normalized_score' or 'doc_peakedness'")
     if a.topical_min_docs < 0:
         raise ConfigError("abstention.topical_min_docs must be >= 0")
     if not 0 <= a.threshold <= 1 or not 0 <= a.min_gap <= 1:

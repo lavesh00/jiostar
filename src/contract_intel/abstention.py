@@ -24,7 +24,7 @@ def decide(cfg: AbstentionConfig, top1: float, top2: float, n_results: int) -> t
     if top1 < cfg.threshold:
         return True, f"top confidence {top1:.3f} below threshold {cfg.threshold:.3f}"
     if cfg.policy == "top_score_gap":
-        gap = max(0.0, (top1 - top2) / top1)  # top-2 confidence can exceed top-1 (ranking uses another score)
+        gap = max(0.0, (top1 - top2) / top1) if top1 > 0 else 0.0  # top-2 confidence can exceed top-1 (ranking uses another score)
         if gap < cfg.min_gap:
             return True, f"relative gap {gap:.3f} below min_gap {cfg.min_gap:.3f}"
     return False, ""
