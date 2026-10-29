@@ -86,7 +86,7 @@ guardrails: Precision@5 ≥ 0.90×baseline (0.0167), latency ≤ min(5×baseline
 Phase B: maximise correct-abstention on the 33 train unanswerable queries at the highest threshold keeping answerable coverage ≥ 0.90 (rule R), without losing > 0.002 of Recall@5/Precision@5; accept if gain > 0.02.
 Each iteration evaluates a small grid for one hypothesis, takes the best guardrail-passing point, and logs everything (`experiments/iterations.jsonl`, 45 rows over 4 runs).
 
-**Run 4 (the run that produced `configs/final.yaml`; 10 iterations, ~35 s total):**
+**Run 4 (the run that produced `configs/final.yaml`; 10 iterations, ~35-40 s total):**
 
 | # | Hypothesis | Best grid point | Obj. before → after | P@5 after | Decision |
 |---|---|---|---|---|---|
