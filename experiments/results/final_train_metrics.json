@@ -1,0 +1,461 @@
+{
+  "meta": {
+    "timestamp": "2026-10-29T18:07:28+00:00",
+    "git_commit": "3d8d621",
+    "config_hash": "1cec43a77086",
+    "manifest_hash": "e2a5024fd7e7ef0b",
+    "split": "train",
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "config": "final",
+    "config_file": "configs/final.yaml",
+    "n_answerable": 140,
+    "n_unanswerable": 33,
+    "kind": "train",
+    "index_build_s": 0.486,
+    "n_chunks": 821
+  },
+  "metrics": {
+    "n_answerable": 140,
+    "n_unanswerable": 33,
+    "precision@1": 0.13133388477315783,
+    "recall@1": 0.4508283364624279,
+    "doc_hit@1": 0.8142857142857143,
+    "span_hit@1": 0.55,
+    "micro_precision@1": 0.1465477373845835,
+    "micro_recall@1": 0.3636303682599979,
+    "precision@3": 0.06814892653484002,
+    "recall@3": 0.6112298712213313,
+    "doc_hit@3": 0.8285714285714286,
+    "span_hit@3": 0.6642857142857143,
+    "micro_precision@3": 0.07562575812578026,
+    "micro_recall@3": 0.5632979845942809,
+    "precision@5": 0.044705020378824976,
+    "recall@5": 0.6414321575543774,
+    "doc_hit@5": 0.8285714285714286,
+    "span_hit@5": 0.6857142857142857,
+    "micro_precision@5": 0.04966617399724785,
+    "micro_recall@5": 0.6169673947451725,
+    "mrr_span": 0.6041666666666666,
+    "false_abstentions": 14,
+    "false_abstention_rate": 0.1,
+    "coverage": 0.9,
+    "correct_abstentions": 18,
+    "correct_abstention_rate": 0.5454545454545454,
+    "false_acceptances": 15,
+    "false_acceptance_rate": 0.45454545454545453,
+    "mean_latency_ms": 1.5620052029857832
+  },
+  "diagnostics": {
+    "k": 5,
+    "categories": {
+      "false_abstention": 14,
+      "overly_broad": 91,
+      "wrong_document": 10,
+      "incomplete_coverage": 4,
+      "right_doc_wrong_section": 20,
+      "success": 1,
+      "correct_abstention": 18,
+      "false_acceptance": 15
+    },
+    "tags": {
+      "query_wording_mismatch": 138,
+      "cross_reference_dependency": 41
+    },
+    "answerable_failure_share": {
+      "false_abstention": 0.1,
+      "overly_broad": 0.65,
+      "wrong_document": 0.0714,
+      "incomplete_coverage": 0.0286,
+      "right_doc_wrong_section": 0.1429
+    },
+    "examples": {
+      "false_abstention": [
+        {
+          "id": "cuad-5f26f5e6ab",
+          "query": "Consider the Amendment No. 3 to Wireless Content License Agreement between Fox Mobile Entertainment, Inc. and Glu Mobile Inc.; What is the expiration date of this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.2265,
+          "gold": [
+            {
+              "file": "cuad/GluMobileInc_20070319_S-1A_EX-10.09_436630_EX-10.09_Content License Agreement4.txt",
+              "start": 598,
+              "end": 989,
+              "text": "The rights granted hereunder shall be effective as of the Effective Date and shall expire on December 31, 2006 (the \"Term\"); provided, however, that with respect to each Property, including Robots, Kingdom of Heaven, Mr. and Mrs. Smith, In Her Shoes, Idiocracy (Oww My Balls) and Ice Age II, all righ"
+            }
+          ],
+          "top_result": null
+        },
+        {
+          "id": "cuad-343d64c560",
+          "query": "Consider the Sponsorship Agreement between Jacksonville Jaguars, LLC and The ARC Group, Inc.; What licenses are granted under this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.565,
+          "gold": [
+            {
+              "file": "cuad/ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement.txt",
+              "start": 1697,
+              "end": 2488,
+              "text": "Subject to the terms and conditions of this Agreement, as part of the consideration of the full and timely payment of the Sponsor Fees, Club hereby grants to Sponsor, and Sponsor hereby accepts, solely in the Territory, and during the Term: (i) the right to use the Benefits set forth on Exhibit A an"
+            }
+          ],
+          "top_result": null
+        },
+        {
+          "id": "cuad-39806369ca",
+          "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; What is the expiration date of this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.514,
+          "gold": [
+            {
+              "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+              "start": 4382,
+              "end": 4705,
+              "text": "The Executive's employment with the Company will commence on the Commencement Date and shall continue, subject to the remaining terms of this Agreement, until terminated by either party giving the other the following minimum advance written notice: 2.1.1 6 weeks' notice;\n\n2.1.2 such other longer per"
+            }
+          ],
+          "top_result": null
+        }
+      ],
+      "overly_broad": [
+        {
+          "id": "cuad-712e68f706",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; What is the governing law for this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 53956,
+              "end": 54252,
+              "text": "This Agreement shall be governed by and interpreted in accordance with the laws of England and Wales and the parties to this Agreement submit to the exclusive jurisdiction of the Courts of England and Wales in relation to any claim, dispute or matter arising out of or relating to this Agreement."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+            "start": 54000,
+            "end": 55500,
+            "text": "rpreted in accordance with the laws of England and Wales and the parties to this Agreement submit to the exclusive jurisdiction of the Courts of England and Wales in relation to any claim, dispute or matter arising out of or relating to this Agreement.\n\n17\n\n\n\n\n\n23 NOTICES\n\nAny notices with respect t"
+          }
+        },
+        {
+          "id": "cuad-2aaca2ad98",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; Are there any exceptions to competitive restrictions in this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 33572,
+              "end": 34034,
+              "text": "save that nothing in this paragraph 13.2 shall prevent you from holding (with the prior written consent of the Company, which shall not be unreasonably delayed or withheld) up to three percent (3%) of the issued equity share capital of any company where those equity shares are listed on a recognised"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+            "start": 40500,
+            "end": 42000,
+            "text": "e or more of such restrictions shall either taken by itself or themselves together be adjudged to go beyond what is reasonable in all the circumstances for the protection of the legitimate interests of the Company but would be adjudged reasonable if any particular restriction or restrictions were de"
+          }
+        },
+        {
+          "id": "cuad-792d77113d",
+          "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; What is the expiration date of this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.8849,
+          "gold": [
+            {
+              "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+              "start": 5604,
+              "end": 5739,
+              "text": "The term of this Agreement shall be one (1) year unless terminated earlier in accordance with the terms of this Agreement (the \"Term\")."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+            "start": 48001,
+            "end": 49500,
+            "text": "for publication or display with a third party, prior to the effective date of expiration or termination; and (ii) PAPA JOHN'S shall have the right, without restriction, to the in-house, non-commercial use of any Materials. Such use may include in-house exhibition for historical, educational or comme"
+          }
+        }
+      ],
+      "wrong_document": [
+        {
+          "id": "cuad-c3e0e0f9d2",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; Does this contract include any right of first refusal, right of first offer, or right of first negotiation?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.9413,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 6235,
+              "end": 6531,
+              "text": "On or as soon as practicable following the Effective Date, it is intended that you will be granted an option under the Option Plan to acquire 107,417 ordinary shares in the capital of BTL (\"Shares\") (representing approximately 0.6% of the Company's issued share capital as at the Effective Date)."
+            },
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 6533,
+              "end": 7937,
+              "text": "In addition, and conditional on completion of a transaction on terms set out below, you will be granted a second option under the Option Plan, such option being one of:\n\n(a) an option to acquire 44,757 Shares (representing approximately 0.25% of the Company's issued share capital as at the Effective"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/IGENEBIOTECHNOLOGYINC_05_13_2003-EX-1-JOINT VENTURE AGREEMENT.txt",
+            "start": 39000,
+            "end": 40499,
+            "text": "pany to obtain such services for the Joint Venture independently. Such transition period shall not exceed 24 months for the services set forth in Article 11.1.1 and Article 11.1.2 and shall not exceed 36 months for the services set forth in Article 11.1.4; provided, however, if T&L shall give notice"
+          }
+        },
+        {
+          "id": "cuad-4228f7e817",
+          "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; Is there an anti-assignment clause in this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+              "start": 17341,
+              "end": 17432,
+              "text": "The rights and obligations provided by this Agreement shall not be assignable by any Party."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+            "start": 157500,
+            "end": 158999,
+            "text": "tion 16.8 Successors and Assigns. Subject to Section 16.9, this Agreement shall be binding upon and shall inure to the benefit of the parties hereto and their respective successors and assigns permitted under this Agreement.\n\nSection 16.9 Assignment. This Agreement and the rights granted herein shal"
+          }
+        },
+        {
+          "id": "cuad-5febc1f161",
+          "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; What is the expiration date of this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.8849,
+          "gold": [
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 3546,
+              "end": 3655,
+              "text": "The term of this Agreement shall be one (1) year, commencing January 1, 2008 and ending on December 31, 2008."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+            "start": 48001,
+            "end": 49500,
+            "text": "for publication or display with a third party, prior to the effective date of expiration or termination; and (ii) PAPA JOHN'S shall have the right, without restriction, to the in-house, non-commercial use of any Materials. Such use may include in-house exhibition for historical, educational or comme"
+          }
+        }
+      ],
+      "incomplete_coverage": [
+        {
+          "id": "cuad-03914e2684",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; How is intellectual property ownership assigned in this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 44840,
+              "end": 45359,
+              "text": "To the extent that such IPRs do not vest automatically in the Company by operation of law, you hereby assign and agree to assign to the Company all of your right, title and interest in any existing and future IPRs which may subsist in any Works for their full term of protection (including any extens"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+            "start": 43501,
+            "end": 45000,
+            "text": "all similar or equivalent rights or forms of protection which subsist or will subsist now or in the future in any part of the world; the term \"Copyright\" means the exclusive legal right to reproduce, perform, display, distribute and make derivative works of a work of authorship (as a literary, music"
+          }
+        },
+        {
+          "id": "cuad-494a099d52",
+          "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; Is there a cap on liability under this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+              "start": 11380,
+              "end": 11583,
+              "text": "GINARES  agrees that the sole and exclusive remedy for money damages related to this Agreement and the transactions contemplated hereby shall be the rights to indemnification set forth in this Section 9."
+            },
+            {
+              "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+              "start": 12564,
+              "end": 12768,
+              "text": "HPIL ET agrees that the sole and exclusive remedy for money damages relating to this Agreement and the transactions contemplated hereby shall be the rights to indemnification set forth in this Section 10."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+            "start": 10501,
+            "end": 12000,
+            "text": "against and with respect to any claim, liability, obligations, loss, damage, assessment, judgment, cost and expense (including, without limitation, reasonable attorneys' and accountants' fees and costs and expenses reasonably incurred in investigating, preparing, defending against or prosecuting any"
+          }
+        },
+        {
+          "id": "cuad-a3b97aa6ae",
+          "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there a cap on liability under this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 85867,
+              "end": 86115,
+              "text": "Except as set forth above, Depomed shall be under no liability whatsoever to compensate King or make any other payment to King for any decision to recall, initiate a market withdrawal or take any other corrective action with respect to the Product."
+            },
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 92834,
+              "end": 93846,
+              "text": "In the event that a Depomed Supply Failure occurs, notwithstanding its compliance with its obligations under Section 6.1, to fulfill all orders for the Product generated by King activities in a timely and efficient manner, upon written notice to Depomed (a \"King Manufacturing Notice\"), King shall ha"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+            "start": 139500,
+            "end": 141000,
+            "text": "nsel of its choice, but the cost of such counsel shall be borne solely by the indemnified party. The provisions of this Section 11.1 shall survive the termination of this Agreement for three years (except as to claims as to which a party has notified the other in writing prior to the third anniversa"
+          }
+        }
+      ],
+      "right_doc_wrong_section": [
+        {
+          "id": "cuad-4898a9bce3",
+          "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; Can this contract be terminated for convenience, and under what conditions?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+              "start": 18678,
+              "end": 18997,
+              "text": "The Company may, in its sole and absolute discretion, terminate the Executive's employment under this Agreement at any time and with immediate effect by notifying the Executive that the Company is exercising its right under this clause 17 and that it will make a payment in l ieu of  not ice (\"PILON\""
+            }
+          ],
+          "top_result": {
+            "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+            "start": 21000,
+            "end": 22500,
+            "text": "dom or elsewhere for which a fine or non-custodial penalty is imposed); or 18.1.7 is no longer eligible to work in the United Kingdom; or 18.1.8 is guilty of any fraud or dishonesty or acts in any manner which brings or is likely to bring the Executive or any Group Company into disrepute or is mater"
+          }
+        },
+        {
+          "id": "cuad-1a6adb98b6",
+          "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; Is there a covenant not to sue included in this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.8689,
+          "gold": [
+            {
+              "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+              "start": 27816,
+              "end": 28397,
+              "text": "If the Executive's employment is terminated at any time by reason of any reconstruction or amalgamation of any Group Company, whether by winding up or otherwise, and the Executive is offered employment with any concern or undertaking involved in or resulting from the reconstruction or amalgamation o"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+            "start": 1500,
+            "end": 2999,
+            "text": "elops, learns, receives or obtains in connection with the Executive's employment before or after the date of this agreement, whether or not such information is marked confidential;\n\n\"Copies\" means copies or records of any Confidential Information in whatever form (including, without limitation, in w"
+          }
+        },
+        {
+          "id": "cuad-b1f8efd953",
+          "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; What is the duration of any warranties provided in this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+              "start": 3021,
+              "end": 3209,
+              "text": "FCC shall promptly, but in no event later than three (3) days after the date of such purchase order, confirm its acceptance or rejection of such purchase order by written notice to Flotek."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+            "start": 1500,
+            "end": 2999,
+            "text": "ventory (e.g. LIFO, FIFO) (provided that such method is in accordance with Generally Accepted Accounting Principles, consistently applied), plus a deemed allocation of other manufacturing costs of FCC of $[***] per pound.\n\n\"Terpene Product\" means terpene from citrus with a minimum d-limonene content"
+          }
+        }
+      ],
+      "false_acceptance": [
+        {
+          "id": "unans-003",
+          "query": "Does Cano Petroleum have an option to renew its Honey Hole lead sponsorship for 2009?",
+          "tags": [],
+          "top1_confidence": 0.712,
+          "top_result": {
+            "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1500,
+            "text": "QuickLinks -- Click here to rapidly navigate through this document\n\n    EXHIBIT 10.1\n\nSponsorship Agreement\n\nTHIS AGREEMENT made this 5th day of December, 2007, between R. C. Boyd Enterprises, LLC, a Texas limited liability company, whose principal  place of business is located at 2003 Navasota Cove"
+          }
+        },
+        {
+          "id": "unans-015",
+          "query": "Does the GE Capital agency agreement with Duckwall-Alco require disputes to be submitted to arbitration?",
+          "tags": [],
+          "top1_confidence": 0.8612,
+          "top_result": {
+            "file": "cuad/ALCOSTORESINC_12_14_2005-EX-10.26-AGENCY AGREEMENT.txt",
+            "start": 10500,
+            "end": 11355,
+            "text": "-Alco Stores, Inc. is ordering the following equipment as Agent for:\n\n\n\n\n\n  General Electric Capital Corporation  311 North Bayshore Drive  Safety Harbor, FL 34695  Attn: Teresa Schafer\n\n• All invoices should indicate that General Electric Capital Corporation is the \"Sold to\" party at the above addr"
+          }
+        },
+        {
+          "id": "unans-016",
+          "query": "Which party guarantees Duckwall-Alco's payment obligations under the GE Capital agency agreement?",
+          "tags": [],
+          "top1_confidence": 0.8276,
+          "top_result": {
+            "file": "cuad/ALCOSTORESINC_12_14_2005-EX-10.26-AGENCY AGREEMENT.txt",
+            "start": 9000,
+            "end": 10500,
+            "text": "y agreed upon by Company and Lessor\n\n5. Agency Agreement Expiration Date and Last Delivery Date:  October 31, 2006\n\nARTICLE III TERMINATION\n\nSection 3.01 Termination.\n\n(a) So long as no default exists and is continuing hereunder or under the Lease, either party may terminate this Agreement at any ti"
+          }
+        }
+      ]
+    }
+  }
+}

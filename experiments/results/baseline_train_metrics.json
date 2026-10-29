@@ -1,0 +1,338 @@
+{
+  "meta": {
+    "timestamp": "2026-10-29T18:07:26+00:00",
+    "git_commit": "3d8d621",
+    "config_hash": "d3989b03f063",
+    "manifest_hash": "e2a5024fd7e7ef0b",
+    "split": "train",
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "config": "baseline",
+    "config_file": "configs/baseline.yaml",
+    "n_answerable": 140,
+    "n_unanswerable": 33,
+    "kind": "train",
+    "index_build_s": 0.166,
+    "n_chunks": 1229
+  },
+  "metrics": {
+    "n_answerable": 140,
+    "n_unanswerable": 33,
+    "precision@1": 0.004071428571428572,
+    "recall@1": 0.014356902105333066,
+    "doc_hit@1": 1.0,
+    "span_hit@1": 0.02142857142857143,
+    "micro_precision@1": 0.004108374597271174,
+    "micro_recall@1": 0.007518201962646407,
+    "precision@3": 0.012863255675958314,
+    "recall@3": 0.0675699084456866,
+    "doc_hit@3": 1.0,
+    "span_hit@3": 0.1357142857142857,
+    "micro_precision@3": 0.012968119188060739,
+    "micro_recall@3": 0.06689880763954838,
+    "precision@5": 0.018544877794129548,
+    "recall@5": 0.18958028241067879,
+    "doc_hit@5": 1.0,
+    "span_hit@5": 0.2785714285714286,
+    "micro_precision@5": 0.018786275695284158,
+    "micro_recall@5": 0.16393637226970562,
+    "mrr_span": 0.09904761904761905,
+    "false_abstentions": 0,
+    "false_abstention_rate": 0.0,
+    "coverage": 1.0,
+    "correct_abstentions": 0,
+    "correct_abstention_rate": 0.0,
+    "false_acceptances": 33,
+    "false_acceptance_rate": 1.0,
+    "mean_latency_ms": 3.067991904903612
+  },
+  "diagnostics": {
+    "k": 5,
+    "categories": {
+      "overly_broad": 27,
+      "right_doc_wrong_section": 101,
+      "incomplete_coverage": 12,
+      "false_acceptance": 33
+    },
+    "tags": {
+      "query_wording_mismatch": 138,
+      "cross_reference_dependency": 41
+    },
+    "answerable_failure_share": {
+      "overly_broad": 0.1929,
+      "right_doc_wrong_section": 0.7214,
+      "incomplete_coverage": 0.0857
+    },
+    "examples": {
+      "overly_broad": [
+        {
+          "id": "cuad-5f26f5e6ab",
+          "query": "Consider the Amendment No. 3 to Wireless Content License Agreement between Fox Mobile Entertainment, Inc. and Glu Mobile Inc.; What is the expiration date of this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.375,
+          "gold": [
+            {
+              "file": "cuad/GluMobileInc_20070319_S-1A_EX-10.09_436630_EX-10.09_Content License Agreement4.txt",
+              "start": 598,
+              "end": 989,
+              "text": "The rights granted hereunder shall be effective as of the Effective Date and shall expire on December 31, 2006 (the \"Term\"); provided, however, that with respect to each Property, including Robots, Kingdom of Heaven, Mr. and Mrs. Smith, In Her Shoes, Idiocracy (Oww My Balls) and Ice Age II, all righ"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/GluMobileInc_20070319_S-1A_EX-10.09_436630_EX-10.09_Content License Agreement4.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "AMENDMENT NO. 3\n\nDated as of February 19, 2007\n\nReference is hereby made to that certain fully executed Wireless Content License Agreement Number 12965 dated as of December 16, 2004, as amended November 11, 2005 and March 27, 2006 (the \"Agreement\"), between Fox Mobile Entertainment, Inc. (\"Fox\"), as"
+          }
+        },
+        {
+          "id": "cuad-792d77113d",
+          "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; What is the expiration date of this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.3624,
+          "gold": [
+            {
+              "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+              "start": 5604,
+              "end": 5739,
+              "text": "The term of this Agreement shall be one (1) year unless terminated earlier in accordance with the terms of this Agreement (the \"Term\")."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+            "start": 3000,
+            "end": 4000,
+            "text": ".......................... 8 21. Early Termination...................................................................................................................... 8 22. Captions....................................................................................................................."
+          }
+        },
+        {
+          "id": "cuad-343d64c560",
+          "query": "Consider the Sponsorship Agreement between Jacksonville Jaguars, LLC and The ARC Group, Inc.; What licenses are granted under this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.3546,
+          "gold": [
+            {
+              "file": "cuad/ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement.txt",
+              "start": 1697,
+              "end": 2488,
+              "text": "Subject to the terms and conditions of this Agreement, as part of the consideration of the full and timely payment of the Sponsor Fees, Club hereby grants to Sponsor, and Sponsor hereby accepts, solely in the Territory, and during the Term: (i) the right to use the Benefits set forth on Exhibit A an"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.1   JACKSONVILLE JAGUARS SPONSORSHIP AGREEMENT   This Sponsorship Agreement (this \"Agreement\") is entered into as of November 27, 2017 (the \"Execution Date\") by and between Jacksonville Jaguars, LLC, a Delaware limited liability company (\"Club\"), and The ARC Group, Inc., a Florida corpora"
+          }
+        }
+      ],
+      "right_doc_wrong_section": [
+        {
+          "id": "cuad-712e68f706",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; What is the governing law for this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.2709,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 53956,
+              "end": 54252,
+              "text": "This Agreement shall be governed by and interpreted in accordance with the laws of England and Wales and the parties to this Agreement submit to the exclusive jurisdiction of the Courts of England and Wales in relation to any claim, dispute or matter arising out of or relating to this Agreement."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.11\n\nDATED 26 September 2019\n\nBicycleTX Ltd\n\nand\n\nNigel Crockett\n\n___________________________________________________\n\nSERVICE AGREEMENT\n\n___________________________________________________\n\n\n\n\n\nTHIS AGREEMENT is made on 26 September 2019\n\nBETWEEN:\n\n(1) BICYCLETX LIMITED a company incorpor"
+          }
+        },
+        {
+          "id": "cuad-2aaca2ad98",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; Are there any exceptions to competitive restrictions in this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.2332,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 33572,
+              "end": 34034,
+              "text": "save that nothing in this paragraph 13.2 shall prevent you from holding (with the prior written consent of the Company, which shall not be unreasonably delayed or withheld) up to three percent (3%) of the issued equity share capital of any company where those equity shares are listed on a recognised"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.11\n\nDATED 26 September 2019\n\nBicycleTX Ltd\n\nand\n\nNigel Crockett\n\n___________________________________________________\n\nSERVICE AGREEMENT\n\n___________________________________________________\n\n\n\n\n\nTHIS AGREEMENT is made on 26 September 2019\n\nBETWEEN:\n\n(1) BICYCLETX LIMITED a company incorpor"
+          }
+        },
+        {
+          "id": "cuad-c3e0e0f9d2",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; Does this contract include any right of first refusal, right of first offer, or right of first negotiation?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.221,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 6235,
+              "end": 6531,
+              "text": "On or as soon as practicable following the Effective Date, it is intended that you will be granted an option under the Option Plan to acquire 107,417 ordinary shares in the capital of BTL (\"Shares\") (representing approximately 0.6% of the Company's issued share capital as at the Effective Date)."
+            },
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 6533,
+              "end": 7937,
+              "text": "In addition, and conditional on completion of a transaction on terms set out below, you will be granted a second option under the Option Plan, such option being one of:\n\n(a) an option to acquire 44,757 Shares (representing approximately 0.25% of the Company's issued share capital as at the Effective"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.11\n\nDATED 26 September 2019\n\nBicycleTX Ltd\n\nand\n\nNigel Crockett\n\n___________________________________________________\n\nSERVICE AGREEMENT\n\n___________________________________________________\n\n\n\n\n\nTHIS AGREEMENT is made on 26 September 2019\n\nBETWEEN:\n\n(1) BICYCLETX LIMITED a company incorpor"
+          }
+        }
+      ],
+      "incomplete_coverage": [
+        {
+          "id": "cuad-38cab520a5",
+          "query": "Consider the Supply Agreement between Florida Chemical Company, LLC and Flotek Chemistry, LLC for Terpene Products; Does this contract include any volume restrictions?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.348,
+          "gold": [
+            {
+              "file": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+              "start": 958,
+              "end": 1076,
+              "text": "\"Maximum Quantity\" means [***] pounds of Terpene Product per Year, prorated for any partial Year included in the Term."
+            },
+            {
+              "file": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+              "start": 3210,
+              "end": 3809,
+              "text": "FCC shall be obligated to accept all such purchase orders unless the amount ordered for a Year exceeds the Maximum Quantity, or orders for a particular quarter exceed [***] pounds or exceed the Flotek forecast for that quarter by more than 25%, provided, however, that, in such event, FCC shall commu"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/FLOTEKINDUSTRIESINCCN_05_09_2019-EX-10.1-SUPPLY AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.1\n\nInformation identified with \"[***]\" has been excluded from this exhibit because it is both not material and would likely cause competitive harm to the registrant if publicly disclosed.\n\nSUPPLY AGREEMENT\n\nThis Supply Agreement (the \"Agreement\") is entered into as of February 28, 2019 by"
+          }
+        },
+        {
+          "id": "cuad-95da45ad36",
+          "query": "Consider the Intellectual Property Agreement for COVID-19 Treatment Development between Marv Enterprises, LLC, Premier Biomedical, Inc., and Technology Health, Inc.; Does this contract include an exclusivity agreement?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.402,
+          "gold": [
+            {
+              "file": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+              "start": 3388,
+              "end": 4736,
+              "text": "The licenses granted herein are exclusive worldwide licenses to:   1.         make, have made, use, lease, sell and import Licensed Products for the legal purposes of researching, developing, manufacturing, assembling, distributing, and selling the Licensed Products;   2.         make, have made, us"
+            },
+            {
+              "file": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+              "start": 12938,
+              "end": 13072,
+              "text": "If THI does not make the obligatory payments as stated in 2(b) by the dates stated, the Exclusive License will revert back to Premier."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/PREMIERBIOMEDICALINC_05_14_2020-EX-10.2-INTELLECTUAL PROPERTY AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "Exhibit 10.2   INTELLECTUAL PROPERTY AGREEMENT   This Intellectual Property Agreement (this \"Agreement\") is entered into on May 12, 2020 (\"Effective Date\"), concerning the pursuits set forth herein for the collective development, implementation and commercialization of a potential treatment for the "
+          }
+        },
+        {
+          "id": "cuad-a2374aa81e",
+          "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Is there a non-compete clause in this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.4333,
+          "gold": [
+            {
+              "file": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+              "start": 47554,
+              "end": 47970,
+              "text": "In the event this Agreement is terminated pursuant to the provisions of         paragraph 17, then the Party in default shall not enter into an         agreement with any other Party to provide services similar to those         provided herein or to provide its services similar to those provided for"
+            },
+            {
+              "file": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+              "start": 47980,
+              "end": 48417,
+              "text": "In the event this Agreement is terminated pursuant to the provisions of         paragraph 19.2, then the Party whose control has changed shall not         enter into an agreement with any other Party to provide services similar         to those provided herein or to provide its services similar to t"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "1                                                                     EXHIBIT 10.4\n\n             MARKETING AND TRANSPORTATION SERVICES AGREEMENT\n\n  THIS AGREEMENT made in duplicate this 20 day of November, 1995.\n\nB E T W E E N:\n\n                         PUROLATOR COURIER LTD.                        "
+          }
+        }
+      ],
+      "false_acceptance": [
+        {
+          "id": "unans-001",
+          "query": "Does the sponsorship agreement between R. C. Boyd Enterprises and Cano Petroleum require disputes to be resolved through binding arbitration?",
+          "tags": [],
+          "top1_confidence": 0.304,
+          "top_result": {
+            "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "QuickLinks -- Click here to rapidly navigate through this document\n\n    EXHIBIT 10.1\n\nSponsorship Agreement\n\nTHIS AGREEMENT made this 5th day of December, 2007, between R. C. Boyd Enterprises, LLC, a Texas limited liability company, whose principal  place of business is located at 2003 Navasota Cove"
+          }
+        },
+        {
+          "id": "unans-003",
+          "query": "Does Cano Petroleum have an option to renew its Honey Hole lead sponsorship for 2009?",
+          "tags": [],
+          "top1_confidence": 0.3286,
+          "top_result": {
+            "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "QuickLinks -- Click here to rapidly navigate through this document\n\n    EXHIBIT 10.1\n\nSponsorship Agreement\n\nTHIS AGREEMENT made this 5th day of December, 2007, between R. C. Boyd Enterprises, LLC, a Texas limited liability company, whose principal  place of business is located at 2003 Navasota Cove"
+          }
+        },
+        {
+          "id": "unans-004",
+          "query": "Can Cano Petroleum terminate the Honey Hole sponsorship early for convenience and recover a pro-rata refund of the sponsorship fee?",
+          "tags": [],
+          "top1_confidence": 0.2279,
+          "top_result": {
+            "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1000,
+            "text": "QuickLinks -- Click here to rapidly navigate through this document\n\n    EXHIBIT 10.1\n\nSponsorship Agreement\n\nTHIS AGREEMENT made this 5th day of December, 2007, between R. C. Boyd Enterprises, LLC, a Texas limited liability company, whose principal  place of business is located at 2003 Navasota Cove"
+          }
+        }
+      ]
+    }
+  }
+}
