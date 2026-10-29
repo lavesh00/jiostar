@@ -234,3 +234,24 @@ def build_manifest(benchmark_file: str | Path, corpus_root: str | Path) -> dict[
 def manifest_hash(manifest: dict[str, Any]) -> str:
     body = {k: v for k, v in manifest.items() if k != "manifest_hash"}
     return hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()[:16]
+
+
+# --- split loading -----------------------------------------------------------------------------
+
+
+def load_queries(
+    benchmark_file: str | Path, corpus_root: str | Path, unanswerable_file: str | Path, split: str
+) -> list[EvalQuery]:
+    """Answerable (validated) + unanswerable queries of one split, in a deterministic order."""
+    if split not in ("train", "test"):
+        raise ValueError(f"split must be 'train' or 'test', got {split!r}")
+    answerable, _ = load_answerable(benchmark_file, corpus_root)
+    un = load_unanswerable(unanswerable_file)
+    return [q for q in answerable + un if q.split == split]
+
+
+def load_train_queries(
+    benchmark_file: str | Path, corpus_root: str | Path, unanswerable_file: str | Path
+) -> list[EvalQuery]:
+    """Train-only loader: the optimizer and its diagnostics import this and nothing that can return test."""
+    return load_queries(benchmark_file, corpus_root, unanswerable_file, "train")
