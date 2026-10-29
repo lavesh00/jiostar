@@ -1,0 +1,69 @@
+{
+  "changes": {
+    "retrieval.k1": 2.0,
+    "retrieval.b": 0.5
+  },
+  "decision": "rejected",
+  "config": {
+    "name": "baseline",
+    "seed": 0,
+    "chunking": {
+      "strategy": "fixed",
+      "size": 1500,
+      "overlap": 0,
+      "snap_boundaries": false
+    },
+    "retrieval": {
+      "k1": 2.0,
+      "b": 0.5,
+      "lowercase": true,
+      "remove_stopwords": true,
+      "stem": true,
+      "strip_query_context": true,
+      "expand_query": true,
+      "fusion": "none",
+      "rrf_k": 60,
+      "doc_boost": 1.0,
+      "candidates": 50,
+      "max_overlap_frac": 0.5
+    },
+    "abstention": {
+      "policy": "top_score",
+      "threshold": 0.0,
+      "min_gap": 0.0,
+      "strip_context": false,
+      "topical_min_docs": 0
+    },
+    "eval": {
+      "k_values": [
+        1,
+        3,
+        5
+      ],
+      "top_k": 5
+    },
+    "paths": {
+      "corpus_root": "data/raw/legalbench-rag/corpus",
+      "benchmark_file": "data/raw/legalbench-rag/benchmarks/cuad.json",
+      "unanswerable_file": "data/unanswerable_queries.jsonl",
+      "manifest_file": "data/manifests/cuad_mini.json",
+      "cache_dir": "cache",
+      "experiments_dir": "experiments"
+    }
+  },
+  "summary": {
+    "recall@1": 0.5242166984783307,
+    "recall@3": 0.6582869109315862,
+    "recall@5": 0.7170077938366032,
+    "precision@1": 0.1538832547174484,
+    "precision@3": 0.07432050572360391,
+    "precision@5": 0.050199000469603974,
+    "n_chunks": 821,
+    "mean_latency_ms": 0.891,
+    "build_s": 0.522,
+    "fitted_threshold": 0.1,
+    "fitted_min_gap": 0.0,
+    "fitted_coverage": 0.9142857142857143,
+    "fitted_correct_abstention": 0.0
+  }
+}

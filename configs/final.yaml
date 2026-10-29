@@ -6,22 +6,24 @@ chunking:
   overlap: 0
   snap_boundaries: false
 retrieval:
-  k1: 2.0
-  b: 0.5
+  k1: 1.2
+  b: 0.75
   lowercase: true
-  remove_stopwords: false
-  stem: false
-  strip_query_context: false
-  fusion: none
+  remove_stopwords: true
+  stem: true
+  strip_query_context: true
+  expand_query: true
+  fusion: rrf
   rrf_k: 60
-  doc_boost: 0.0
+  doc_boost: 1.0
   candidates: 50
   max_overlap_frac: 0.5
 abstention:
   policy: top_score
-  threshold: 0.15
+  threshold: 0.13
   min_gap: 0.0
-  topical_min_docs: 8
+  strip_context: false
+  topical_min_docs: 0
 eval:
   k_values:
   - 1

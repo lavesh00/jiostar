@@ -76,12 +76,18 @@ class LexicalIndex:
         self._norms = [math.sqrt(x) or 1.0 for x in norms]
 
     def bm25(self, q_tokens: Sequence[str]) -> tuple[dict[int, float], float]:
-        """Raw BM25 scores per doc id and the saturation upper bound used for normalisation."""
+        """Raw BM25 scores per doc id and the saturation upper bound used for normalisation.
+
+        The bound sums ``idf*(k1+1)`` over *all* distinct query terms; terms absent from the index use the
+        maximum idf, so a question whose key term occurs nowhere cannot look fully supported.
+        """
         scores: dict[int, float] = {}
         bound = 0.0
+        oov_idf = math.log(1.0 + (self.n + 0.5) / 0.5)  # a term seen nowhere counts as maximally rare
         for t in sorted(set(q_tokens)):
             post = self.postings.get(t)
             if not post:
+                bound += oov_idf * (self.k1 + 1.0)  # unmatched query terms lower confidence
                 continue
             idf = self.idf[t]
             bound += idf * (self.k1 + 1.0)

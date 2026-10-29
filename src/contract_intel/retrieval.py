@@ -117,10 +117,10 @@ class ContractSearcher:
         return {paths[i]: s / bound for i, s in raw.items()} if bound > 0 else {}
 
     def _topical_confidence(self, q_tokens: list[str], idxs: list[int]) -> dict[int, float]:
-        """Normalised BM25 using only query terms that occur in >= N contracts (drops party/contract names)."""
+        """Normalised BM25 using only query terms that occur in >= N contracts (drops party/contract names; unseen terms are kept)."""
         assert self.doc_index is not None
         n = self.cfg.abstention.topical_min_docs
-        topical = [t for t in q_tokens if len(self.doc_index.postings.get(t, ())) >= n]
+        topical = [t for t in q_tokens if (df := len(self.doc_index.postings.get(t, ()))) == 0 or df >= n]
         raw, bound = self.index.bm25(topical)
         return {i: (raw.get(i, 0.0) / bound if bound > 0 else 0.0) for i in idxs}
 

@@ -27,7 +27,7 @@ def rank_candidates(
     """Score chunks for a query and return candidates sorted by (-score, file_path, start)."""
     raw, bound = index.bm25(q_tokens)
     if not raw or bound <= 0:
-        return []
+        return []  # no candidate shares any term with the query
     conf = {i: s / bound for i, s in raw.items()}
     prior = doc_prior or {}
 

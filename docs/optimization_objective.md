@@ -63,3 +63,12 @@ re-runs the loop from the unchanged baseline with an updated hypothesis list, st
 `chunk_strategy, chunk_size, overlap_boundaries, query_processing (strip + document prior), query_expansion
 (hand-written lexicon), bm25_params, rrf_fusion` (phase A) and `topical_confidence, confidence_strip_context,
 gap_policy` (phase B). Both runs are reported; Run 2 produces `configs/final.yaml`.
+
+## Revision 1.3 — abstention-signal fixes before Run 3 (objective, guardrails, thresholds unchanged)
+Run 2 (`20261029T175827Z`) showed every phase-B candidate rejected, and inspection found two defects in the
+*signal*, not in the declared objective: (1) `decide()` also abstained when the top confidence was exactly 0 even
+with threshold 0, so "retrieval-only" metrics were not abstention-free once topical confidence was enabled
+(recall fell for reasons unrelated to chunking); (2) query terms that occur nowhere in the indexed corpus were
+dropped from the confidence normaliser, so a question about an absent concept (e.g. "arbitrated") looked as well
+supported as a present one. Fixes: abstain on zero candidates only, and count unseen query terms with maximal idf
+in the normaliser. Run 3 re-runs the same 10 hypotheses from the unchanged baseline; Runs 1-2 stay in the log.

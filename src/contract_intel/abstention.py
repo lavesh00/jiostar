@@ -9,7 +9,7 @@ Signals (all computed from the lexical retriever, never from gold labels):
 Policies
   top_score      abstain iff top1 < threshold
   top_score_gap  abstain iff top1 < threshold or gap < min_gap
-Abstain always when nothing matched. ``threshold == 0`` disables the score test.
+Abstain always when nothing matched (no candidate passage). ``threshold == 0`` disables the score test.
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from .config import AbstentionConfig
 
 def decide(cfg: AbstentionConfig, top1: float, top2: float, n_results: int) -> tuple[bool, str]:
     """Return ``(abstain, reason)``; ``reason`` is '' when not abstaining."""
-    if n_results == 0 or top1 <= 0.0:
+    if n_results == 0:
         return True, "no passage matched any query term"
     if top1 < cfg.threshold:
         return True, f"top confidence {top1:.3f} below threshold {cfg.threshold:.3f}"
