@@ -68,6 +68,17 @@ service.py (shared by cli.py and app.py)
 * **Unanswerable set:** `data/unanswerable_queries.jsonl` (frozen).
 * **Out-of-corpus probe:** `data/out_of_corpus_probe.jsonl`.
 
+### Documentation
+
+| Document | Content |
+|---|---|
+| [docs/solution.md](docs/solution.md) | Short end-to-end account: problem, approach, design reasons, headline results, open problems |
+| [docs/implementation.md](docs/implementation.md) | Module-by-module walkthrough, search step by step, invariants and the tests that enforce them, how to make a change |
+| [docs/improvement_loop.md](docs/improvement_loop.md) | How the self-improvement loop diagnoses, proposes, accepts or rejects; log schema; adding a hypothesis |
+| [docs/optimization_objective.md](docs/optimization_objective.md) | Frozen objective and guardrails, with every revision |
+| [docs/commit_hashes.md](docs/commit_hashes.md) | Old → current commit hashes for the hashes cited in experiment logs |
+| [REPORT.md](REPORT.md) | Evaluation report |
+
 ## Reproducing results
 After `setup` (about 30 s), run these from the repository root:
 
