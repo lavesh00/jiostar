@@ -1,0 +1,32 @@
+[project]
+name = "contract-intel"
+version = "0.1.0"
+description = "Contract Intelligence Assistant: exact-span passage retrieval over CUAD contracts (LegalBench-RAG-mini) with abstention."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+dependencies = ["pyyaml>=6,<7"]
+
+[project.optional-dependencies]
+data = ["huggingface_hub>=0.24"]
+app = ["streamlit>=1.36"]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+contract-intel = "contract_intel.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/contract_intel"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+markers = ["data: needs the downloaded LegalBench-RAG CUAD files (data/raw)"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

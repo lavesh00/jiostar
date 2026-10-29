@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.env
+.env.*
+!.env.example
+# downloaded corpora / caches / indexes / private artifacts
+data/raw/
+cache/
+*.idx
+scratch/
+# third-party reference clone (MIT, Akshitha024); not part of this project
+legal-retrieval-benchmark/
+# confidential assignment material must never be committed
+*.pdf
