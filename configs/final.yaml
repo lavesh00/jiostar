@@ -17,13 +17,17 @@ retrieval:
   rrf_k: 60
   doc_boost: 1.0
   candidates: 50
+  doc_filter_ratio: 0.8
+  min_rel_score: 0.0
+  refine_max_chars: 0
   max_overlap_frac: 0.5
 abstention:
   policy: top_score
-  threshold: 0.68
+  threshold: 0.66
   min_gap: 0.0
   signal: doc_peakedness
   strip_context: false
+  min_doc_prior: 0.59
   topical_min_docs: 0
 eval:
   k_values:
