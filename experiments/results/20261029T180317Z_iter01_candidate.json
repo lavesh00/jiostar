@@ -1,14 +1,14 @@
 {
   "changes": {
-    "abstention.strip_context": true
+    "chunking.strategy": "section"
   },
   "decision": "rejected",
   "config": {
     "name": "baseline",
     "seed": 0,
     "chunking": {
-      "strategy": "fixed",
-      "size": 1500,
+      "strategy": "section",
+      "size": 1000,
       "overlap": 0,
       "snap_boundaries": false
     },
@@ -16,13 +16,13 @@
       "k1": 1.2,
       "b": 0.75,
       "lowercase": true,
-      "remove_stopwords": true,
-      "stem": true,
-      "strip_query_context": true,
-      "expand_query": true,
-      "fusion": "rrf",
+      "remove_stopwords": false,
+      "stem": false,
+      "strip_query_context": false,
+      "expand_query": false,
+      "fusion": "none",
       "rrf_k": 60,
-      "doc_boost": 1.0,
+      "doc_boost": 0.0,
       "candidates": 50,
       "max_overlap_frac": 0.5
     },
@@ -30,8 +30,9 @@
       "policy": "top_score",
       "threshold": 0.0,
       "min_gap": 0.0,
-      "strip_context": true,
-      "topical_min_docs": 3
+      "signal": "normalized_score",
+      "strip_context": false,
+      "topical_min_docs": 0
     },
     "eval": {
       "k_values": [
@@ -51,18 +52,18 @@
     }
   },
   "summary": {
-    "recall@1": 0.5183464184951183,
-    "recall@3": 0.6823193818254502,
-    "recall@5": 0.7194513056851488,
-    "precision@1": 0.15504124188946236,
-    "precision@3": 0.07614687676154927,
-    "precision@5": 0.0497960924282722,
-    "n_chunks": 821,
-    "mean_latency_ms": 1.72,
-    "build_s": 0.508,
-    "fitted_threshold": 0.035,
+    "recall@1": 0.0,
+    "recall@3": 0.030209927197978517,
+    "recall@5": 0.10512472529755909,
+    "precision@1": 0.0,
+    "precision@3": 0.007589253533080431,
+    "precision@5": 0.0119883011678083,
+    "n_chunks": 2146,
+    "mean_latency_ms": 4.544,
+    "build_s": 0.222,
+    "fitted_threshold": 0.26,
     "fitted_min_gap": 0.0,
     "fitted_coverage": 0.9,
-    "fitted_correct_abstention": 0.06060606060606061
+    "fitted_correct_abstention": 0.18181818181818182
   }
 }

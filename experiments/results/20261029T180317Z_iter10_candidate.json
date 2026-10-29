@@ -1,9 +1,9 @@
 {
   "changes": {
-    "retrieval.fusion": "rrf",
-    "retrieval.rrf_k": 60
+    "abstention.policy": "top_score_gap",
+    "abstention.min_gap": 0.05
   },
-  "decision": "accepted",
+  "decision": "rejected",
   "config": {
     "name": "baseline",
     "seed": 0,
@@ -28,9 +28,10 @@
       "max_overlap_frac": 0.5
     },
     "abstention": {
-      "policy": "top_score",
+      "policy": "top_score_gap",
       "threshold": 0.0,
-      "min_gap": 0.0,
+      "min_gap": 0.05,
+      "signal": "doc_peakedness",
       "strip_context": false,
       "topical_min_docs": 0
     },
@@ -59,11 +60,11 @@
     "precision@3": 0.07614687676154927,
     "precision@5": 0.0497960924282722,
     "n_chunks": 821,
-    "mean_latency_ms": 1.485,
-    "build_s": 0.532,
-    "fitted_threshold": 0.13,
+    "mean_latency_ms": 1.832,
+    "build_s": 0.535,
+    "fitted_threshold": 0.68,
     "fitted_min_gap": 0.0,
     "fitted_coverage": 0.9,
-    "fitted_correct_abstention": 0.0
+    "fitted_correct_abstention": 0.5454545454545454
   }
 }

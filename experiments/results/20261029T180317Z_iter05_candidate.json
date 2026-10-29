@@ -1,8 +1,7 @@
 {
   "changes": {
-    "retrieval.strip_query_context": true,
-    "retrieval.doc_boost": 1.0,
-    "retrieval.stem": true
+    "retrieval.expand_query": true,
+    "retrieval.remove_stopwords": true
   },
   "decision": "accepted",
   "config": {
@@ -18,10 +17,10 @@
       "k1": 1.2,
       "b": 0.75,
       "lowercase": true,
-      "remove_stopwords": false,
+      "remove_stopwords": true,
       "stem": true,
       "strip_query_context": true,
-      "expand_query": false,
+      "expand_query": true,
       "fusion": "none",
       "rrf_k": 60,
       "doc_boost": 1.0,
@@ -32,6 +31,7 @@
       "policy": "top_score",
       "threshold": 0.0,
       "min_gap": 0.0,
+      "signal": "normalized_score",
       "strip_context": false,
       "topical_min_docs": 0
     },
@@ -53,18 +53,18 @@
     }
   },
   "summary": {
-    "recall@1": 0.22196978937704076,
-    "recall@3": 0.352338672877159,
-    "recall@5": 0.3943614500310888,
-    "precision@1": 0.07239827436016892,
-    "precision@3": 0.040460018381160416,
-    "precision@5": 0.028156129798955466,
+    "recall@1": 0.5170738413354735,
+    "recall@3": 0.6607047977539052,
+    "recall@5": 0.7168978530262508,
+    "precision@1": 0.15292134995554363,
+    "precision@3": 0.07529150534374132,
+    "precision@5": 0.050129138029832834,
     "n_chunks": 821,
-    "mean_latency_ms": 1.929,
-    "build_s": 0.769,
-    "fitted_threshold": 0.175,
+    "mean_latency_ms": 0.885,
+    "build_s": 0.504,
+    "fitted_threshold": 0.13,
     "fitted_min_gap": 0.0,
-    "fitted_coverage": 0.9285714285714286,
+    "fitted_coverage": 0.9,
     "fitted_correct_abstention": 0.0
   }
 }

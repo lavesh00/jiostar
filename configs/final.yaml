@@ -20,8 +20,9 @@ retrieval:
   max_overlap_frac: 0.5
 abstention:
   policy: top_score
-  threshold: 0.13
+  threshold: 0.68
   min_gap: 0.0
+  signal: doc_peakedness
   strip_context: false
   topical_min_docs: 0
 eval:

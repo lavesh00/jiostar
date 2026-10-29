@@ -1,28 +1,29 @@
 {
   "changes": {
-    "chunking.strategy": "section"
+    "retrieval.k1": 2.0,
+    "retrieval.b": 0.5
   },
   "decision": "rejected",
   "config": {
     "name": "baseline",
     "seed": 0,
     "chunking": {
-      "strategy": "section",
-      "size": 1000,
+      "strategy": "fixed",
+      "size": 1500,
       "overlap": 0,
       "snap_boundaries": false
     },
     "retrieval": {
-      "k1": 1.2,
-      "b": 0.75,
+      "k1": 2.0,
+      "b": 0.5,
       "lowercase": true,
-      "remove_stopwords": false,
-      "stem": false,
-      "strip_query_context": false,
-      "expand_query": false,
+      "remove_stopwords": true,
+      "stem": true,
+      "strip_query_context": true,
+      "expand_query": true,
       "fusion": "none",
       "rrf_k": 60,
-      "doc_boost": 0.0,
+      "doc_boost": 1.0,
       "candidates": 50,
       "max_overlap_frac": 0.5
     },
@@ -30,6 +31,7 @@
       "policy": "top_score",
       "threshold": 0.0,
       "min_gap": 0.0,
+      "signal": "normalized_score",
       "strip_context": false,
       "topical_min_docs": 0
     },
@@ -51,18 +53,18 @@
     }
   },
   "summary": {
-    "recall@1": 0.0,
-    "recall@3": 0.030209927197978517,
-    "recall@5": 0.10512472529755909,
-    "precision@1": 0.0,
-    "precision@3": 0.007589253533080431,
-    "precision@5": 0.0119883011678083,
-    "n_chunks": 2146,
-    "mean_latency_ms": 4.042,
-    "build_s": 0.209,
-    "fitted_threshold": 0.26,
+    "recall@1": 0.5242166984783307,
+    "recall@3": 0.6582869109315862,
+    "recall@5": 0.7170077938366032,
+    "precision@1": 0.1538832547174484,
+    "precision@3": 0.07432050572360391,
+    "precision@5": 0.050199000469603974,
+    "n_chunks": 821,
+    "mean_latency_ms": 0.921,
+    "build_s": 0.54,
+    "fitted_threshold": 0.1,
     "fitted_min_gap": 0.0,
-    "fitted_coverage": 0.9,
-    "fitted_correct_abstention": 0.18181818181818182
+    "fitted_coverage": 0.9142857142857143,
+    "fitted_correct_abstention": 0.0
   }
 }

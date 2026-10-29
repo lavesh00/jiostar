@@ -1,9 +1,8 @@
 {
   "changes": {
-    "retrieval.k1": 2.0,
-    "retrieval.b": 0.5
+    "chunking.size": 1500
   },
-  "decision": "rejected",
+  "decision": "accepted",
   "config": {
     "name": "baseline",
     "seed": 0,
@@ -14,16 +13,16 @@
       "snap_boundaries": false
     },
     "retrieval": {
-      "k1": 2.0,
-      "b": 0.5,
+      "k1": 1.2,
+      "b": 0.75,
       "lowercase": true,
-      "remove_stopwords": true,
-      "stem": true,
-      "strip_query_context": true,
-      "expand_query": true,
+      "remove_stopwords": false,
+      "stem": false,
+      "strip_query_context": false,
+      "expand_query": false,
       "fusion": "none",
       "rrf_k": 60,
-      "doc_boost": 1.0,
+      "doc_boost": 0.0,
       "candidates": 50,
       "max_overlap_frac": 0.5
     },
@@ -31,6 +30,7 @@
       "policy": "top_score",
       "threshold": 0.0,
       "min_gap": 0.0,
+      "signal": "normalized_score",
       "strip_context": false,
       "topical_min_docs": 0
     },
@@ -52,18 +52,18 @@
     }
   },
   "summary": {
-    "recall@1": 0.5242166984783307,
-    "recall@3": 0.6582869109315862,
-    "recall@5": 0.7170077938366032,
-    "precision@1": 0.1538832547174484,
-    "precision@3": 0.07432050572360391,
-    "precision@5": 0.050199000469603974,
+    "recall@1": 0.03711485200501795,
+    "recall@3": 0.13964835518920593,
+    "recall@5": 0.2676194987110694,
+    "precision@1": 0.008369489478034203,
+    "precision@3": 0.018275944279775237,
+    "precision@5": 0.019623239433268155,
     "n_chunks": 821,
-    "mean_latency_ms": 0.956,
-    "build_s": 0.523,
-    "fitted_threshold": 0.1,
+    "mean_latency_ms": 2.326,
+    "build_s": 0.182,
+    "fitted_threshold": 0.3,
     "fitted_min_gap": 0.0,
-    "fitted_coverage": 0.9142857142857143,
-    "fitted_correct_abstention": 0.0
+    "fitted_coverage": 0.9071428571428571,
+    "fitted_correct_abstention": 0.21212121212121213
   }
 }

@@ -1,8 +1,8 @@
 {
   "meta": {
-    "timestamp": "2026-10-29T17:58:28+00:00",
-    "git_commit": "e890270",
-    "config_hash": "f7e53d8cf164",
+    "timestamp": "2026-10-29T18:03:18+00:00",
+    "git_commit": "96d458e",
+    "config_hash": "d3989b03f063",
     "manifest_hash": "e2a5024fd7e7ef0b",
     "split": "train",
     "python": "3.12.0",
@@ -37,6 +37,7 @@
       "policy": "top_score",
       "threshold": 0.0,
       "min_gap": 0.0,
+      "signal": "normalized_score",
       "strip_context": false,
       "topical_min_docs": 0
     },
@@ -86,7 +87,7 @@
     "correct_abstention_rate": 0.0,
     "false_acceptances": 33,
     "false_acceptance_rate": 1.0,
-    "mean_latency_ms": 3.085304045581361
+    "mean_latency_ms": 3.095735256786248
   },
   "summary": {
     "recall@1": 0.014356902105333066,
@@ -96,17 +97,18 @@
     "precision@3": 0.012863255675958314,
     "precision@5": 0.018544877794129548,
     "n_chunks": 1229,
-    "mean_latency_ms": 3.085,
-    "build_s": 0.173,
+    "mean_latency_ms": 3.096,
+    "build_s": 0.168,
     "fitted_threshold": 0.295,
     "fitted_min_gap": 0.0,
     "fitted_coverage": 0.9071428571428571,
-    "fitted_correct_abstention": 0.12121212121212122
+    "fitted_correct_abstention": 0.15151515151515152
   },
   "fitted_abstention_rule_R": {
     "policy": "top_score",
     "threshold": 0.295,
     "min_gap": 0.0,
+    "signal": "normalized_score",
     "strip_context": false,
     "topical_min_docs": 0
   },
