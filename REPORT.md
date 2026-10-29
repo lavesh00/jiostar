@@ -47,7 +47,7 @@ cache to reproduce. It also gave large measured gains without an LLM. Next steps
 
 * **Data.** `mini()` and `assign_split()` are implemented verbatim. 194 queries, 272 gold spans, 29 indexed contracts; all 272 spans checked
   `document[start:end] == answer`: **0 mismatches, 0 overlapping gold pairs, 0 skipped**. Split: **140 train / 54 test**.
-* **Unanswerable set.** 39 hand-written questions about the indexed contracts (`data/unanswerable_queries.jsonl`), committed in `f5b73f4` before any
+* **Unanswerable set.** 39 hand-written questions about the indexed contracts (`data/unanswerable_queries.jsonl`), committed in `1f25e0c` before any
   retrieval code or loop run and never edited (a test pins its sha-256). `assign_split` put **33 in train and 6 in test** (15%, not the third the
   function usually gives). I did not rebalance them, because the brief requires the same function and no edits.
 * **Out-of-corpus probe.** 60 CUAD benchmark questions about contracts *outside* the index (one per contract, chosen deterministically by
@@ -267,8 +267,9 @@ contract-intel probe --config configs/final.yaml                            # ou
 pytest                                                                      # 203 passed (~7 s; 3 need data/raw)
 ```
 Environment: Python 3.12.0 on Windows 11. Core dependency: PyYAML. Hashes: manifest `e2a5024fd7e7ef0b`, final config `78a53ef0d1aa`. The git
-history records the order of events: unanswerable set frozen (`f5b73f4`); each objective revision before its run; freeze tags `config-frozen`
-(Run 4) and `config-frozen-v2` (Run 5); then the test runs.
+history records the order of events: unanswerable set frozen (`1f25e0c`); each objective revision before its run; freeze tags `config-frozen`
+(Run 4) and `config-frozen-v2` (Run 5); then the test runs. Experiment logs cite commit hashes from before the history's author
+metadata was normalised; [docs/commit_hashes.md](docs/commit_hashes.md) maps them to the current ones.
 
 ## 10. Requirement checklist
 
@@ -278,7 +279,7 @@ history records the order of events: unanswerable set frozen (`f5b73f4`); each o
 | Ranked passages with document and offsets; abstention with reason | Done | `retrieval.py`; tests |
 | Web app and CLI | Done | `app.py` (AppTest exercised), `cli.py` (tests) |
 | Configurable pipeline; ≥ 2 approaches compared | Done | `configs/*.yaml`; §5 |
-| ≥ 30 unanswerable queries committed before the loop | Done | 39 queries, commit `f5b73f4` (33 train / 6 test) |
+| ≥ 30 unanswerable queries committed before the loop | Done | 39 queries, commit `1f25e0c` (33 train / 6 test) |
 | Char P/R at k = 1, 3, 5; abstention both directions; train for development, test for reporting | Done | §3–4; 3 test runs |
 | Baseline, declared objective, loop with diagnosis, ≥ 5 logged iterations | Done | §5; 14 iterations in Run 5, 61 log rows in total |
 | Train–test gap discussed | Done | §4 |
