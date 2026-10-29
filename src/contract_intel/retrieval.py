@@ -24,6 +24,7 @@ from .chunking import Chunk, chunk_document
 from .config import Config
 from .documents import DocumentStore
 from .indexing import LexicalIndex, Tokenizer, strip_query_context
+from .lexicon import expand
 from .ranking import rank_candidates, suppress_overlaps
 
 
@@ -128,13 +129,15 @@ class ContractSearcher:
         t0 = time.perf_counter()
         r = self.cfg.retrieval
         top_k = top_k or self.cfg.eval.top_k
-        q_text = strip_query_context(query) if r.strip_query_context else query
+        base = strip_query_context(query) if r.strip_query_context else query
+        q_text = expand(base) if r.expand_query else base
+        conf_text = strip_query_context(query) if (r.strip_query_context or self.cfg.abstention.strip_context) else query
         prior = self._doc_prior(query) if self.doc_index is not None else None
         cands = rank_candidates(self.index, self.chunks, self.tokenize(q_text), r, prior)
         kept = suppress_overlaps(cands, r.max_overlap_frac, top_k)
         conf = {c.idx: c.confidence for c in kept}
         if self.cfg.abstention.topical_min_docs > 0 and kept:
-            conf = self._topical_confidence(self.tokenize(q_text), [c.idx for c in kept])
+            conf = self._topical_confidence(self.tokenize(conf_text), [c.idx for c in kept])
         passages = [
             Passage(i, c.chunk.file_path, c.chunk.start, c.chunk.end, c.score, conf[c.idx],
                     self.docs.slice(c.chunk.file_path, c.chunk.start, c.chunk.end))

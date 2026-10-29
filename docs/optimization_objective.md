@@ -52,3 +52,14 @@ Train has 140 answerable queries over 29 contracts and the loop selects among a 
 a few dozen evaluated grid points; train gains may not transfer. The held-out test split (54 answerable, 6
 unanswerable queries) is evaluated once after the configuration is frozen. The 6 test unanswerable queries make
 the abstention estimate on test very coarse; raw counts are reported.
+
+## Revision 1.2 — hypotheses list for Run 2 (objective, guardrails and thresholds above are unchanged)
+Run 1 (`run_id 20261029T175554Z`, rows kept in `experiments/iterations.jsonl`, summary in `experiments/run1_superseded/`)
+executed the original 9 hypotheses on train. It exposed (a) a **bug**: with the gap policy the second passage's topical
+confidence could exceed the first's, giving a negative gap and spurious abstention in retrieval-only metrics (fixed by
+clipping the gap at 0); and (b) that stripping the "Consider the <contract>;" prefix alone destroyed routing to the
+right contract (diagnosis: 65-72% of failures were already "right contract, wrong section"). Run 2 therefore
+re-runs the loop from the unchanged baseline with an updated hypothesis list, still train-only:
+`chunk_strategy, chunk_size, overlap_boundaries, query_processing (strip + document prior), query_expansion
+(hand-written lexicon), bm25_params, rrf_fusion` (phase A) and `topical_confidence, confidence_strip_context,
+gap_policy` (phase B). Both runs are reported; Run 2 produces `configs/final.yaml`.

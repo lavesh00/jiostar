@@ -1,0 +1,7 @@
+LICENSE AGREEMENT between Gamma Licensing Inc and Delta Software Ltd.
+
+1. Grant. Licensor grants Licensee a non-exclusive, non-transferable license to use the Software.
+
+2. Restrictions. Licensee may not sublicense, rent or lease the Software to any third party.
+
+3. Fees. Licensee shall pay an annual royalty equal to five percent (5%) of net revenue.

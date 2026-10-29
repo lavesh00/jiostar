@@ -1,6 +1,6 @@
 """Train-only self-improvement loop (deterministic grid proposer, rule-gated by diagnostics).
 
-    python -m contract_intel.optimize --config configs/baseline.yaml --iterations 9
+    python -m contract_intel.optimize --config configs/baseline.yaml --iterations 10
 
 Protocol (declared in docs/optimization_objective.md, revision 1.1):
   * Phase A (structure / lexical): maximise macro char Recall@5 with abstention disabled, subject to
@@ -74,24 +74,29 @@ HYPOTHESES: list[Hypothesis] = [
                [{"chunking.overlap": o, "chunking.snap_boundaries": s} for o in (0, 100, 200) for s in (False, True)
                 if (o, s) != (0, False)]),
     Hypothesis("query_processing", "A",
-               "Queries start with 'Consider the <contract>;' whose name tokens dominate BM25; stripping it, dropping stopwords or stemming should focus scoring on the clause topic.",
-               [{"retrieval.strip_query_context": True},
-                {"retrieval.strip_query_context": True, "retrieval.remove_stopwords": True},
-                {"retrieval.strip_query_context": True, "retrieval.stem": True},
-                {"retrieval.strip_query_context": True, "retrieval.remove_stopwords": True, "retrieval.stem": True}]),
+               "Failures are dominated by 'right contract, wrong section'; the 'Consider the <contract>;' prefix inflates scores of its own name tokens, so score chunks on the question only while a document-level prior over the full query keeps routing to the right contract.",
+               [{"retrieval.strip_query_context": True, "retrieval.doc_boost": 0.5},
+                {"retrieval.strip_query_context": True, "retrieval.doc_boost": 1.0},
+                {"retrieval.strip_query_context": True, "retrieval.doc_boost": 1.0, "retrieval.remove_stopwords": True},
+                {"retrieval.strip_query_context": True, "retrieval.doc_boost": 1.0, "retrieval.stem": True}],
+               trigger="right_doc_wrong_section"),
+    Hypothesis("query_expansion", "A",
+               "Contract-review questions are short templates ('governing law', 'audit rights'); appending typical clause vocabulary should pull the right clause above topically unrelated chunks.",
+               [{"retrieval.expand_query": True}, {"retrieval.expand_query": True, "retrieval.remove_stopwords": True}],
+               trigger="right_doc_wrong_section"),
     Hypothesis("bm25_params", "A",
                "Default k1/b are tuned for web text; long, repetitive legal chunks may prefer different saturation/length normalisation.",
                [{"retrieval.k1": k1, "retrieval.b": b} for k1 in (0.8, 1.2, 1.6, 2.0) for b in (0.5, 0.75, 0.9)
                 if (k1, b) != (1.2, 0.75)]),
-    Hypothesis("doc_prior", "A",
-               "If many failures come from the wrong contract, a document-level BM25 prior over the full query should route to the right contract.",
-               [{"retrieval.doc_boost": x} for x in (0.1, 0.25, 0.5, 1.0)], trigger="wrong_document"),
     Hypothesis("rrf_fusion", "A",
                "A second lexical view (TF-IDF cosine) fused by reciprocal rank can correct BM25 ranking errors.",
                [{"retrieval.fusion": "rrf", "retrieval.rrf_k": k} for k in (20, 60)]),
     Hypothesis("topical_confidence", "B",
                "Contract-identifying names inflate confidence for unsupported questions; scoring confidence only on terms shared by >= N contracts should separate answerable from unanswerable.",
                [{"abstention.topical_min_docs": n} for n in (3, 5, 8, 12, 16)]),
+    Hypothesis("confidence_strip_context", "B",
+               "The contract descriptor's generic words (agreement, services...) still inflate confidence; computing confidence on the bare question should separate answerable from unsupported questions better.",
+               [{"abstention.strip_context": True}]),
     Hypothesis("gap_policy", "B",
                "Unsupported questions produce flat score distributions; requiring a relative gap between top-1 and top-2 may add separation.",
                [{"abstention.policy": "top_score_gap", "abstention.min_gap": g} for g in (0.05, 0.1, 0.2, 0.3)]),
@@ -209,7 +214,7 @@ def with_fitted_abstention(ev: dict[str, Any]) -> Config:
 # --- the loop -----------------------------------------------------------------------------------
 
 
-def optimize(config_path: str, iterations: int, out_config: str, experiments_dir: str | None = None) -> int:
+def optimize(config_path: str, iterations: int, out_config: str, experiments_dir: str | None = None, note: str = "") -> int:
     base_cfg = load_config(config_path)
     exp = Path(experiments_dir or base_cfg.paths.experiments_dir)
     log_path = exp / "iterations.jsonl"
@@ -235,7 +240,7 @@ def optimize(config_path: str, iterations: int, out_config: str, experiments_dir
         })
         print(f"[optimize] wrote {baseline_path}")
     append_jsonl(log_path, {"run_id": run_id, "iteration": 0, "type": "baseline", "timestamp": run_metadata("", None, "train")["timestamp"],
-                            "git_commit": git_commit(), "config_hash": base_cfg.hash(), "metrics": summary(base_ev)})
+                            "git_commit": git_commit(), "config_hash": base_cfg.hash(), "metrics": summary(base_ev), "note": note})
 
     incumbent = base_ev
     done = 0
@@ -323,12 +328,13 @@ def optimize(config_path: str, iterations: int, out_config: str, experiments_dir
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Train-only improvement loop (never touches the test split).")
     ap.add_argument("--config", default="configs/baseline.yaml")
-    ap.add_argument("--iterations", type=int, default=9)
+    ap.add_argument("--iterations", type=int, default=10)
     ap.add_argument("--out-config", default="configs/final.yaml")
     ap.add_argument("--experiments-dir", default=None)
+    ap.add_argument("--note", default="", help="free-text note stored in the baseline row of this run")
     a = ap.parse_args(argv)
     try:
-        return optimize(a.config, a.iterations, a.out_config, a.experiments_dir)
+        return optimize(a.config, a.iterations, a.out_config, a.experiments_dir, a.note)
     except (ConfigError, FileNotFoundError, ValueError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2

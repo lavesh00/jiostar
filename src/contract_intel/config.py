@@ -34,6 +34,7 @@ class RetrievalConfig:
     remove_stopwords: bool = False
     stem: bool = False  # light suffix stripping
     strip_query_context: bool = False  # drop a leading "Consider the <contract>;" clause
+    expand_query: bool = False  # append hand-written legal lexicon terms (see lexicon.py)
     fusion: str = "none"  # "rrf": fuse BM25 with TF-IDF cosine
     rrf_k: int = 60
     doc_boost: float = 0.0  # weight of a document-level BM25 prior added to the chunk score
@@ -46,6 +47,7 @@ class AbstentionConfig:
     policy: str = "top_score"  # "top_score" | "top_score_gap"
     threshold: float = 0.0  # on the normalized top score in [0, 1]; 0 disables abstention
     min_gap: float = 0.0  # top_score_gap only: lower bound on (top1 - top2) / top1
+    strip_context: bool = False  # confidence uses the query without its 'Consider the <contract>;' prefix
     topical_min_docs: int = 0  # >0: confidence ignores query terms found in fewer than N contracts (names)
 
 

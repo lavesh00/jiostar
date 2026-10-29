@@ -1,0 +1,151 @@
+{
+ "dataset": "awinml/legalbench-rag (CUAD subset)",
+ "benchmark_file_sha256": "1e65e9130ca7b90a92ef0d635c732561e1eb2df2470d7cea54d5d4caaf25895a",
+ "selection": "mini(tests, n=194) exactly as specified",
+ "split_rule": "assign_split: sha256(query.strip()) % 10 < 3 -> test else train",
+ "stats": {
+  "n_total_benchmark_tests": 9,
+  "n_selected": 9,
+  "n_gold_spans": 10,
+  "n_invalid_spans": 0,
+  "n_overlapping_gold_pairs": 0,
+  "n_files": 3
+ },
+ "split_counts": {
+  "train": 6,
+  "test": 3
+ },
+ "contracts": [
+  {
+   "file_path": "cuad/alpha.txt",
+   "n_chars": 412,
+   "sha256": "07088114e0ccf6d22ef2aeff67d54bcc0c377325a4bb23fbbf67612f6f80a38e"
+  },
+  {
+   "file_path": "cuad/beta.txt",
+   "n_chars": 353,
+   "sha256": "f1d363ba1e317e26af00ac4fee5ab6e6d7be7eefba7d26bb02c96d264c811822"
+  },
+  {
+   "file_path": "cuad/gamma.txt",
+   "n_chars": 327,
+   "sha256": "9d76b718267fde487d90bcd3076c0af02fe0c21065f961a25b3b81dcbb501a08"
+  }
+ ],
+ "queries": [
+  {
+   "id": "cuad-539acf2cd4",
+   "query": "Consider the Services Agreement between Alpha Corp and Beta LLC; What is the term of the agreement?",
+   "split": "test",
+   "gold": [
+    [
+     "cuad/alpha.txt",
+     53,
+     144
+    ]
+   ]
+  },
+  {
+   "id": "cuad-92315eb417",
+   "query": "Consider the Services Agreement between Alpha Corp and Beta LLC; Which law governs this agreement?",
+   "split": "train",
+   "gold": [
+    [
+     "cuad/alpha.txt",
+     262,
+     344
+    ]
+   ]
+  },
+  {
+   "id": "cuad-35347b73f4",
+   "query": "Consider the Services Agreement between Alpha Corp and Beta LLC; How much notice is required to terminate?",
+   "split": "train",
+   "gold": [
+    [
+     "cuad/alpha.txt",
+     146,
+     260
+    ]
+   ]
+  },
+  {
+   "id": "cuad-494d904163",
+   "query": "Consider the License Agreement between Gamma Licensing Inc and Delta Software Ltd; What does the license grant?",
+   "split": "test",
+   "gold": [
+    [
+     "cuad/beta.txt",
+     71,
+     168
+    ]
+   ]
+  },
+  {
+   "id": "cuad-8bdcc7aa04",
+   "query": "Consider the License Agreement between Gamma Licensing Inc and Delta Software Ltd; Can the licensee sublicense?",
+   "split": "train",
+   "gold": [
+    [
+     "cuad/beta.txt",
+     170,
+     262
+    ]
+   ]
+  },
+  {
+   "id": "cuad-0cc6b15330",
+   "query": "Consider the License Agreement between Gamma Licensing Inc and Delta Software Ltd; What royalty is payable?",
+   "split": "train",
+   "gold": [
+    [
+     "cuad/beta.txt",
+     264,
+     352
+    ]
+   ]
+  },
+  {
+   "id": "cuad-fd64871d7d",
+   "query": "Consider the Supply Agreement between Epsilon Foods and Zeta Retail; When must invoices be paid?",
+   "split": "train",
+   "gold": [
+    [
+     "cuad/gamma.txt",
+     57,
+     132
+    ]
+   ]
+  },
+  {
+   "id": "cuad-fa2cc7280a",
+   "query": "Consider the Supply Agreement between Epsilon Foods and Zeta Retail; Is the agreement confidential, and how fast is delivery?",
+   "split": "test",
+   "gold": [
+    [
+     "cuad/gamma.txt",
+     134,
+     217
+    ],
+    [
+     "cuad/gamma.txt",
+     219,
+     326
+    ]
+   ]
+  },
+  {
+   "id": "cuad-3682860492",
+   "query": "Consider the Services Agreement between Alpha Corp and Beta LLC; What are the payment terms in euros?",
+   "split": "train",
+   "gold": [
+    [
+     "cuad/alpha.txt",
+     346,
+     411
+    ]
+   ]
+  }
+ ],
+ "manifest_hash": "00bbd3a9ef23f8b0"
+}

@@ -1,0 +1,129 @@
+{
+ "tests": [
+  {
+   "query": "Consider the Services Agreement between Alpha Corp and Beta LLC; What is the term of the agreement?",
+   "snippets": [
+    {
+     "file_path": "cuad/alpha.txt",
+     "span": [
+      53,
+      144
+     ],
+     "answer": "1. Term. This Agreement shall commence on January 1, 2020 and continue for three (3) years."
+    }
+   ]
+  },
+  {
+   "query": "Consider the Services Agreement between Alpha Corp and Beta LLC; Which law governs this agreement?",
+   "snippets": [
+    {
+     "file_path": "cuad/alpha.txt",
+     "span": [
+      262,
+      344
+     ],
+     "answer": "3. Governing Law. This Agreement is governed by the laws of the State of Delaware."
+    }
+   ]
+  },
+  {
+   "query": "Consider the Services Agreement between Alpha Corp and Beta LLC; How much notice is required to terminate?",
+   "snippets": [
+    {
+     "file_path": "cuad/alpha.txt",
+     "span": [
+      146,
+      260
+     ],
+     "answer": "2. Termination. Either party may terminate this Agreement upon thirty (30) days written notice to the other party."
+    }
+   ]
+  },
+  {
+   "query": "Consider the License Agreement between Gamma Licensing Inc and Delta Software Ltd; What does the license grant?",
+   "snippets": [
+    {
+     "file_path": "cuad/beta.txt",
+     "span": [
+      71,
+      168
+     ],
+     "answer": "1. Grant. Licensor grants Licensee a non-exclusive, non-transferable license to use the Software."
+    }
+   ]
+  },
+  {
+   "query": "Consider the License Agreement between Gamma Licensing Inc and Delta Software Ltd; Can the licensee sublicense?",
+   "snippets": [
+    {
+     "file_path": "cuad/beta.txt",
+     "span": [
+      170,
+      262
+     ],
+     "answer": "2. Restrictions. Licensee may not sublicense, rent or lease the Software to any third party."
+    }
+   ]
+  },
+  {
+   "query": "Consider the License Agreement between Gamma Licensing Inc and Delta Software Ltd; What royalty is payable?",
+   "snippets": [
+    {
+     "file_path": "cuad/beta.txt",
+     "span": [
+      264,
+      352
+     ],
+     "answer": "3. Fees. Licensee shall pay an annual royalty equal to five percent (5%) of net revenue."
+    }
+   ]
+  },
+  {
+   "query": "Consider the Supply Agreement between Epsilon Foods and Zeta Retail; When must invoices be paid?",
+   "snippets": [
+    {
+     "file_path": "cuad/gamma.txt",
+     "span": [
+      57,
+      132
+     ],
+     "answer": "1. Payment. Zeta shall pay each invoice within thirty (30) days of receipt."
+    }
+   ]
+  },
+  {
+   "query": "Consider the Supply Agreement between Epsilon Foods and Zeta Retail; Is the agreement confidential, and how fast is delivery?",
+   "snippets": [
+    {
+     "file_path": "cuad/gamma.txt",
+     "span": [
+      134,
+      217
+     ],
+     "answer": "2. Confidentiality. Each party shall keep the terms of this Agreement confidential."
+    },
+    {
+     "file_path": "cuad/gamma.txt",
+     "span": [
+      219,
+      326
+     ],
+     "answer": "3. Delivery. Epsilon shall deliver goods to the Zeta warehouse within ten (10) business days of each order."
+    }
+   ]
+  },
+  {
+   "query": "Consider the Services Agreement between Alpha Corp and Beta LLC; What are the payment terms in euros?",
+   "snippets": [
+    {
+     "file_path": "cuad/alpha.txt",
+     "span": [
+      346,
+      411
+     ],
+     "answer": "4. Café Clause. Payments of €500 are due monthly — no exceptions."
+    }
+   ]
+  }
+ ]
+}
