@@ -55,3 +55,6 @@ Data flow: manifest → allowed contract list → original text → chunks (star
 * A single index over all 29 contracts is searched (mirrors the benchmark, where the query names the contract in free text); no gold-based document routing.
 * Test-split unanswerable questions (6) are too few for tight intervals; reported with raw counts.
 * No LLM and no dense model are used in the default pipeline (offline, deterministic).
+
+## Status
+Implemented. Results, iteration history and limitations are in REPORT.md; run instructions are in README.md.

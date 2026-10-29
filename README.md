@@ -1,101 +1,115 @@
-# JioStar Contract Intelligence Assistant
+# Contract Intelligence Assistant
 
-Retrieval-focused assistant that finds the **exact answer-bearing passages** in commercial contracts. For a
-natural-language question it returns ranked passages with the source file and exact character offsets
-(`document[start:end] == text`), or **abstains** (returns nothing) when no passage is sufficiently relevant.
-It runs fully offline: BM25 + TF-IDF lexical retrieval, no LLM, no API keys.
+## Overview
+Ask a natural-language question about a contract. The system returns a ranked list of passages from the indexed contracts, each with its
+source file and exact character offsets (`document[start:end]` equals the returned text). When no passage is relevant enough, it returns
+nothing and says why. It is fully offline: lexical retrieval (BM25 + TF-IDF with reciprocal-rank fusion), document routing and a
+small legal query-expansion lexicon, with no LLM and no API keys. It has a CLI and a Streamlit web app built on the same service code,
+plus an evaluation harness and a train-only self-improvement loop. The data is the CUAD part of LegalBench-RAG-mini (194 queries over 29 contracts).
+Results and analysis are in [REPORT.md](REPORT.md).
 
-Data: the CUAD subset of [LegalBench-RAG](https://huggingface.co/datasets/awinml/legalbench-rag) restricted to the
-194-query "mini" selection (29 contracts). Numbers and analysis are in [REPORT.md](REPORT.md); the plan and repository
-audit are in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md). The tool retrieves evidence; it is **not legal advice**.
-
-## Setup (Python 3.11 or 3.12)
+## Setup
+Python 3.11 or 3.12 (developed on 3.12.0, Windows 11).
 
 ```bash
 python -m venv .venv
-.venv/Scripts/activate            # Windows;  source .venv/bin/activate on macOS/Linux
-pip install -e ".[data,app,dev]"
-contract-intel setup              # downloads CUAD files (~32 MB) into data/raw/, validates all 272 gold offsets, writes data/manifests/cuad_mini.json
+.venv\Scripts\activate                 # macOS/Linux: source .venv/bin/activate
+pip install -e ".[data,app,dev]"       # PyYAML (core); huggingface_hub, streamlit, pytest, ruff (extras)
+contract-intel setup                   # download data, validate offsets, write the manifest (~30 s)
 ```
 
-`setup` fails loudly if any gold `document[start:end]` differs from its annotated text. To rebuild only the manifest from
-files you already have: `contract-intel setup --skip-download` (or `contract-intel validate`).
-`data/raw/` is git-ignored; nothing from the corpus is committed except question text and offsets in the manifest.
+`setup` downloads `benchmarks/cuad.json` and `corpus/cuad/` from `huggingface.co/datasets/awinml/legalbench-rag` into the git-ignored
+`data/raw/legalbench-rag/` folder (~32 MB). It selects the 194 mini queries, checks `document[start:end] == answer` for all 272 gold spans
+(it stops with an error on any mismatch), and writes `data/manifests/cuad_mini.json`. No LLM is used, so no keys or local models are
+needed. `.env.example` lists only an optional `HF_TOKEN` for faster downloads.
 
-## Use
+## How to run
 
-```bash
-contract-intel build-index --config configs/final.yaml
-contract-intel search "Consider the Sponsorship Agreement between Jacksonville Jaguars, LLC and The ARC Group, Inc.; Is there an anti-assignment clause in this contract?" --top-k 5
-contract-intel search "..." --json                  # stable JSON schema (below)
-streamlit run src/contract_intel/app.py             # web app (reads configs/final.yaml; override with CONTRACT_INTEL_CONFIG)
-```
+| Task | Command |
+|---|---|
+| Web app | `streamlit run src/contract_intel/app.py` (choose a contract, or name it in the question) |
+| CLI search | `contract-intel search "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; Is there an anti-assignment clause in this contract?"` |
+| CLI search in one contract, JSON | `contract-intel search "Is there an anti-assignment clause?" --contract CANOPETROLEUM --top-k 3 --json` |
+| Index statistics | `contract-intel build-index` |
+| Train evaluation | `contract-intel evaluate --split train --config configs/final.yaml` (or `configs/baseline.yaml`) |
+| Test evaluation (final reporting only) | `contract-intel evaluate --split test --final --config configs/final.yaml` |
+| Out-of-corpus abstention probe | `contract-intel probe --config configs/final.yaml` |
+| Failure diagnosis | `contract-intel diagnose --split train` |
+| Improvement loop | `contract-intel optimize --config configs/baseline.yaml --iterations 14` |
+| Tests | `contract-intel test` or `pytest` |
 
-(`python -m contract_intel.cli ...` is equivalent to `contract-intel ...`.) Abstention prints
-`ABSTAINED: no passage is sufficiently relevant (...)` and returns exit code 0 with an empty `results` list in JSON mode.
-Exit codes: 0 success, 1 unexpected error, 2 usage/config/data problem.
+`python -m contract_intel.cli …` works the same as `contract-intel …`.
 
-JSON result schema: `{"query", "abstained", "abstain_reason", "results": [{"rank", "file_path", "start", "end", "score", "confidence", "text"}], "meta": {...}}`.
-`file_path` is dataset-style (`cuad/<name>.txt`, resolved under `data/raw/legalbench-rag/corpus/`); offsets are Python
-`str` offsets of the file read with `Path.read_text(encoding="utf-8")`.
-
-## Evaluate, optimize, test
-
-```bash
-contract-intel evaluate --split train --config configs/baseline.yaml     # also configs/final.yaml
-contract-intel optimize --config configs/baseline.yaml --iterations 10   # train-only loop, ~35 s; writes configs/final.yaml
-contract-intel evaluate --split test --final --config configs/final.yaml # held-out test; --final is mandatory and every run is logged
-contract-intel diagnose --split train --config configs/final.yaml        # failure categories with examples
-contract-intel test                                                       # = pytest (194 tests; 3 need the downloaded data)
-```
-
-Outputs: `experiments/baseline.json`, `experiments/iterations.jsonl` (append-only), `experiments/results/*` (metrics +
-per-query JSONL), `experiments/final_test_runs.jsonl` (every test-split evaluation). Approximate runtimes on a laptop:
-index build 0.2-0.5 s, train evaluation ~3 s, optimizer ~35 s, test suite ~6 s.
-
-## Reproduce the reported numbers
-
-1. `contract-intel setup` (manifest hash must be `e2a5024fd7e7ef0b`; 194 queries; 140 train / 54 test).
-2. `contract-intel evaluate --split train --config configs/baseline.yaml` and `... configs/final.yaml` reproduce the train rows of REPORT.md.
-3. `contract-intel evaluate --split test --final --config configs/final.yaml` (and baseline) reproduce the test rows. The committed
-   `experiments/final_test_runs.jsonl` already records the two official test runs; re-running appends further (clearly numbered) runs.
-4. `contract-intel optimize ...` re-derives `configs/final.yaml` deterministically (compare `config_hash 1cec43a77086`).
+* **Exit codes:** 0 success (including abstention), 2 usage/config/data error, 1 unexpected error.
+* **Test-split guard:** `--split test` refuses to run without `--final`, and every test run is appended to `experiments/final_test_runs.jsonl` so the count is auditable.
+* **JSON output:** `{"query", "abstained", "abstain_reason", "results": [{"rank", "file_path", "start", "end", "score", "confidence", "text"}], "meta"}`.
+  * `file_path` uses the dataset's form (`cuad/<name>.txt`).
+  * Offsets are Python string offsets into the file read with `Path.read_text(encoding="utf-8")`.
 
 ## Architecture
 
 ```
-manifest (contract list) -> DocumentStore (original text) -> chunking (start,end on original text)
-  -> LexicalIndex (BM25 / TF-IDF) -> rank_candidates (+RRF, +document prior, +query expansion)
-  -> overlap suppression -> abstention.decide -> SearchResponse (text == doc[start:end])
+contract-intel setup ─> data.py (exact mini(), assign_split(), offset validation) ─> manifest (29 contracts, no answer text)
+                                                                          │
+search query ─> retrieval.ContractSearcher ──────────────────────────────┤ documents.py (original text, never modified)
+   (CLI, app,       ├ indexing.py   tokenizer, BM25 + TF-IDF index        │ chunking.py  fixed / paragraph / section chunks as [start,end)
+    evaluation)     ├ lexicon.py    query expansion                       
+                    ├ ranking.py    RRF fusion, document prior, route filter, overlap suppression, span refinement
+                    └ abstention.py contract gate + confidence threshold  ─> SearchResponse (text == doc[start:end])
+evaluation.py (per-query scoring) ─ metrics.py (character P/R@k, as in LegalBench-RAG) ─ diagnostics.py (failure categories)
+optimize.py (train-only loop: diagnose -> propose -> evaluate -> accept/reject -> experiments/iterations.jsonl)
+service.py (shared by cli.py and app.py)
 ```
-Modules in `src/contract_intel/`: `config` (typed YAML), `data` (exact `mini()`, `assign_split()`, offset validation, manifest),
-`documents`, `chunking` (fixed / paragraph / section, offset-exact), `indexing`, `ranking`, `lexicon`, `retrieval`
-(the service), `abstention`, `metrics` (official-style char precision/recall), `evaluation`, `diagnostics`, `optimize`, `service`, `cli`, `app`.
-CLI and Streamlit both call `service.load_searcher` / `ContractSearcher.search`, so results are identical (tested).
 
-## Configuration
+* **Configuration** lives in `configs/baseline.yaml` and `configs/final.yaml`, parsed into typed dataclasses in `config.py`. It covers chunking,
+  BM25 parameters, query processing, fusion, routing, refinement, abstention signal and thresholds, k values and paths.
+* **Gold spans** are read only by `data.py` (validation), `evaluation.py`, `metrics.py` and `diagnostics.py`. The searcher receives only the query text.
+* **Objective and guardrails:** `docs/optimization_objective.md`.
+* **Unanswerable set:** `data/unanswerable_queries.jsonl` (frozen).
+* **Out-of-corpus probe:** `data/out_of_corpus_probe.jsonl`.
 
-`configs/baseline.yaml` (fixed 1000-char windows, plain BM25, abstention off) and `configs/final.yaml` (the configuration
-accepted by the train-only loop, with its train-fitted abstention threshold). Every pipeline choice (chunking, BM25 parameters,
-query processing/expansion, RRF fusion, document prior, abstention signal/threshold, k values, paths) lives in these files.
+## Reproducing results
+After `setup` (about 30 s), run these from the repository root:
 
-## Assumptions and ambiguities
+| Step | Command | Time |
+|---|---|---|
+| Train metrics, baseline and final | `contract-intel evaluate --split train --config configs/baseline.yaml` and `… configs/final.yaml` | ~3 s each |
+| Re-derive the final config | `contract-intel optimize --config configs/baseline.yaml --iterations 14` → `configs/final.yaml`, config hash `78a53ef0d1aa` | ~50 s |
+| Test metrics | `contract-intel evaluate --split test --final --config configs/final.yaml` (logged as an extra test run) | ~3 s |
+| Out-of-corpus probe | `contract-intel probe --config configs/final.yaml` | ~3 s |
+| Tests | `pytest`: 203 tests; 3 of them need `data/raw` and are skipped without it | ~7 s |
 
-* Submission visibility: the brief is inconsistent (private repo with collaborator access vs. public); a **private** repository is assumed.
-* Selection/split functions are implemented verbatim; split counts are reported as they fall (no balancing).
-* A single index over all 29 contracts is searched; there is no gold-based routing.
-* The unanswerable set (39 queries; 33 train / 6 test) was verified by an AI assistant: 17 items by reading the whole contract,
-  22 by automated keyword-absence checks plus a section-level read (see REPORT.md, "Limitations"). It was frozen before tuning.
-* No dense retrieval, reranker or LLM is used; adding them is an extension, not a requirement of the baseline.
+* **Outputs:** metrics and per-query results go to `experiments/results/`.
+* **Committed results:** the runs used in the report are already committed (`experiments/results/`, `experiments/final_test_runs.jsonl`,
+  `experiments/iterations.jsonl`), so you can compare a fresh run against them.
+* **Determinism:** everything is deterministic; only latencies vary.
+
+## Assumptions
+* **Visibility.** The brief asks for a private repository with collaborator access in one place and a public repository in another. I assumed
+  **private + collaborator access**, because that is the explicit submission instruction.
+* **Offsets.** Offsets are taken as Python `str` indices after reading in text mode with UTF-8 (universal newlines). All 272 gold spans match exactly
+  under this reading.
+* **Corpus.** One index over all 29 contracts. Benchmark questions name their contract in free text ("Consider the … between X and Y; …"),
+  so the system has to work out which contract is meant. Nothing gold-derived is used for routing.
+* **Unanswerable split.** `assign_split` put 33 of the 39 unanswerable questions in train and 6 in test. The brief expects about a third in test; I kept
+  the function's output rather than editing the frozen set.
+* **Questions about contracts outside the corpus** are answered with an abstention. To measure this I derived a separate probe set from benchmark
+  questions about non-indexed CUAD contracts. It is used only for reporting.
+* **Explicit contract choice.** A question that names no contract can be scoped with `--contract` or the app's selector. Without one, it searches
+  every indexed contract.
+* **"Relevant enough"** means passing two train-calibrated thresholds: the contract match (≤ 1% answerable loss) and passage confidence
+  (≥ 90% answerable coverage). The rationale is in `docs/optimization_objective.md`.
+* **Character metrics** follow the LegalBench-RAG reference implementation. Overlapping passages are merged so they are never double counted; see `metrics.py`.
 
 ## AI tool usage
+* **Development:** Claude Code (Anthropic) was used throughout. It audited a candidate starting repository (`Akshitha024/legal-retrieval-benchmark`,
+  MIT); only ideas were reused, no code was copied. It wrote the code, the tests and the first draft of the 39 unanswerable questions, which were
+  checked against the contract text with scripts and by reading (REPORT §7 says how thoroughly). It also ran every experiment and drafted these documents.
+* **The submitted system** contains no LLM.
 
-This project was built with Claude Code (Claude Sonnet 5.5) acting autonomously on a written specification: it audited the
-candidate repository, wrote the code, tests, unanswerable questions, configs and reports, and ran every experiment reported here.
-All figures come from files under `experiments/`. A human owner should review the code and the unanswerable set before relying on them.
+The author reviewed the design and is responsible for being able to explain and change every part of it.
 
-## License and third-party material
-
-No project license has been chosen yet (private repository; the owner must pick one). See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
-for data and dependency licenses. No code was copied from `Akshitha024/legal-retrieval-benchmark` (MIT, inspected only) or from the official
-LegalBench-RAG repository (MIT, used to confirm the metric definition).
+## Licenses
+* **Data:** CUAD / LegalBench-RAG under CC BY 4.0. It is downloaded at setup time and not redistributed.
+* **Dependencies:** see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+* **This repository:** no license has been chosen yet (private submission).

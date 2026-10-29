@@ -1,0 +1,375 @@
+{
+  "meta": {
+    "timestamp": "2026-10-29T18:34:04+00:00",
+    "git_commit": "14f97ba",
+    "config_hash": "78a53ef0d1aa",
+    "manifest_hash": "e2a5024fd7e7ef0b",
+    "split": "test",
+    "python": "3.12.0",
+    "platform": "Windows-11-10.0.26100-SP0",
+    "config": "final",
+    "config_file": "configs/final.yaml",
+    "n_answerable": 54,
+    "n_unanswerable": 6,
+    "kind": "final_test",
+    "index_build_s": 0.47,
+    "n_chunks": 821,
+    "test_run_number": 3
+  },
+  "metrics": {
+    "n_answerable": 54,
+    "n_unanswerable": 6,
+    "precision@1": 0.14584371747350472,
+    "recall@1": 0.5346462771113428,
+    "doc_hit@1": 0.9259259259259259,
+    "span_hit@1": 0.6481481481481481,
+    "micro_precision@1": 0.15746588172330747,
+    "micro_recall@1": 0.3739870984143125,
+    "precision@3": 0.08229784604663387,
+    "recall@3": 0.6965409940462964,
+    "doc_hit@3": 0.9259259259259259,
+    "span_hit@3": 0.7777777777777778,
+    "micro_precision@3": 0.08920670850910588,
+    "micro_recall@3": 0.6336712320061012,
+    "precision@5": 0.06068782493533647,
+    "recall@5": 0.7976881163514349,
+    "doc_hit@5": 0.9259259259259259,
+    "span_hit@5": 0.8518518518518519,
+    "micro_precision@5": 0.06567653660569078,
+    "micro_recall@5": 0.7763831071848486,
+    "mrr_span": 0.7203703703703703,
+    "false_abstentions": 4,
+    "false_abstention_rate": 0.07407407407407407,
+    "coverage": 0.9259259259259259,
+    "correct_abstentions": 2,
+    "correct_abstention_rate": 0.3333333333333333,
+    "false_acceptances": 4,
+    "false_acceptance_rate": 0.6666666666666666,
+    "mean_latency_ms": 1.170461675307403
+  },
+  "diagnostics": {
+    "k": 5,
+    "categories": {
+      "overly_broad": 42,
+      "false_abstention": 4,
+      "right_doc_wrong_section": 4,
+      "success": 2,
+      "incomplete_coverage": 2,
+      "false_acceptance": 4,
+      "correct_abstention": 2
+    },
+    "tags": {
+      "query_wording_mismatch": 52,
+      "cross_reference_dependency": 22
+    },
+    "answerable_failure_share": {
+      "overly_broad": 0.7778,
+      "false_abstention": 0.0741,
+      "right_doc_wrong_section": 0.0741,
+      "incomplete_coverage": 0.037
+    },
+    "examples": {
+      "overly_broad": [
+        {
+          "id": "cuad-ec6283c4e4",
+          "query": "Consider the Service Agreement between BicycleTX Ltd and Nigel Crockett for Chief Business Officer Position; What is the expiration date of this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+              "start": 693,
+              "end": 859,
+              "text": "Your employment shall commence on 26  September 2019 and shall continue unless and until either party gives notice to the other in accordance with paragraph 11 below."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/BICYCLETHERAPEUTICSPLC_03_10_2020-EX-10.11-SERVICE AGREEMENT.txt",
+            "start": 0,
+            "end": 1500,
+            "text": "Exhibit 10.11\n\nDATED 26 September 2019\n\nBicycleTX Ltd\n\nand\n\nNigel Crockett\n\n___________________________________________________\n\nSERVICE AGREEMENT\n\n___________________________________________________\n\n\n\n\n\nTHIS AGREEMENT is made on 26 September 2019\n\nBETWEEN:\n\n(1) BICYCLETX LIMITED a company incorpor"
+          }
+        },
+        {
+          "id": "cuad-4d5e7051b2",
+          "query": "Consider the Cooperation Agreement between HPIL ENERGYTECH Inc. and GINARES GROUP AG for Renewable Energy Projects; Can this contract be terminated for convenience, and under what conditions?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+              "start": 18172,
+              "end": 18336,
+              "text": "The Parties may terminate its performance of related obligations under this Agreement within thirty (30) days of receipt by the Party of written termination notice."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/HPILHOLDING_01_07_2015-EX-99.1-COOPERATION AGREEMENT.txt",
+            "start": 18000,
+            "end": 19499,
+            "text": "ies assume no liability to any third party because of any reliance on the representations, warranties and agreements contained in this Agreement.   21. Early Termination   The Parties may terminate its performance of related obligations under this Agreement within thirty (30) days of receipt by the "
+          }
+        },
+        {
+          "id": "cuad-fe6c822e61",
+          "query": "Consider the Service Agreement between Theravance Biopharma UK Limited and Brett Haumann; What is the governing law for this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.9039,
+          "gold": [
+            {
+              "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+              "start": 32015,
+              "end": 32250,
+              "text": "This Agreement and any dispute or claim arising out of or in connection with it or its subject matter or formation (including non-contractual disputes or claims) shall be governed by and construed in accordance with the law of England."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/THERAVANCEBIOPHARMA,INC_05_08_2020-EX-10.2-SERVICE AGREEMENT.txt",
+            "start": 31500,
+            "end": 32861,
+            "text": ".9 This Agreement may be executed in any number of counterparts, each of which, when executed and delivered, shall be an original, and all the counterparts together shall constitute one and the same agreement. 24.10 The Contracts (Rights of Third Parties) Act 1999 shall only apply to this Agreement "
+          }
+        }
+      ],
+      "false_abstention": [
+        {
+          "id": "cuad-f5fd1dec27",
+          "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; What is the governing law for this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.6398,
+          "gold": [
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 4159,
+              "end": 4489,
+              "text": "This Agreement shall be governed by and construed in accordance with the laws of the State of Texas and venue for  any legal action brought in State Court shall lie exclusively in Tarrant County, Texas and venue for any action brought in federal court shall  lie exclusively in the Northern District "
+            }
+          ],
+          "top_result": null
+        },
+        {
+          "id": "cuad-0c5c5e9b75",
+          "query": "Consider the Sponsorship Agreement between R. C. Boyd Enterprises, LLC and Cano Petroleum, Inc. for 'Honey Hole'; Is there a minimum commitment required under this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.4929,
+          "gold": [
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 1116,
+              "end": 1204,
+              "text": "The Company shall produce no less than forty (40) original episodes of the Show per year"
+            },
+            {
+              "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+              "start": 2160,
+              "end": 2302,
+              "text": "The Company agrees to feature not less than two (2) persons designated by Cano as guests on not less than six (6)  separate episodes per year."
+            }
+          ],
+          "top_result": null
+        },
+        {
+          "id": "cuad-54a5a09654",
+          "query": "Consider the Strategic Alliance Agreement between Information System Associates, Inc. and Rubicon Software Group plc; Are there any services to be provided after the termination of this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.6585,
+          "gold": [
+            {
+              "file": "cuad/DUOSTECHNOLOGIESGROUP,INC_04_21_2009-EX-10.1-STRATEGIC ALLIANCE AGREEMENT.txt",
+              "start": 12612,
+              "end": 12792,
+              "text": "Each Party shall retain the financial records relating to all payments owed and/or paid under this Agreement for a period of six  years from the date such payment obligation arose."
+            }
+          ],
+          "top_result": null
+        }
+      ],
+      "right_doc_wrong_section": [
+        {
+          "id": "cuad-3d4d98175e",
+          "query": "Consider the Marketing and Transportation Services Agreement between Purolator Courier Ltd. and Parcelway Courier Systems Canada Ltd. (Dynamex Inc.); Does this contract include an exclusivity agreement?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.8108,
+          "gold": [
+            {
+              "file": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+              "start": 7970,
+              "end": 8101,
+              "text": "Dynamex agrees not to provide sameday delivery services for any other        provider of next day or multiple day courier services."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/DYNAMEXINC_06_06_1996-EX-10.4-TRANSPORTATION SERVICES AGREEMENT.txt",
+            "start": 21000,
+            "end": 22500,
+            "text": "ct during the term of        this Agreement and covenants that nothing shall be done whereby any        policy will be cancelled and shall pay all renewal premiums thereon on or        before the due date and shall forthwith furnish the other Party with        copies of certificates of insurance of "
+          }
+        },
+        {
+          "id": "cuad-65cdade3c3",
+          "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there a non-compete clause in this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 28888,
+              "end": 29204,
+              "text": "Except as expressly contemplated by this Agreement (including Article XIII hereof) and subject to Section 13.1 hereof, King shall not promote, market or distribute any product containing metformin hydrochloride as the sole active ingredient in the Territory during the Term of this Agreement, other t"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+            "start": 132000,
+            "end": 133500,
+            "text": "TY AND WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE.\n\nSection 9.4 King Disclaimer. EXCEPT AS EXPRESSLY PROVIDED HEREIN, KING DISCLAIMS ALL OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING THE WARRANTY OF MERCHANTABILITY AND WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE.\n\nARTICLE X\n\nINTELLECTUAL PROPER"
+          }
+        },
+        {
+          "id": "cuad-08c378a1b8",
+          "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Is there a covenant not to sue included in this contract?",
+          "tags": [
+            "query_wording_mismatch"
+          ],
+          "top1_confidence": 0.9297,
+          "gold": [
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 64934,
+              "end": 65583,
+              "text": "King recognizes Depomed's title to the Depomed Trademarks, and shall not at any time, during or after the Term, do or knowingly suffer to be done any act or thing which will in any way impair the rights of Depomed in or to the Depomed Trademarks. King acknowledges and agrees that it shall not acquir"
+            },
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 66237,
+              "end": 66474,
+              "text": "Depomed recognizes King's title to the King Trademarks, and shall not at any time, during or after the Term, do or knowingly suffer to be done any act or thing which will in any way impair the rights of King in or to the King Trademarks."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+            "start": 132000,
+            "end": 133500,
+            "text": "TY AND WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE.\n\nSection 9.4 King Disclaimer. EXCEPT AS EXPRESSLY PROVIDED HEREIN, KING DISCLAIMS ALL OTHER WARRANTIES, EXPRESS OR IMPLIED, INCLUDING THE WARRANTY OF MERCHANTABILITY AND WARRANTY OF FITNESS FOR A PARTICULAR PURPOSE.\n\nARTICLE X\n\nINTELLECTUAL PROPER"
+          }
+        }
+      ],
+      "incomplete_coverage": [
+        {
+          "id": "cuad-5938744c36",
+          "query": "Consider the Promotion Agreement between Depomed, Inc. and King Pharmaceuticals, Inc. for Glumetza; Are there any services to be provided after the termination of this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 0.8534,
+          "gold": [
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 103074,
+              "end": 103212,
+              "text": "This right to audit shall extend throughout the term of this Agreement and for one year after expiration or termination of this Agreement."
+            },
+            {
+              "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+              "start": 105475,
+              "end": 105918,
+              "text": "Following the termination of this Agreement at the conclusion of the initial five year term or any additional term, for each of the eight full calendar quarters following such termination, Depomed shall pay to King an amount equal to, in each of the first four such calendar quarters, [***]% of the N"
+            }
+          ],
+          "top_result": {
+            "file": "cuad/KINGPHARMACEUTICALSINC_08_09_2006-EX-10.1-PROMOTION AGREEMENT.txt",
+            "start": 118500,
+            "end": 120000,
+            "text": "under Rule 24b-2 of the Securities Exchange Act of 1934.\n\n34\n\n\n\n\n\n\n\n(a) No additional payment obligations arising under Article VII hereof shall accrue after the date of expiration or termination of this Agreement except as set forth in Section 7.4; provided, however, that expiration or termination "
+          }
+        },
+        {
+          "id": "cuad-635d48eec1",
+          "query": "Consider the Endorsement Agreement between ABG-Shaq, LLC and Papa John's International, Inc.; Is there a non-disparagement clause in this contract?",
+          "tags": [
+            "query_wording_mismatch",
+            "cross_reference_dependency"
+          ],
+          "top1_confidence": 1.0,
+          "gold": [
+            {
+              "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+              "start": 13350,
+              "end": 13670,
+              "text": "PAPA JOHN'S shall not, during the Term or at any time thereafter: (I) defame or disparage CELEBRITY or the Personality Rights (or any portion thereof), nor shall PAPA JOHN'S place the CELEBRITY or the Personality Rights (or any portion thereof) in a negative light, whether in connection with this Ag"
+            },
+            {
+              "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+              "start": 61086,
+              "end": 61257,
+              "text": "All Parties agree not to disparage or make derogatory comments, verbal or written, regarding the other Party during the Term of the Agreement, and for one year thereafter."
+            }
+          ],
+          "top_result": {
+            "file": "cuad/PapaJohnsInternationalInc_20190617_8-K_EX-10.1_11707365_EX-10.1_Endorsement Agreement.txt",
+            "start": 60000,
+            "end": 61500,
+            "text": "esignated by the other Party, and to conduct such other discovery as the arbitrator deems appropriate. The award or decision rendered by the arbitrator shall be final, binding and conclusive and judgment may be entered upon such award by any court.\n\n10. Confidentiality and Non-Disparagement. Each Pa"
+          }
+        }
+      ],
+      "false_acceptance": [
+        {
+          "id": "unans-002",
+          "query": "What liability insurance must R. C. Boyd Enterprises maintain for the Honey Hole show under the Cano Petroleum sponsorship?",
+          "tags": [],
+          "top1_confidence": 0.6603,
+          "top_result": {
+            "file": "cuad/CANOPETROLEUM,INC_12_13_2007-EX-10.1-Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1500,
+            "text": "QuickLinks -- Click here to rapidly navigate through this document\n\n    EXHIBIT 10.1\n\nSponsorship Agreement\n\nTHIS AGREEMENT made this 5th day of December, 2007, between R. C. Boyd Enterprises, LLC, a Texas limited liability company, whose principal  place of business is located at 2003 Navasota Cove"
+          }
+        },
+        {
+          "id": "unans-020",
+          "query": "May The ARC Group assign its Jaguars sponsorship rights to a franchisee of Dick's Wings and Grill?",
+          "tags": [],
+          "top1_confidence": 0.696,
+          "top_result": {
+            "file": "cuad/ArcGroupInc_20171211_8-K_EX-10.1_10976103_EX-10.1_Sponsorship Agreement.txt",
+            "start": 0,
+            "end": 1500,
+            "text": "Exhibit 10.1   JACKSONVILLE JAGUARS SPONSORSHIP AGREEMENT   This Sponsorship Agreement (this \"Agreement\") is entered into as of November 27, 2017 (the \"Execution Date\") by and between Jacksonville Jaguars, LLC, a Delaware limited liability company (\"Club\"), and The ARC Group, Inc., a Florida corpora"
+          }
+        },
+        {
+          "id": "unans-035",
+          "query": "How many units is the minimum order quantity (MOQ) that Inde Living Holdings must order from Vayyar during the Initial Term?",
+          "tags": [],
+          "top1_confidence": 0.9017,
+          "top_result": {
+            "file": "cuad/HealthcareIntegratedTechnologiesInc_20190812_8-K_EX-10.1_11776966_EX-10.1_Reseller Agreement.txt",
+            "start": 0,
+            "end": 1500,
+            "text": "WALABOT-HOME RESELLER AGREEMENT This Walabot-HOME Reseller Agreement (\"Agreement\") is made and entered into as of this 31 day of July 2019 (\"Effective Date\") by and between Vayyar Imaging Ltd., having its principal place of business at 3 Avraham Giron St., POB. 325, Yehud 5621717, Israel (\"Supplier\""
+          }
+        }
+      ]
+    }
+  }
+}

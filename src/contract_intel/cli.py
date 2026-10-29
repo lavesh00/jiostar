@@ -152,7 +152,7 @@ def _cmd_probe(a: argparse.Namespace) -> int:
                "correct_abstention_rate": agg["correct_abstention_rate"],
                "by_split": {s: {"n": len(v), "correct_abstentions": sum(r["abstained"] for r in v)} for s, v in by_split.items()},
                "abstain_reasons": dict(sorted({k: sum(1 for r in records if r["abstain_reason"].startswith(k))
-                                               for k in ("the question does not match", "top confidence", "no passage")}.items()))}
+                                               for k in ("the question could not be matched", "top confidence", "no passage")}.items()))}
     out = Path(a.out or Path(cfg.paths.experiments_dir) / "results")
     write_json(out / f"{cfg.name}_out_of_corpus_metrics.json",
                {"meta": run_metadata(cfg.hash(), None, "out_of_corpus_probe", {"config": cfg.name}), "summary": summary})

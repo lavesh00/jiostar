@@ -26,8 +26,8 @@ def decide(
     if n_results == 0:
         return True, "no passage matched any query term"
     if doc_match < cfg.min_doc_prior:
-        return True, (f"the question does not match any indexed contract well (match {doc_match:.3f} < "
-                      f"{cfg.min_doc_prior:.3f}); the contract may not be in the corpus - choose a contract explicitly")
+        return True, (f"the question could not be matched confidently to an indexed contract (match {doc_match:.3f} < "
+                      f"{cfg.min_doc_prior:.3f}); it may not be in the corpus - name it more fully or choose a contract")
     if top1 < cfg.threshold:
         return True, f"top confidence {top1:.3f} below threshold {cfg.threshold:.3f}"
     if cfg.policy == "top_score_gap":
